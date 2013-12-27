@@ -1,0 +1,238 @@
+ 
+#t3
+{
+	width:33%;
+/*        height:200px;*/
+	border:3px solid black;
+}
+
+#t3
+{ 
+	float:auto;
+}  
+
+#myText { text-align: right; } 
+
+#t1, #t2
+{
+	width:48%;
+/*        height:200px;*/
+	border:3px solid black;
+}
+
+#t1
+{
+	float:left;
+}  
+
+#t2
+{ 
+    float:right;
+}  
+
+
+		
+body
+{
+/*background: url(../images/skull.jpg)*/
+}
+
+table
+{
+   border-collapse: collapse;
+	width:100%;
+}
+
+table.blue
+{
+   border-collapse: collapse;
+}
+
+tr:nth-child(odd) 
+{
+  background-color:rgb(180,255,255);
+  /*background-color:rgb(150,255,255);
+  background-color:cyan;*/
+}
+tr:nth-child(even) 
+{
+  background-color:rgb(250,255,155); 
+}
+
+tr.blank 
+{
+  background-color:violet; 
+}
+
+tr.blank2 
+{
+  background-color:cyan; 
+}
+
+tr.trq 
+{
+  background-color:cyan; 
+}
+
+td
+{
+	padding-right: 6px
+}
+
+td.blue
+{
+	padding-right: 18px
+}
+
+#container
+{
+width: 95%;
+/*width: 90%;*/
+margin: 10px auto;
+
+background-color: #48603C;
+color: blue;
+border: 2px solid red;  /*red*/
+line-height: 130%;
+}
+
+#top
+{
+padding: 1em;
+background-color: tan;
+border: 10px solid purple;
+text-decoration:none;
+}
+
+#top a
+{
+	color: blue;
+	text-decoration: none;
+}
+
+
+#top h1
+{
+text-decoration:none;
+padding: 0;
+margin: 0;
+}
+
+
+
+#wrapper
+{
+border: 10px solid purple;
+background-color: tan;
+}
+
+
+#top2
+{
+float:left;
+width:40%;
+padding: 1em;
+background-color: tan;
+border: 0px solid purple;
+text-decoration:none;
+}
+
+#top2 a
+{
+	color: blue;
+	text-decoration: none;
+}
+
+
+#top2 h1
+{
+text-decoration:none;
+padding: 0;
+margin: 0;
+}
+
+
+#lname
+{
+margin-left: 300px;
+padding: 1em;
+border: 0px solid green;
+background-color: tan;
+text-align: right;
+}
+
+
+#leftnavpre
+{
+float: left;
+width: 200px;
+margin: 0;
+padding: 1em;
+background-color: violet;
+}
+
+#leftnav
+{
+float: left;
+width: 155px;
+margin: 0;
+padding: 1em;
+background-color: violet;
+}
+
+#contentpre
+{
+margin-left: 232px;
+padding: 1em;
+max-width: 37em;
+border: 2px solid blue;
+background-color: cyan
+}
+#content
+{
+margin-left: 187px;
+padding: 1em;
+max-width: 37em;
+border: 2px solid blue;
+background-color: cyan
+}
+
+
+#content2
+{
+padding: 1em;
+border: 2px solid blue;
+background-color: cyan
+}
+
+#contentblank
+{
+padding: 1em;
+border: 2px solid blue;
+background-color: cyan
+}
+
+#footer
+{
+clear: both;
+margin: 0;
+padding: .5em;
+color: #333;
+background-color: #FFFECA; /*grey*/
+border: 0px solid indigo;
+}
+#lbox
+{
+float:left;
+width:40%;
+text-decoration:none;
+}
+
+#rbox
+{
+margin-left: 350px;
+text-align: right;
+}
+
+#leftnav p { margin: 0 0 1em 0; }
+#content h2 { margin: 0 0 .5em 0; }
