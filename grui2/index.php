@@ -19,12 +19,8 @@ if( $_SESSION['login'] == 'yes' )
 	echo $leftnav3;
 	echo $content3blank1;
 	echo $content11;
-
-	$dir = 'source/';
-	$files1 = scandir($dir);
-	$zipname = $files1[count($files1) - 1];
 	
-	$srclink = 'source : <a href=source/' .$zipname . '>' . $zipname . '</a><br>';
+	$srclink = 'source : <a href=https://github.com/thename151/tablesalt>github.com/thename151/tablesalt</a><br>';
 	echo $srclink;
 	
 	echo $content3blank2;
@@ -38,11 +34,7 @@ else
 	$name1 = ""; #//defined variable
 	include( "stringz.php" );
 
-	$dir = 'source/';
-	$files1 = scandir($dir);
-	$zipname = $files1[count($files1) - 1];
-	
-	$srclink = 'source : <a href=source/' .$zipname . '>' . $zipname . '</a><br>';
+	$srclink = 'source : <a href=https://github.com/thename151/tablesalt>github.com/thename151/tablesalt</a><br>';
 	
 	echo $header1;
 	echo "start";
