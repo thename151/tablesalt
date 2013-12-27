@@ -1,26 +1,48 @@
 <?php
 
 include( "funcs.php" );
+include( "lib/password.php" );
 
 function createprofile( $fname1, $pass1, $pass2 )
 {
+echo "qwe 1<br>";
 	$check1 = createprofile2( $fname1, $pass1, $pass2 );
 	if( $check1 != "is valid" )
 	{
 		return $check1;
 	}
 
+echo "qwe 2<br>";
+
+
+if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH)
+ {
+    echo "CRYPT_BLOWFISH is enabled!";
+}
+else
+ {
+    echo "CRYPT_BLOWFISH is not available";
+}
+
 	#check name availability
 	$check3 = profile_exist($fname1);
+
+echo "qwe 3<br>";
 	if ($check3 == "profile does not exist" )
 	{
 		#add user
 
+//echo phpinfo();
+
+echo "qwe 4<br>";
+
 		$hashAndSalt = password_hash($pass1, PASSWORD_BCRYPT);
 
 		$pass1 = "";
-
+echo "qwe 5<br>";
 		$date1 = date("y-m-d H:i:s",time());
+
+echo "qwe 6<br>";
 
 		 my2query( "INSERT INTO users1 (loginName,createDate, hashword )
 		 VALUES ( \"$fname1\", \"$date1\", \"$hashAndSalt\" )" );

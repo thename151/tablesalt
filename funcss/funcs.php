@@ -1,6 +1,7 @@
 <?php
 include( "dbfuncs.php" );
 include_once( "hilovalues.php" );
+include( "lib/password.php" );
 
 function check_name($fname,$label,$flen)
 {
@@ -154,8 +155,6 @@ function profile_exist($fname2)
 
 function checknamepass( $name1, $pass1 )
 {
-
-	echo "ch one";
 	include( "hilovalues.php" );
 
 	$check1 = check_name($name1, "name", $namelength);

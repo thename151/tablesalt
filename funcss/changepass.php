@@ -1,6 +1,7 @@
 <?php
 
 include( "funcs.php" );
+include( "lib/password.php" );
 
 function changepass( $name1, $pass1, $pass2a, $pass2b )
 {

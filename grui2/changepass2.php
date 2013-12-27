@@ -14,8 +14,6 @@ $mess1 = changepass( $name1, $pass1, $pass2a, $pass2b );
 
 include( "stringz.php" );
 
-echo 'things1';
-
 echo $header1;
 echo $title1;
 echo $header2;
