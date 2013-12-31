@@ -20,7 +20,6 @@ echo $otherlinks;
 		
 echo '</div>';
 echo $footer;
-echo '</body></html>';
 
 
 

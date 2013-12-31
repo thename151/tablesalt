@@ -53,7 +53,7 @@ if( $sizemess == 0 )
 
 $mess2 = "<table>" . $mess2 . "</table>";
 // echo $head1 . $messli . $mess2 . $back1 . $foot1;
-$mess2 .= '<br><center><a href="settradeb1.php">add trade</a><br></center><br>';
+$mess2 .= '<br><center><a href="settradeb3.php?am1=1&type1=sell&cr1=&pr1=&cr2=&pr2=">add trade</a><br></center><br>';
 
 include( "stringz.php" );
 
@@ -66,7 +66,6 @@ echo $content3blank1;
 echo $mess2;
 echo $content3blank2;
 echo $footer;
-echo '</body></html>';
 
 
 ?>

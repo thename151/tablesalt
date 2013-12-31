@@ -38,10 +38,11 @@ else
 }
 
 $mess2a = "";
-$mess4 = "listprices2.php";
+$mess4 = "listprices2.php?";
 
 include_once( "incs3.php" );
 
+$mess2 = $displayResults . "<br>";
 $th1 = '';
 
 $sz = sizeof($mess1);
@@ -136,7 +137,6 @@ echo $content3blank1;
 echo $mess2;
 echo $content3blank2;
 echo $footer;
-echo '</body></html>';
 
 
 ?>

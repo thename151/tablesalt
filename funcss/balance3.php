@@ -345,7 +345,7 @@ function balance2trades( $ux1, $ux2 )
 	$r1stock = $row1[2];
 	$r1user = $row1[3];
 	
-	// echo "r1 : $row1[0] $row1[1] $row1[2]<br>";
+echo "r1 : $r1type $r1amount $r1stock<br>";
 	
 	$q2 = myquery( "select
 			type1, stock, price1, price2, user, creator1, product1, amount1
@@ -361,7 +361,7 @@ function balance2trades( $ux1, $ux2 )
 	$r2user = $row2[4];
 	$r2amount = $row2[7];
 	
-	// echo "r2 : $row2[0] $row2[1] $row2[2] $row2[3]<br>";
+echo "r2 : $r2type $r2stock $r2price1  $r2price2<br>";
 	
 	$r1sends = 0;
 	$r2sends = 0;
@@ -447,14 +447,15 @@ function balance2trades( $ux1, $ux2 )
 	
 	if ( $r1type == "buy" && $r2type == "buy" )					//"4"
 	{
-		// echo "r1 : buy  r2: buy <br>";
 		if ( $r1amount < $r2stock )					// 2 < 10
 		{
+echo "$r1amount < $r2stock<br>";
 			$r1sends = $r1amount * $r2price1;		//2 * 1.33
 			$oddsend = 1;
-			$r2sends = $r1amount;					
+			$r2sends = $r1amount;
 			if( $r1sends > $r1stock )
 			{
+echo "$r1sends > $r1stock<br>";
 				$r1sends = $r1stock;
 				$r2sends = $r1stock * $r2price2;
 				$oddsend = 2;
@@ -474,7 +475,11 @@ function balance2trades( $ux1, $ux2 )
 		}
 	}
 
-	// echo "oddsends : $oddsend<br>";
+echo "oddsends : $oddsend<br>";
+echo "r1sends : $r1sends r2sends : $r2sends<br>";
+
+$r1sends_orig = $r1sends ;
+$r2sends_orig = $r2sends ;
 
 	$oddnum = 0;
 	$odduser = "";
@@ -553,23 +558,33 @@ function balance2trades( $ux1, $ux2 )
 
 	include_once( "sendproduct.php" );
 	
-	if( $r1sends > 0 )
+	if( $r1sends_orig > 0 )
 	{
-		$send1 = sendproduct($r1user, $row1[4], $row1[5], $r1sends, $r2user, "trade" );
+		if( $r1sends > 0 )
+		{
+			$send1 = sendproduct($r1user, $row1[4], $row1[5], $r1sends, $r2user, "trade" );
+		}
 		if( $r1type == "sell" )
 		{
-			updatesale( $ux1, ( $r1amount - $r1sends ) );
+			updatesale( $ux1, ( $r1amount - $r1sends_orig ) );
 		}
 		if( $r1type == "buy" )
 		{
-			updatesale( $ux1, ( $r1amount - $r2sends ) );
+			updatesale( $ux1, ( $r1amount - $r2sends_orig ) );
 		}
-		subtractstock( $r1user, $row1[4], $row1[5], $r1sends );
+		if( $r1sends > 0 )
+		{
+			subtractstock( $r1user, $row1[4], $row1[5], $r1sends );
+		}
 	}
 	
-	if( $r2sends > 0 )
+	if( $r2sends_orig > 0 )
 	{
-		$send2 = sendproduct($r2user, $row2[5], $row2[6], $r2sends, $r1user, "trade" );
+		if( $r2sends > 0 )
+		{	
+			$send2 = sendproduct($r2user, $row2[5], $row2[6], $r2sends, $r1user, "trade" );
+		}
+
 		if( $r2type == "sell" )
 		{
 			updatesale( $ux2, ( $r2amount - $r2sends ) );
@@ -578,7 +593,10 @@ function balance2trades( $ux1, $ux2 )
 		{
 			updatesale( $ux2, ( $r2amount - $r1sends ) );
 		}
-		subtractstock( $r2user, $row2[5], $row2[6], $r2sends );
+		if( $r2sends > 0 )
+		{	
+			subtractstock( $r2user, $row2[5], $row2[6], $r2sends );
+		}
 	}
 	
 	if( $r2sends > 0 )

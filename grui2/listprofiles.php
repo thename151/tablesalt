@@ -15,8 +15,10 @@ if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";
 
 
 $mess1 = listusers2( $startfrom, $results );
-$mess4 = "listprofiles.php";
+$mess4 = "listprofiles.php?";
 include_once( "incs3.php" );
+
+$mess2 = $displayResults . "<br>";
 
 for( $i2 = 1; $i2 < sizeof( $mess1 ); $i2++ )
 {
@@ -37,7 +39,6 @@ echo $content3blank1;
 echo $mess2;
 echo $content3blank2;
 echo $footer;
-echo '</body></html>';
 
 
 ?>

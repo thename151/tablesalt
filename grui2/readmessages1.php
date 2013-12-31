@@ -24,18 +24,47 @@ else
 	$mess1 = readmessages( $name1, $startfrom, $results );
 }
 
-
-
-#$mess1 = readmessages( $name1, $startfrom, $results );
-$mess4 = "readmessages1.php";
+$mess4 = "readmessages1.php?";
 
 include_once( "incs3.php" );
 
+$mess2 = $displayResults . "<br>";
+
 for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
-{
-	$mess2 .= $mess1[$i2][0] . "<br>" . $mess1[$i2][1] . "<br>from : ";
+{	
+	$type = "message";
+	$product = "";
+		
+	if( $mess1[$i2][5] == "user" || $mess1[$i2][5] == "product" )
+	{
+		$type = "comment";
+	}
+
+	if( $mess1[$i2][6] != "" )
+	{
+		$product = '<a href="product.php?cr1=' . $mess1[$i2][2] . '&pr1=' . $mess1[$i2][6] . '">'.$mess1[$i2][6].' </a>';
+	}
+	
+
+	$mess2 .= "<table><tr><td>";
+	$mess2 .= $type . "</td><td>";
+
+	$mess2 .= "from : ";
 	$mess2 .= '<a href="user.php?cr1=' . $mess1[$i2][2] . '">'.$mess1[$i2][2].' </a>';
-	$mess2 .= '<br>to : <a href="user.php?cr1=' . $mess1[$i2][3] . '">'.$mess1[$i2][3].' </a><br>';
+	$mess2 .= "</td><td>";
+	
+	$mess2 .= 'to : <a href="user.php?cr1=' . $mess1[$i2][3] . '">'.$mess1[$i2][3].' </a><br>';
+	$mess2 .= " $product";
+	$mess2 .= "</td><td>";
+
+
+
+	$mess2 .= $mess1[$i2][1] . "</td><td>";
+	$mess2 .= $mess1[$i2][0];
+
+	$mess2 .= "</td></tr>";
+	$mess2 .= "</table>";
+
 	$mess2 .= $mess1[$i2][4] . "<br><br>";
 }
 
@@ -54,6 +83,5 @@ echo $content3blank1;
 echo $mess2;
 echo $content3blank2;
 echo $footer;
-echo '</body></html>';
 
 ?>

@@ -12,9 +12,11 @@ if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom
 if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
 
 $mess1 = readlog( $name1, $startfrom, $results );
-$mess4 = "readlog1.php";
+$mess4 = "readlog1.php?";
 
 include_once( "incs3.php" );
+
+$mess2 = $displayResults . "<br>";
 
 $mess2a = "";
 
@@ -59,6 +61,5 @@ echo $content3blank1;
 echo $mess2;
 echo $content3blank2;
 echo $footer;
-echo '</body></html>';
 
 ?>

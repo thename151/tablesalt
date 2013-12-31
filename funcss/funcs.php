@@ -1,5 +1,5 @@
 <?php
-include( "dbfuncs.php" );
+include_once( "dbfuncs.php" );
 include_once( "hilovalues.php" );
 include( "lib/password.php" );
 

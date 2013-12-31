@@ -17,7 +17,6 @@ echo $content21;
 echo $nameg;
 echo $content22;
 echo $footer;
-echo '</body></html>';
 
 
 

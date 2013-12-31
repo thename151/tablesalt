@@ -15,8 +15,4 @@ if( $_SESSION['login'] != "yes" )
 
 $messli = "$name1 logged in<br><a href='logout.php'>logout</a><br><br>";
 
-# $messli = "<a href='changepass.php'>$name1</a> logged in<br>";
-# $messli .= "<a href='logout.php'>logout</a><br><br>";
-
-
 ?>

@@ -272,9 +272,12 @@ function settradeb2( $name1, $amount, $crea1, $pname1,
 		
 		if( $buysell == "buy")
 		{
+		echo "$pname1 $pname2<br>";
 			$price1 = 1 / $price;
 			$price2 = $price;
 			$type1 = "buy";
+	
+	echo "$price1 $price2<br>";
 			
 			$crea3 = $crea1;
 			$crea1 = $crea2;

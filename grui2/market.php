@@ -50,7 +50,7 @@ $revers = '<a href="market.php?
 			&cr1=' . $cr2 . '			
 			&pr1=' . $pr2 . '			
 			&cr2=' . $cr1 . '			
-			&pr2=' . $pr1 . '"">/</a>';
+			&pr2=' . $pr1 . '""><b>/</b></a>';
 			
 			
 $mess9 = '
@@ -103,6 +103,5 @@ echo $content3blank1;
 echo $mess9;
 echo $content3blank2;
 echo $footer;
-echo '</body></html>';
 
 ?>

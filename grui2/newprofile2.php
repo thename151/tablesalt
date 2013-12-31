@@ -19,6 +19,5 @@ echo $contentblank1;
 echo $mess2;
 echo $contentblank2;
 echo $footer;
-echo '</body></html>';
 
 ?>
