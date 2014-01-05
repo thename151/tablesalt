@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2013 at 12:03 AM
+-- Generation Time: Jan 05, 2014 at 06:13 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `login1` (
   `loginName` varchar(25) NOT NULL,
   `loginTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=446 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=457 ;
 
 -- --------------------------------------------------------
 
@@ -43,10 +43,12 @@ CREATE TABLE IF NOT EXISTS `messages1` (
   `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
   `from1` varchar(25) NOT NULL,
   `to1` varchar(25) NOT NULL,
+  `product` varchar(40) NOT NULL,
+  `type` varchar(25) NOT NULL,
   `message1` varchar(500) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
 
 -- --------------------------------------------------------
 
@@ -59,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `priceview1` (
 ,`product1` varchar(40)
 ,`creator2` varchar(25)
 ,`product2` varchar(40)
-,`price1` decimal(9,6)
+,`price1` decimal(6,3)
 ,`ct` bigint(21)
 );
 -- --------------------------------------------------------
@@ -73,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `priceview5` (
 ,`product1` varchar(40)
 ,`creator2` varchar(25)
 ,`product2` varchar(40)
-,`price2` decimal(9,6)
+,`price2` decimal(6,3)
 ,`ct` bigint(21)
 );
 -- --------------------------------------------------------
@@ -103,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `pv01` (
 ,`product1` varchar(40)
 ,`creator2` varchar(25)
 ,`product2` varchar(40)
-,`price1` decimal(9,6)
+,`price1` decimal(6,3)
 ,`ct` bigint(21)
 );
 -- --------------------------------------------------------
@@ -117,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `pv02` (
 ,`product1` varchar(40)
 ,`creator2` varchar(25)
 ,`product2` varchar(40)
-,`price2` decimal(9,6)
+,`price2` decimal(6,3)
 ,`ct` bigint(21)
 );
 -- --------------------------------------------------------
@@ -163,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `pv4` (
 ,`pvp1` varchar(40)
 ,`pvc2` varchar(25)
 ,`pvp2` varchar(40)
-,`price1` decimal(9,6)
+,`price1` decimal(6,3)
 );
 -- --------------------------------------------------------
 
@@ -175,8 +177,8 @@ CREATE TABLE IF NOT EXISTS `pv5` (
 ,`pvp1` varchar(40)
 ,`pvc2` varchar(25)
 ,`pvp2` varchar(40)
-,`price1` decimal(9,6)
-,`price2` decimal(9,6)
+,`price1` decimal(6,3)
+,`price2` decimal(6,3)
 );
 -- --------------------------------------------------------
 
@@ -206,13 +208,13 @@ CREATE TABLE IF NOT EXISTS `sales3` (
   `product1` varchar(40) NOT NULL,
   `creator2` varchar(25) NOT NULL,
   `product2` varchar(40) NOT NULL,
-  `price1` decimal(9,6) NOT NULL,
-  `price2` decimal(9,6) NOT NULL,
+  `price1` decimal(6,3) NOT NULL,
+  `price2` decimal(6,3) NOT NULL,
   `user` varchar(25) NOT NULL,
   `dateTime` datetime NOT NULL,
   `dateTime2` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=565 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=818 ;
 
 -- --------------------------------------------------------
 
@@ -227,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `scores1` (
   `product` varchar(40) NOT NULL,
   `amount` decimal(6,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=115 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=117 ;
 
 -- --------------------------------------------------------
 
@@ -245,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `sendreclog1` (
   `sendsort` varchar(25) NOT NULL,
   `dateLog` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1168 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1478 ;
 
 -- --------------------------------------------------------
 
