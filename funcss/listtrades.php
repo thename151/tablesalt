@@ -94,6 +94,33 @@ function showhowmuch( $name1, $crea1, $pname1, $amount )
 }
 
 
+function showHowMuch2( $cr1, $pr1, $user )
+{
+	$q1 = myquery( "select amount from scores1 where who1 = \"$user\" and creator = \"$cr1\" and product =\"$pr1\"" );
+	$row = mysqli_fetch_row($q1);
+	
+	include( "hilovalues.php" );
+	
+	if( $row != null )
+	{
+		if ( $user == $cr1 )
+		{
+			$availbl = $hiscore - $row[0];
+			// echo"avalable $availbl<br>";
+			return $availbl;
+		}
+		
+		return $row[0];
+	}
+	
+	if( $user == $cr1 )
+	{
+		return $hiscore;
+	}
+	return 0;
+}
+
+
 function listprofilestrades( $name1 )
 {
 	$result7 = myquery( "select 

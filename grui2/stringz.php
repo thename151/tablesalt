@@ -102,7 +102,6 @@ $leftnav3 = '
 <a href="sendproduct1.php">send product</a><br>
 <a href="readlog1.php">send receive log</a><br><br>
 <a href="listprices2.php">prices</a><br>
-<a href="listtrades1.php">trades</a><br>
 <a href="listptrades1.php">my trades</a><br><br>
 <a href="sendmessage1.php">send message</a><br>
 <a href="readmessages1.php?startfrom=0&results=5">read messages</a><br><br>

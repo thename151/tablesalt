@@ -8,7 +8,7 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 	{
 	$result1 = myquery( "select
 			stock, price2
-			from sales3 where
+			from salesactive2 where
 			creator1 = \"$cr2\" and product1 = \"$pr2\" and
 			creator2 = \"$cr1\" and product2 = \"$pr1\" and
 			stock > 0
@@ -20,7 +20,7 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 	{
 	$result1 = myquery( "select
 			stock, price1
-			from sales3 where
+			from salesactive2 where
 			creator1 = \"$cr2\" and product1 = \"$pr2\" and
 			creator2 = \"$cr1\" and product2 = \"$pr1\" and
 			stock > 0
@@ -33,6 +33,7 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 	{
 		$messa[$counter][0] = $rowa[ 0 ];
 		$messa[$counter][1] = $rowa[ 1 ];
+#		echo "$counter : " . $messa[$counter][0] . " : " . $messa[$counter][1]. "<br>";
 		$counter = $counter + 1;
 	}
 	

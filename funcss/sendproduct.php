@@ -37,12 +37,17 @@ function sendproductbalance( $name1, $pcrea, $pname, $amount, $name2, $sendsort 
 	
 // 	return $mess . balanceuser( $name2, $pcrea, $pname );
 
-	include_once ("balance3.php");
+	// include_once ("balance3.php");
 	// subtract stock
-	subtractstock( $name1, $pcrea, $pname, $amount );
+	// subtractstock( $name1, $pcrea, $pname, $amount );
 	
 	// add stock
-	addstock( $name2, $pcrea, $pname );
+	// addstock( $name2, $pcrea, $pname );
+	
+	include_once ("balance4.php");
+	
+	newSend( $pcrea, $pname, $name1, $name2 );
+	
 	return $mess;
 }
 

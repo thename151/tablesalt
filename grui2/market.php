@@ -1,6 +1,6 @@
 <?php
 
-$title1 = "order";
+$title1 = "market";
 
 include_once( "incs1.php" );
 
@@ -20,32 +20,65 @@ $mess3 = listdep($cr1, $pr1, $cr2, $pr2, 1 );
 $mess5 = listdep($cr2, $pr2, $cr1, $pr1, 2 );
 
 $mess4 = "";
+$highbid = 0;
 
 for( $i2 = 0; $i2 < sizeof($mess3); $i2++ )
 {
+	$sum = $mess3[$i2][0] / $mess3[$i2][1];
 	$suma = $mess3[$i2][0] / $mess3[$i2][1];
-	$sum = $suma * $mess3[$i2][1];
-	// $mess4 .= "<tr><td>" . (float)number_format($mess3[$i2][0],3) . "</td>";
-	$mess4 .= "<tr><td>" . (float)number_format($suma,3) . "</td>";
+	$mess4 .= "<tr><td>" . number_format((float)$sum, 3, '.', '') . "</td>";
 	$mess4 .= "<td>for</td>";
 	$mess4 .= "<td>" . (float)number_format($mess3[$i2][1],6) . "</td>";
 	$mess4 .= "<td>each</td>";
-	$mess4 .= "<td>( " . (float)number_format($sum,3) . " )</td>";
+	$mess4 .= "<td>( " . $mess3[$i2][0] * 1 . " )</td>";
 	$mess4 .= "</tr>";
+	if( $i2 == 0 )
+	{
+		$highbid = (float)number_format($mess3[$i2][1],6);
+	}
 }
 
 $mess6 = "";
 
+$lowask = 0;
+
 for( $i2 = 0; $i2 < sizeof($mess5); $i2++ )
 {
+#	echo $i2 . " :; " . $mess5[$i2][0] . " :: " . $mess5[$i2][1] . " .. " . $mess5[$i2][0] * $mess5[$i2][1] . "<br>";
 	$sum = $mess5[$i2][0] * $mess5[$i2][1];
-	$mess6 .= "<tr><td>" . ($mess5[$i2][0]*1) . "</td>";
+	$mess6 .= "<tr><td>" . 1 * $mess5[$i2][0] . "</td>";
 	$mess6 .= "<td>for</td>";
-	$mess6 .= "<td>" . (float)number_format($mess5[$i2][1],6) . "</td>";
+	$mess6 .= "<td>" . 1 * $mess5[$i2][1] . "</td>";
 	$mess6 .= "<td>each</td>";
-	$mess6 .= "<td>( " . (float)number_format($sum,3) . " )</td>";
+	$mess6 .= "<td>( " . number_format((float)$sum, 3, '.', '') . " )</td>";
 	$mess6 .= "</tr>";
+	if( $i2 == 0 )
+	{
+		$lowask = (float)number_format($mess5[$i2][1],6);
+	}
 }
+
+
+
+$bidlink = '<a href="settradeb3.php?am1=' . $highbid . '
+		&type1=sell
+		&cr1=' . $cr1 . '
+		&pr1=' . $pr1 . '
+		&cr2=' . $cr2 . '
+		&pr2=' . $pr2 . '"
+		>bids</a></td>';
+
+$asklink = '<a href="settradeb3.php?am1=' . $lowask . '
+		&type1=buy
+		&cr1=' . $cr1 . '
+		&pr1=' . $pr1 . '
+		&cr2=' . $cr2 . '
+		&pr2=' . $pr2 . '"
+		>asks</a></td>';
+
+
+
+
 $revers = '<a href="market.php?
 			&cr1=' . $cr2 . '			
 			&pr1=' . $pr2 . '			
@@ -56,11 +89,18 @@ $revers = '<a href="market.php?
 $mess9 = '
         <center>    <table  id="t3">
               <tr>
-                 <td>'.$cr1.'</td>
-        		  <td>'.$pr1.'</td>
+                 <td>
+				 <a href="user.php?cr1=' . $cr1 . '">'.$cr1 .' </a>
+				 
+				 </td>
+				 
+				 <td><a href="product.php?cr1=' . $cr1 . '&pr1=' . $pr1 . '">' . $pr1 . '</a></td>
+				 
+				 
+				 
                  <td><center>'.$revers.'</center></td>
-        		  <td><div id="myText">'.$cr2.'</div> </td>
-                 <td><div id="myText">'.$pr2.'</div> </td>
+        		  <td><div id="myText"><a href="user.php?cr1=' . $cr2 . '">'.$cr2 .' </a></div> </td>
+                 <td><div id="myText"><td><a href="product.php?cr1=' . $cr2 . '&pr1=' . $pr2 . '">' . $pr2 . '</a></td></div> </td>
               </tr>
           </table>
 		  <center>
@@ -68,7 +108,7 @@ $mess9 = '
 		  
         	<table  id="t1">
               <tr>
-                 <td><b>bids<b></td><td></td><td></td><td></td><td></td>
+                 <td><b>' . $bidlink . '</b></td><td></td><td></td><td></td><td></td>
               </tr>';
 
 $mess92 =  '
@@ -77,7 +117,7 @@ $mess92 =  '
             <!-- Table 2 markup-->
         <table id="t2"> 
               <tr>
-                 <td><b>asks<b></td><td></td><td></td><td></td><td></td>
+                 <td><b>'.$asklink.'</b></td><td></td><td></td><td></td><td></td>
               </tr>';
 			  
 			  

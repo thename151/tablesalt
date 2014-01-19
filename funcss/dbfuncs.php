@@ -11,7 +11,7 @@ function myquery( $fquery )
 	//  echo $fquery;
 
 	$result = mysqli_query($cxn,$query)
-	or die ("Couldn’t executes query!.");
+	or die ("Couldn’t executes query! : <br>$query");
 
 	mysqli_close($cxn);
 
@@ -32,7 +32,7 @@ function my2query( $fquery )
 // 	echo $fquery;
 	
 	$result = mysqli_query($cxn,$query)
-	or die ("Couldn’t executes query!1");
+	or die ("Couldn’t executes query! 2 : <br>$query");
 	
 	$cleanq = mysqli_real_escape_string($cxn,$fquery);
 	
@@ -45,7 +45,7 @@ function my2query( $fquery )
 	            ";
 	
 	$result2 = mysqli_query( $cxn, $querylog )
-	or die ("Couldn’t executes query!3");
+	or die ("Couldn’t executes query! 3 : <br>$querylog");
 	
 	mysqli_close($cxn);
 

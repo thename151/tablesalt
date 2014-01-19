@@ -28,39 +28,27 @@ function deleteproduct( $name1, $pass1, $pname )
 	
 	if($row1 != null )
 	{
-		$result2 = myquery( "select * from scores1 where who1 = \"$name1\" and creator = \"$name1\" and product = \"$pname\"" );
-// #		$row2 = mysqli_fetch_row( $result2 );
-		
-		$amount = 0;
-		while ($row2 = mysqli_fetch_row(($result2)))
+		$result3 = myquery( "select who1, amount from scores1 where creator = \"$name1\" and product = \"$pname\"" );
+		while( $row3 = mysqli_fetch_array($result3) )
 		{
-			$amount = $row2[4];
-			
-			#get it sent back
-			$result3 = myquery( "select * from scores1 where creator = \"$name1\" and product = \"$pname\"" );
-			while( $row3 = mysqli_fetch_array($result3) )
+			if( $row3[0] != $name1 )
 			{
-				if( $row3[1] != $name1 )
-				{
-					#send it back
-					include_once( "sendproduct.php" );
-					sendproduct($row3[1], $name1, $pname, $row3[4], $name1, "recall" );
-				}
+				#send it back
+				include_once( "sendproduct.php" );
+				sendproduct($row3[0], $name1, $pname, $row3[1], $name1, "recall" );
 			}
 		}
 
-// 		#remove trades
-// 		myquery( "delete from sales2 where creator1 = \"$name1\" and product1 = \"$pname\"" );
-// 		myquery( "delete from sales2 where creator2 = \"$name1\" and product2 = \"$pname\"" );
-				
-// 		#get the date
-// 		$date1 = date("y-m-d H:i:s",time());
-		
-// 		$result4 = my2query( "INSERT INTO closedproducts1
-// 	     (otherX,productName,profileName,detail,amount, opendateTime, closedateTime)
-// 		 VALUES
-// 		 (\"$row1[0]\",\"$pname\",\"$name1\",\"$row1[3]\",\"$amount\",\"$row1[4]\",\"$date1\")" );
-		
+		$q2 = myquery( "select uniqueX from sales3 where ( creator1 = \"$name1\" and product1 = \"$pname\")
+														 or
+														 ( creator2 = \"$name1\" and product2 = \"$pname\")" );
+		$var1 = 0;
+		while ( $rowa = mysqli_fetch_row( ( $q2 ) ) )
+		{
+			$var1 = $rowa[0];
+			my2query( "delete from salesactive where saleId = \"$rowa[0]\"" );
+		}
+		my2query( "delete from sales3 where uniqueX = \"$var1\" " );
 
 		my2query( "update products1 set status1 = \"removed\" where productName = \"$pname\" and profileName = \"$name1\"" );
 		return "product removed";

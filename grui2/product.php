@@ -23,6 +23,10 @@ if( $mess2b[0] =="blank" )
 {
 	$mess0 = "$cr1 $pr1 not found";
 }
+else if( $mess2b[0] == "removed" )
+{
+	$mess0 = "product $cr1 $pr1 has been deleted";
+}
 else
 {
 

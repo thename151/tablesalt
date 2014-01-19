@@ -17,6 +17,7 @@ function removetrade( $name1, $traden )
 	if($row != null )
 	{
 		myquery( "delete from sales3 where uniqueX = \"$traden\"" );
+		myquery( "delete from salesactive where saleId = \"$traden\"" );
 		return "trade deleted";
 	}
 	else
@@ -181,8 +182,17 @@ function edittrade20( $amount,  $crea1, $pname1,
 
 	// echo " $name1, $crea1, $pname1<br> ";
 	
-	include_once( "balance3.php" );
-	addstock( $name1, $crea1, $pname1 );
+	// include_once( "balance3.php" );
+	// addstock( $name1, $crea1, $pname1 );
+	
+	
+	include_once( "balance4.php" );
+
+	myquery( "delete from salesactive where saleId = \"$txno\"" );
+		
+	newSale( $crea1, $pname1,
+			 $crea2, $pname2, $name1 );
+	
 	return $mess1;
 }
 
@@ -272,12 +282,12 @@ function settradeb2( $name1, $amount, $crea1, $pname1,
 		
 		if( $buysell == "buy")
 		{
-		echo "$pname1 $pname2<br>";
+	//		echo "$pname1 $pname2<br>";
 			$price1 = 1 / $price;
 			$price2 = $price;
 			$type1 = "buy";
 	
-	echo "$price1 $price2<br>";
+	//		echo "set tradeb : $pname1 $pname2 $price1 $price2<br>";
 			
 			$crea3 = $crea1;
 			$crea1 = $crea2;
@@ -313,10 +323,16 @@ function settradeb2( $name1, $amount, $crea1, $pname1,
 // 		$crea2, $pname2 );
 		
 		
-		include_once( "balance3.php" );
+		// include_once( "balance3.php" );
 
-	    // echo " $name1, $crea1, $pname1<br> ";
-		addstock( $name1, $crea1, $pname1 );
+	    // // echo " $name1, $crea1, $pname1<br> ";
+		// addstock( $name1, $crea1, $pname1 );
+
+		include_once( "balance4.php" );
+
+//	    echo "settradeb2() : $name1, $crea1, $pname1<br> ";
+		newSale( $crea1, $pname1,$crea2, $pname2, $name1 );
+
 		
 		return $mess1;
 }
@@ -402,12 +418,14 @@ function edittrade3( $name1, $pass1, $tdn, $am1, $am2 )
 // 		$messb2 = balance( $row2[2], $row2[3],
 // 		         		   $row2[4], $row2[5] );
 
-		echo "$name1, $row2[2], $row2[3]";
+		// echo "$name1, $row2[2], $row2[3]";
 
-		include_once( "balance3.php" );
-		addstock( $name1, $row2[2], $row2[3] );
+		include_once( "balance4.php" );
+		// addstock( $name1, $row2[2], $row2[3] );
 
-// 		return "sale edited<br>" . $messb2;
+		
+		newSale( $row2[2], $row2[3],
+ 		         		   $row2[4], $row2[5], $name1 );
 		return "sale edited<br>";
 	}
 

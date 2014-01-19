@@ -39,6 +39,10 @@ if( $mess1[$i2][4] == "<i>trade</i>" )
 {
 	$mess2a .= "<td>trade</td>";
 }
+else if( $mess1[$i2][4] == "<i>recall</i>" )
+{
+	$mess2a .= "<td>recall</td>";
+}
 else
 {
 	$mess2a .= '<td><a href="user.php?cr1=' . $mess1[$i2][4] . '">'.$mess1[$i2][4].' </a> </td>';
