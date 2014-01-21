@@ -35,6 +35,14 @@ $title1 = "product $cr1 $pr1";
 	$mess0 = "<b>$cr1 $pr1</b><br><br>";
 	$mess2a = "<tr><td>creator</td><td><a href=\"user.php?cr1=$cr1\">$cr1</a></td></tr>";
 	$mess2a .= "<tr><td>product</td><td>$pr1</td></tr>";
+	
+	$var1 = "true";
+	if ( $mess2b[3] == 0 )
+	{
+		$var1 = "false";
+	}
+	
+	$mess2a .= "<tr><td>decimal places</td><td>$var1</td></tr>";
 	$mess2a .= "<tr><td>create date</td><td>$mess2b[2]</td></tr>";
 	$mess2a .= "<tr><td>details</td><td>$mess2b[1]</td></tr>";
 

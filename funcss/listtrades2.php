@@ -1,34 +1,44 @@
 <?php
 include_once( "funcs.php" );
 
-function listdep( $cr1, $pr1, $cr2, $pr2, $type )
+function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
 {
-	$result1 = "";
-	if( $type == 1 )
+	$messa[0] = 1;
+
+	$q3 = myquery( "select
+	divisible 
+	from products1
+	where profileName = \"$cr2\" and productName = \"$pr2\" " );
+	$row4 = mysqli_fetch_row( $q3 );
+	$divisible = $row4[0];
+	if ( $divisible == 0 )
 	{
-	$result1 = myquery( "select
-			stock, price2
-			from salesactive2 where
-			creator1 = \"$cr2\" and product1 = \"$pr2\" and
-			creator2 = \"$cr1\" and product2 = \"$pr1\" and
-			stock > 0
-			order by price2 desc"
-			);
+		$messa[0] = 0;
 	}
 	
-	if( $type == 2 )
+	$messa[1] = listdep( $cr1, $pr1, $cr2, $pr2, 1 );
+	$messa[2] = listdep( $cr2, $pr2, $cr1, $pr1, 2 );
+	
+	return $messa;
+}
+
+function listdep( $cr1, $pr1, $cr2, $pr2, $type )
+{
+	$price = "price1";
+	if( $type == 1 )
 	{
+		$price = "price2";
+	}
 	$result1 = myquery( "select
-			stock, price1
+			stock, $price
 			from salesactive2 where
 			creator1 = \"$cr2\" and product1 = \"$pr2\" and
 			creator2 = \"$cr1\" and product2 = \"$pr1\" and
 			stock > 0
 			order by price1"
 			);
-	}
+
 	$counter = 0;
-	$messa = null;
 	while( $rowa = mysqli_fetch_array( $result1 ) )
 	{
 		$messa[$counter][0] = $rowa[ 0 ];
@@ -61,6 +71,7 @@ function listtrades23( $startfrom, $results )
 		$messa[$counter][1] = $rowa[ 1 ];
 		$messa[$counter][2] = $rowa[ 2 ];
 		$messa[$counter][3] = $rowa[ 3 ];
+
 		$row4 = (float)$rowa[ 4 ];
 		$row5 = (float)$rowa[ 5 ];
 		if( $row4 == 0 )
@@ -73,7 +84,20 @@ function listtrades23( $startfrom, $results )
 		}
 		$messa[$counter][4] = $row4;
 		$messa[$counter][5] = $row5;
-		 
+
+		$messa[$counter][6] = 1;
+		
+		$q3 = myquery( "select
+		divisible 
+		from products1
+		where profileName = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
+		$row4 = mysqli_fetch_row( $q3 );
+		$divisible = $row4[0];
+		if ( $divisible == 0 )
+		{
+			$messa[$counter][6] = 0;
+		}
+
 		$counter = $counter + 1;
 	}
 
@@ -119,6 +143,20 @@ function listtrades46( $startfrom, $results, $cr1, $pr1 )
 		}
 		$messa[$counter][4] = $row4;
 		$messa[$counter][5] = $row5;
+
+		$messa[$counter][6] = 1;
+		
+		$q3 = myquery( "select
+		divisible 
+		from products1
+		where profileName = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
+		$row4 = mysqli_fetch_row( $q3 );
+		$divisible = $row4[0];
+		if ( $divisible == 0 )
+		{
+			$messa[$counter][6] = 0;
+		}
+
 		 
 		$counter = $counter + 1;
 	}
@@ -163,6 +201,20 @@ function listtrades64( $startfrom, $results, $cr2 )
 		}
 		$messa[$counter][4] = $row4;
 		$messa[$counter][5] = $row5;
+
+		$messa[$counter][6] = 1;
+		
+		$q3 = myquery( "select
+		divisible 
+		from products1
+		where profileName = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
+		$row4 = mysqli_fetch_row( $q3 );
+		$divisible = $row4[0];
+		if ( $divisible == 0 )
+		{
+			$messa[$counter][6] = 0;
+		}
+
 		 
 		$counter = $counter + 1;
 	}

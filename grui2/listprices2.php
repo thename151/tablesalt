@@ -30,7 +30,7 @@ else
 	{	
 		$mess1 = listtrades64($startfrom, $results, $cr2 );
 		$title1 = "list $cr2 prices";
-	}	
+	}
 	else
 	{
 		$mess1 = listtrades23($startfrom, $results);
@@ -80,7 +80,7 @@ for( $i2 = 1; $i2 < $sz; $i2++ )
 			&cr1=' . $mess1[$i2][0] . '			
 			&pr1=' . $mess1[$i2][1] . '			
 			&cr2=' . $mess1[$i2][2] . '			
-			&pr2=' . $mess1[$i2][3] . '">/</a> </td>';
+			&pr2=' . $mess1[$i2][3] . '">_/&#175</a> </td>';
 //	$mess2a .= "<td>" . $mess1[$i2][2] . "</td>";
 	
 	$mess2a .= '<td><a href="user.php?cr1=' . $mess1[$i2][2] . '">'.$mess1[$i2][2].' </a> </td>';
@@ -92,8 +92,14 @@ for( $i2 = 1; $i2 < $sz; $i2++ )
 			&cr1=' . $mess1[$i2][2] . '			
 			&pr1=' . $mess1[$i2][3] . '">' . $mess1[$i2][3] . '</a> </td>';
 
-
-	$mess2a .= '<td> <a href="settradeb3.php?am1=' . $mess1[$i2][4] . '
+	if( $mess1[$i2][6] == 0 )
+	{
+		$mess2a .= '<td>' . $mess1[$i2][4] . '</td>';
+		$mess2a .= '<td>' . $mess1[$i2][5] . '</td>';
+	}
+	else
+	{
+		$mess2a .= '<td> <a href="settradeb3.php?am1=' . $mess1[$i2][4] . '
 			&type1=sell
 			&cr1=' . $mess1[$i2][0] . '
 			&pr1=' . $mess1[$i2][1] . '
@@ -101,14 +107,14 @@ for( $i2 = 1; $i2 < $sz; $i2++ )
 			&pr2=' . $mess1[$i2][3] . '"
 			> ' . $mess1[$i2][4] . '</a>  </td>';
 	
-	$mess2a .= '<td> <a href="settradeb3.php?am1=' . $mess1[$i2][5] . '
+		$mess2a .= '<td> <a href="settradeb3.php?am1=' . $mess1[$i2][5] . '
 			&type1=buy
 			&cr1=' . $mess1[$i2][0] . '			
 			&pr1=' . $mess1[$i2][1] . '			
 			&cr2=' . $mess1[$i2][2] . '			
 			&pr2=' . $mess1[$i2][3] . '"			
-			> ' . $mess1[$i2][5] . '</a>  </td>';
-			
+			> ' . $mess1[$i2][5] . '</a></td>'; //'.$mess1[$i2][6].'
+	}		
 	$mess2a .= '</tr>';
 	
 // 	$mess2 .= "<td>" . $mess1[$i2][5] . "</td>

@@ -167,8 +167,7 @@ function edittrade20( $amount,  $crea1, $pname1,
 	price1 = \"$price1\",
 	price2 = \"$price2\",
 
-	type1 = \"$buysell\",
-	stock = \"0\"
+	type1 = \"$buysell\"
 	where uniqueX = \"$txno\"" );
 
 	$mess1 = "sale edited";
@@ -246,20 +245,35 @@ function settradeb( $name1, $amount, $crea1,  $pname1,
 function settradeb2( $name1, $amount, $crea1, $pname1,
 		$price, $crea2, $pname2, $buysell )
 {
-	$result4 = myquery( "select productName from products1 where profileName = \"$crea1\" and productName = \"$pname1\" and status1 = \"okay\"" );
+	$result4 = myquery( "select productName, divisible from products1 where profileName = \"$crea1\" and productName = \"$pname1\" and status1 = \"okay\"" );
 	$row = mysqli_fetch_row( $result4 );
 	if($row == null )
 	{
 		return "not found";#product does not exist";
 	}
+	if($row[1] == 0 )
+	{
+		$var1 = fmod($amount, 1);
+#		echo "ww : $var1";
+		if( $var1 != 0 )
+		{
+			
+			return "$crea1 $pname1 can't have decimal places : $var1";
+		}
+	}
+	
 	# product exists
 	# does crea2-pname2 exist
 
-	$result5 = myquery( "select productName from products1 where profileName = \"$crea2\" and productName = \"$pname2\" and status1 = \"okay\"" );
+	$result5 = myquery( "select productName, divisible from products1 where profileName = \"$crea2\" and productName = \"$pname2\" and status1 = \"okay\"" );
 	$row2 = mysqli_fetch_row( $result5 );
 	if($row2 == null )
 	{
 		return "not found";#"product does not exist";
+	}
+	if($row2[1] == 0 )
+	{
+		return "$crea2 $pname2 can not contain decimal places and so can not be the second product in a trade";
 	}
 
 
@@ -394,8 +408,7 @@ function edittrade3( $name1, $pass1, $tdn, $am1, $am2 )
 				$price2 = 1 / $am2;
 				my2query( "update sales3 set
 				price1 = \"$am2\",
-				price2 = \"$price2\",
-				stock = \"0\"
+				price2 = \"$price2\"
 				where uniqueX = \"$tdn\"" );
 			}
 			if( $row2[1] == "buy" )
@@ -403,8 +416,7 @@ function edittrade3( $name1, $pass1, $tdn, $am1, $am2 )
 				$price1 = 1 / $am2;
 				my2query( "update sales3 set
 				price1 = \"$price1\",
-				price2 = \"$am2\",
-				stock = \"0\"
+				price2 = \"$am2\"
 				where uniqueX = \"$tdn\"" );
 			}
 			$changed = true;

@@ -9,6 +9,16 @@ $mess1 = '
 method="POST">
 <TABLE >
 <tr class="trq"><td>product name</td><td><input type="text" name="pname" maxlength="25"></td></tr>
+
+<tr class="trq"><td>decimal places</td><td>
+
+<select name="decimalplaces">
+  <option value="true" selected>true</option>
+  <option value="false" >false</option>
+</select>
+
+</td></tr>
+
 <tr class="trq"><td>details</td><td><input type="text" name="pdetail" maxlength="500"></td></tr>
 <tr class="trq"><td></td><td><input type="submit" value="send"></td></tr>
 </TABLE >

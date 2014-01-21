@@ -4,14 +4,19 @@ $title1 = "create product";
 
 include_once( "incs1.php" );
 
-$pname = $_POST["pname"];
-$pdetail = $_POST["pdetail"];
+$pname = '';
+$pdetail = '';
+$decimalplaces = '';
+
+if (isset($_POST['pname'])){ $pname = $_POST['pname'];}else{$pname = "";}
+if (isset($_POST['pdetail'])){ $pdetail = $_POST['pdetail'];}else{$pdetail = "";}
+if (isset($_POST['decimalplaces'])){ $decimalplaces = $_POST['decimalplaces'];}else{$decimalplaces = "";}
+
+echo "$name1, $pname, $pdetail, $decimalplaces";
 
 include( "../funcss/createproduct.php" );
 
-$mess2 = createproduct( $name1, $pname, $pdetail );
-
-// echo $head1 . $messli . $mess2 . $back1 . $foot1;
+$mess2 = createproduct( $name1, $pname, $pdetail, $decimalplaces );
 
 include( "stringz.php" );
 

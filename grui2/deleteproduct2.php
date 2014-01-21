@@ -8,7 +8,6 @@ include_once( "incs1.php" );
 
 $pname = $_POST["pname"];
 $pass1 = $_POST["pass1"];
-echo $pname;
 
 include( "../funcss/deleteproduct.php" );
 

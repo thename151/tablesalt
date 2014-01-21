@@ -2,7 +2,7 @@
 include( "funcs.php" );
 
 
-function createproduct( $name1, $pname, $pdetail )
+function createproduct( $name1, $pname, $pdetail, $divisible )
 {
 	$check1 = createproduct2( $name1, $pname, $pdetail );
 	if( $check1 != "is valid" )
@@ -21,20 +21,19 @@ function createproduct( $name1, $pname, $pdetail )
 		return "this profile has already created this product";
 	}
 	
-// 	$result2 = myquery(
-// 	"select productName from closedproducts1 where profileName = \"$name1\" and 
-// 	productName = \"$pname\"" );
-
-// 	$row2 = mysqli_fetch_row( $result2 );
-	
-// 	if($row2 != null )
-// 	{
-// 		echo "here4";
-// 		return "this profile has already created, and deleted, this product";
-// 	}
+	$var1 = 1;
+	if( $divisible == "false" )
+	{
+		$var1 = 0;
+	}
 	
 	$date1 = date("y-m-d H:i:s");
-	$result4 = my2query( "INSERT INTO products1 (productName,profileName,detail,dateTime) VALUES (\"$pname\",\"$name1\",\"$pdetail\",\"$date1\")" );
+	
+	$result4 = my2query( "INSERT INTO products1 
+						(productName, profileName, detail, divisible, dateTime) 
+						VALUES 
+						(\"$pname\",\"$name1\",\"$pdetail\",\"$var1\",\"$date1\")" );
+	
 	return "product added";
 }
 

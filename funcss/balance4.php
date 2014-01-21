@@ -24,7 +24,6 @@ function newSend( $cr1, $pr1, $user1, $user2 )
 	
 	if($row != null )
 	{	
-		// 001 echo "not zero<br>";
 		$stopId = $row[0];
 	}
 
@@ -61,9 +60,22 @@ function updatePair( $cr1, $pr1, $cr2, $pr2, $user )
 		
 		$var2 = 0;
 		$stock = 0;
+		$checkdivisible = false;
 		
 		if( $type1 == "buy" )
 		{
+			$q3 = myquery( "select
+			divisible 
+			from products1
+			where profileName = \"$cr2\" and productName = \"$pr2\" " );
+			$row4 = mysqli_fetch_row( $q3 );
+			$divisible = $row4[0];
+			if ( $divisible == 0 )
+			{
+				//~ echo "check1<br>";
+				$checkdivisible = true;
+			}
+
 			$var2 = $amount * $price2;
 		}
 		else
@@ -73,17 +85,25 @@ function updatePair( $cr1, $pr1, $cr2, $pr2, $user )
 		
 		if( $var1 > $var2 )
 		{
-		
 			$stock = $var2;
 			$var1 = $var1 - $stock;
 		}
 		else
 		{
-		// 001 echo "var1 : $var1<br>";
-		// 001 echo "var2 : $var2<br>";
-		
 			$stock = $var1;
 			$var1 = 0;
+		}
+		
+		//~ echo "check 2<br>";
+		if( $checkdivisible )
+		{
+			//~ echo "check 3<br>";
+			if( $stock < $price2 )
+			{
+				//~ echo "check 4<br>";
+				$var1 = $var1 + $stock;
+				$stock = 0;
+			}
 		}
 
 		$q2 = myquery( "select
@@ -233,8 +253,8 @@ function balance2trades( $fid, $oId )
 	$q1 = myquery( "select
 					type1,	amount1,		stock,	user,
 					creator1,	product1,	creator2,	product2,
-					saleId
-					from salesactive2
+					saleId, divisible
+					from salesactive3
 					where uniqueX = \"$fid\" " );
 	$row1 = mysqli_fetch_row( $q1 );
 
@@ -249,12 +269,13 @@ function balance2trades( $fid, $oId )
 	$pr2 = $row1[7];
 
 	$r1saleId = $row1[8];
+	$r1divisible = $row1[9]; //1;//
 	
 	$q2 = myquery( "select
 					type1,	amount1,		stock,	user,
 					price1,		price2,
-					saleId
-					from salesactive2
+					saleId, divisible
+					from salesactive3
 					where uniqueX = \"$oId\" " );
 	$row2 = mysqli_fetch_row( $q2 );
 
@@ -266,55 +287,88 @@ function balance2trades( $fid, $oId )
 	$r2price2 = $row2[5];
 
 	$r2saleId = $row2[6];
+	$r2divisible = $row2[7];
 	
 	$r1sends = 0;
 	$r2sends = 0;
 
-	// 001 echo "r1 : $r1type  r2: $r2type <br>";
-		
-	if( $r1type == "buy" && $r2type == "sell" )						//"1"
+	echo "r1 : $r1type  r2: $r2type <br>";
+
+	if( $r1type == "buy" && $r2type == "sell" )		//"1"
 	{
 		if( $r1amount >= $r2stock )					//1 >= 1
 		{
 			$r1sends = $r2stock * $r2price1;		//10 * 0.7 = 7
-			$oddsend = 1;
 			$r2sends = $r2stock;					//10
 			if ( $r1sends > $r1stock )				//7 > 1.3
 			{
 				$r1sends = $r1stock;				//1.3
 				$r2sends = $r1stock * $r2price2;	//1.3 * 1.42
-				$oddsend = 2;
 			}
 		}
 		else										//( 2 < 10 )
 		{
 			$r1sends = $r1amount * $r2price1;		//( 1.4 )
-			$oddsend = 1;
 			$r2sends = $r1amount;					//( 2 )
 			if ( $r1sends > $r1stock )				//( 1.4 > 1.3 )
 			{
 				$r1sends = $r1stock;				//( 1.3 )
-				$r2sends = $r1stock * $r2price2;		//( 1.3 * 1.42 )
-				$oddsend = 2;
+				$r2sends = $r1stock * $r2price2;	//( 1.3 * 1.42 )
 			}
 		}
+		echo "q1 r1sends : $r1sends, r2sends : $r2sends<br>";
+		
+		if( $r2divisible == '0' )
+		{
+			$var1 = fmod( $r2sends, 1 );
+			if( $var1 != 0 )
+			{
+				$r2sends = $r2sends - $var1;
+				if( $r2sends == 0 )
+				{
+					echo "no sale<br>";
+					return 0;
+				}
+			
+				$r1sends = $r2sends * $r2price1;
+			}
+		}
+		echo "q2 r1sends : $r1sends, r2sends : $r2sends<br>";
 	}
 
-	if ( $r1type == "sell" && $r2type == "buy" )					//"3"
+	if ( $r1type == "sell" && $r2type == "buy" )		//"3"
 	{
 		$var1 = $r1stock * $r2price2;
-		if( $var1 <= $r2stock )		//2 * 1.42 < 10
+		if( $var1 <= $r2stock )							//2 * 1.42 < 10
 		{
 			$r1sends = $r1stock;						//2
 			$r2sends = $r1stock * $r2price2;			//2.84
-			$oddsend = 2;
 		}
-		if( $var1 > $r2stock )		//20 * 1.42 > 10
+		if( $var1 > $r2stock )							//20 * 1.42 > 10
 		{
 			$r1sends = $r2stock * $r2price1;			//10 * 0.7 = 7
-			$oddsend = 1;
 			$r2sends = $r2stock;						//10
 		}
+
+		echo "q3 r1sends : $r1sends, r2sends : $r2sends : $r1divisible : $r2divisible<br>";
+		
+		if( $r1divisible == '0' )
+		{
+			echo "here<br>";
+			$var1 = fmod( $r1sends, 1 );
+			if( $var1 != 0 )
+			{
+				$r1sends = $r1sends - $var1;
+				$r2sends = $r1sends * $r2price2;
+			}
+			if( $r1sends == 0 )
+			{
+				echo "no sale<br>";
+				return 0;
+			}
+		}
+		echo "q4 r1sends : $r1sends, r2sends : $r2sends<br>";
+
 	}
 
 	if ( $r1type == "sell" && $r2type == "sell" )					//"2"
@@ -324,16 +378,13 @@ function balance2trades( $fid, $oId )
 		{
 			$r1sends = $r1stock;						//2
 			$r2sends = $r1stock * $r2price2;			//2.84
-			$oddsend = 2;
 		}
 		if( $var1 > $r2stock )		//20 * 1.42 > 10
 		{
 			$r1sends = $r2stock * $r2price1;			//10 * 0.7 = 7
-			$oddsend = 1;
 			$r2sends = $r2stock;						//10
 		}
 	}
-
 
 
 	if ( $r1type == "buy" && $r2type == "buy" )					//"4"
@@ -343,25 +394,21 @@ function balance2trades( $fid, $oId )
 		{
 			// 001 echo "two<br>";
 			$r1sends = $r1amount * $r2price1;		//2 * 1.33
-			$oddsend = 1;
 			$r2sends = $r1amount;
 			if( $r1sends > $r1stock )
 			{
 				$r1sends = $r1stock;
 				$r2sends = $r1stock * $r2price2;
-				$oddsend = 2;
 			}
 		}
 		if ( $r1amount > $r2stock )
 		{
 			$r1sends = $r2stock * $r2price1;
-			$oddsend = 1;
 			$r2sends = $r2stock;
 			if ( $r1sends > $r1stock )
 			{
 				$r1sends = $r1stock;
 				$r2sends = $r1stock * $r2price2;
-				$oddsend = 2;
 			}
 		}
 	}

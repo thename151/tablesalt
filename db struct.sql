@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 19, 2014 at 05:24 AM
+-- Generation Time: Jan 21, 2014 at 06:17 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `login1` (
   `loginName` varchar(25) NOT NULL,
   `loginTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=475 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=481 ;
 
 -- --------------------------------------------------------
 
@@ -75,10 +75,11 @@ CREATE TABLE IF NOT EXISTS `products1` (
   `productName` varchar(40) NOT NULL,
   `profileName` varchar(25) NOT NULL,
   `detail` varchar(500) NOT NULL,
+  `divisible` tinyint(1) NOT NULL,
   `status1` varchar(25) NOT NULL DEFAULT 'okay',
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 -- --------------------------------------------------------
 
@@ -177,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `querylog` (
   `theQuery` varchar(250) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=2392 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=2808 ;
 
 -- --------------------------------------------------------
 
@@ -198,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `sales3` (
   `user` varchar(25) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1052 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1077 ;
 
 -- --------------------------------------------------------
 
@@ -211,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `salesactive` (
   `saleId` int(11) NOT NULL,
   `stock` decimal(6,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=231 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=260 ;
 
 -- --------------------------------------------------------
 
@@ -235,6 +236,26 @@ CREATE TABLE IF NOT EXISTS `salesactive2` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `salesactive3`
+--
+CREATE TABLE IF NOT EXISTS `salesactive3` (
+`uniqueX` int(11)
+,`saleId` int(11)
+,`stock` decimal(6,3)
+,`amount1` decimal(6,3)
+,`type1` varchar(25)
+,`creator1` varchar(25)
+,`product1` varchar(40)
+,`creator2` varchar(25)
+,`product2` varchar(40)
+,`divisible` tinyint(1)
+,`price1` decimal(6,3)
+,`price2` decimal(6,3)
+,`user` varchar(25)
+);
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `scores1`
 --
 
@@ -245,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `scores1` (
   `product` varchar(40) NOT NULL,
   `amount` decimal(6,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=127 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=129 ;
 
 -- --------------------------------------------------------
 
@@ -263,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `sendreclog1` (
   `sendsort` varchar(25) NOT NULL,
   `dateLog` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1729 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1770 ;
 
 -- --------------------------------------------------------
 
@@ -290,7 +311,7 @@ CREATE TABLE IF NOT EXISTS `tradelog` (
   `price1` decimal(9,6) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=226 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=404 ;
 
 -- --------------------------------------------------------
 
@@ -377,6 +398,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `salesactive2`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `salesactive2` AS select `salesactive`.`uniqueX` AS `uniqueX`,`salesactive`.`saleId` AS `saleId`,`salesactive`.`stock` AS `stock`,`sales3`.`amount1` AS `amount1`,`sales3`.`type1` AS `type1`,`sales3`.`creator1` AS `creator1`,`sales3`.`product1` AS `product1`,`sales3`.`creator2` AS `creator2`,`sales3`.`product2` AS `product2`,`sales3`.`price1` AS `price1`,`sales3`.`price2` AS `price2`,`sales3`.`user` AS `user` from (`salesactive` left join `sales3` on((`sales3`.`uniqueX` = `salesactive`.`saleId`))) where (`sales3`.`uniqueX` > 0) limit 0,30;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `salesactive3`
+--
+DROP TABLE IF EXISTS `salesactive3`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `salesactive3` AS select `salesactive2`.`uniqueX` AS `uniqueX`,`salesactive2`.`saleId` AS `saleId`,`salesactive2`.`stock` AS `stock`,`salesactive2`.`amount1` AS `amount1`,`salesactive2`.`type1` AS `type1`,`salesactive2`.`creator1` AS `creator1`,`salesactive2`.`product1` AS `product1`,`salesactive2`.`creator2` AS `creator2`,`salesactive2`.`product2` AS `product2`,`products1`.`divisible` AS `divisible`,`salesactive2`.`price1` AS `price1`,`salesactive2`.`price2` AS `price2`,`salesactive2`.`user` AS `user` from (`salesactive2` left join `products1` on(((`products1`.`profileName` = `salesactive2`.`creator1`) and (`products1`.`productName` = `salesactive2`.`product1`))));
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
