@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2014 at 06:17 AM
+-- Generation Time: Jan 21, 2014 at 06:52 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -49,20 +49,6 @@ CREATE TABLE IF NOT EXISTS `messages1` (
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `priceview1`
---
--- in use(#1356 - View 'web7.priceview1' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
-
--- --------------------------------------------------------
-
---
--- Table structure for table `priceview5`
---
--- in use(#1356 - View 'web7.priceview5' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
 
 -- --------------------------------------------------------
 
@@ -178,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `querylog` (
   `theQuery` varchar(250) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=2808 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=2810 ;
 
 -- --------------------------------------------------------
 
@@ -199,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `sales3` (
   `user` varchar(25) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1077 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1078 ;
 
 -- --------------------------------------------------------
 
@@ -212,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `salesactive` (
   `saleId` int(11) NOT NULL,
   `stock` decimal(6,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=260 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=261 ;
 
 -- --------------------------------------------------------
 

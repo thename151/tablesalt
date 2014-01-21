@@ -24,6 +24,7 @@ function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
 
 function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 {
+	$messa =null;
 	$price = "price1";
 	if( $type == 1 )
 	{
