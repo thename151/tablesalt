@@ -11,13 +11,18 @@ function removetrade( $name1, $traden )
 		return $check1;
 	}
 
-	$result2 = myquery( "select * from sales3 where uniqueX = \"$traden\" and user = \"$name1\"" );
+	$result2 = myquery( "select creator1, product1, creator2, product2, user
+						 from sales3 where uniqueX = \"$traden\" and user = \"$name1\"" );
 
 	$row = mysqli_fetch_row( $result2 );
 	if($row != null )
 	{
 		myquery( "delete from sales3 where uniqueX = \"$traden\"" );
 		myquery( "delete from salesactive where saleId = \"$traden\"" );
+		
+		include_once ("balance4.php");
+	
+		updatePair( $row[0], $row[1], $row[2], $row[3], $row[4] );
 		return "trade deleted";
 	}
 	else
