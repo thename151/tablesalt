@@ -1,5 +1,5 @@
 <?php
 
-$sitename = "inc";
+$sitename = "rinc";
 
 ?>

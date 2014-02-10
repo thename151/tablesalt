@@ -62,6 +62,14 @@ $title1 = "product $cr1 $pr1";
 			&cr1=' . $cr1 . '
 			&pr1=' . $pr1 . '"
 			>sell</a>';
+			
+include_once '../funcss/divs.php';
+$mess2e3 = countdivs1( $cr1, $pr1 );
+
+	$mess2e2 = '<a href="dividends.php?
+			cr1=' . $cr1 . '
+			&pr1=' . $pr1 . '"
+			>dividends( '.$mess2e3.' )</a>';
 	$mess2f = '<a href="listprices2.php?
 			cr1=' . $cr1 . '
 			&pr1=' . $pr1 . '"
@@ -103,8 +111,8 @@ for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
 	
 }
 
-	$mess2g = "$mess2c<br>$mess2d<br>$mess2e<br>$mess2f";
-	$mess2f = "<table><tr><td>$mess2c</td><td>$mess2d</td><td>$mess2e</td><td>$mess2f</td></table>";
+	$mess2g = "$mess2c<br>$mess2d<br>$mess2e<br>$mess2f<br>$mess2e2";
+	$mess2f = "<table><tr><td>$mess2c</td><td>$mess2d</td><td>$mess2e</td><td>$mess2e2</td><td>$mess2f</td></table>";
 		
 	$mess0 .= '<br>' . $mess2g;
 	$mess0 .= '<br>' . $mess2j;

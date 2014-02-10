@@ -1,6 +1,6 @@
 <?php
 
-include( "funcs.php" );
+include_once( "funcs.php" );
 
 function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 {
@@ -50,16 +50,16 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 	{
 		$amount = $rowa[0];
 		$var4 = $amount * $am1;
-		echo "var4 : $var4 $rowa[1] <br>";
+//		echo "var4 : $var4 $rowa[1] <br>";
 		$var6 = fmod( $var4, .001 );
-		echo "var 5: $var4  var 6: $var6 <br>";
+	//	echo "var 5: $var4  var 6: $var6 <br>";
 		
 		if( $var6 != 0 )
 		{
 			$var7 = $var4 - $var6;
-			echo "var 7: $var7<br>";
+//			echo "var 7: $var7<br>";
 			$var7 = $var7 + .001;
-			echo "var 7: $var7<br>";
+	//		echo "var 7: $var7<br>";
 
 			$upamount = $upamount + $var7;
 		}
@@ -69,17 +69,17 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 		}
 	}
 	
-	echo "upamount $upamount <br>";
+//	echo "upamount $upamount <br>";
 	
 	if( $var2 < $upamount )
 	{
 		$mess1[0] = 'false';
-		$mess1[1] = "$var1 * $am1 = $var3<br>rounded up to a max of : $upamount<br>you only have $var2 $cr2 $pr2";
+		$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>rounded up to a max of : $upamount<br>you only have $var2 $cr2 $pr2";
 		return $mess1;
 	}
 
 	$mess1[0] = 'true';
-	$mess1[1] = "$var1 * $am1 = $var3<br>rounded up to a max of : $upamount<br>are you sure";
+	$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>rounded up to a max of : $upamount<br>are you sure";
 	$mess1[2] = $upamount;
 	return $mess1;
 }
@@ -119,7 +119,7 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 	if ( $var3 > $var2 )
 	{
 		$mess1[0] = 'false';
-		$mess1[1] = "$var1 * $am1 = $var3<br>you only have $var2 $cr2 $pr2";
+		$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>you only have $var2 $cr2 $pr2";
 		return $mess1;
 	}
 
@@ -130,16 +130,16 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 	{
 		$amount = $rowa[0];
 		$var4 = $amount * $am1;
-		echo "var4 : $var4 $rowa[1] <br>";
+//		echo "var4 : $var4 $rowa[1] <br>";
 		$var6 = fmod( $var4, .001 );
-		echo "var 5: $var4  var 6: $var6 <br>";
+	//	echo "var 5: $var4  var 6: $var6 <br>";
 		
 		if( $var6 != 0 )
 		{
 			$var7 = $var4 - $var6;
-			echo "var 7: $var7<br>";
+//			echo "var 7: $var7<br>";
 			$var7 = $var7 + .001;
-			echo "var 7: $var7<br>";
+	//		echo "var 7: $var7<br>";
 
 			$upamount = $upamount + $var7;
 		}
@@ -152,14 +152,14 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 	if ( $upamount > $var2 )
 	{
 		$mess1[0] = 'false';
-		$mess1[1] = "$var1 * $am1 = $var3<br>rounded up to a max of : $upamount<br>you only have $var2 $cr2 $pr2";
+		$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>rounded up to a max of : $upamount<br>you only have $var2 $cr2 $pr2";
 		return $mess1;
 	}
 	
 	if ( $upamount > $prevmax )
 	{
 		$mess1[0] = 'true';
-		$mess1[1] = "$var1 * $am1 = $var3<br>rounded up to a max of : $upamount<br>are you sure";
+		$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>rounded up to a max of : $upamount<br>are you sure";
 		$mess1[2] = $upamount;
 		return $mess1;
 	}
@@ -238,7 +238,7 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 
 	foreach ($baltable as $value)
 	{
-		echo "$value <br>";
+//		echo "$value <br>";
 		newSendDiv( $cr2, $pr2, $value );
 	}
 
@@ -253,7 +253,7 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 }
 
 
-function listdivs( $name1, $startfrom, $results )
+function listdivs( $startfrom, $results )
 {
 	
 	 
@@ -290,7 +290,113 @@ function listdivs( $name1, $startfrom, $results )
 	return $mess1;
 }
 
+function listdivs2( $startfrom, $results, $cr1, $pr1 )
+{
+	$result4 = myquery( "select 
+	 cr1, 	pr1, 	cr2,	pr2,
+	 rate, 	doessend, 	datetime
+	 from divtotal 
+	 where
+	 cr1 = \"$cr1\" and pr1 = \"$pr1\" or
+	 cr2 = \"$cr1\" and pr2 = \"$pr1\"
+	 order by datetime desc limit $startfrom, $results " );
+	
+	$result5 = myquery( "select uniqueX from divtotal 
+	 where
+	 cr1 = \"$cr1\" and pr1 = \"$pr1\" or
+	 cr2 = \"$cr1\" and pr2 = \"$pr1\" " );
+	$numrows = mysqli_num_rows( $result5 );
+	
+	$mess1 [0] = $numrows;
+	$i1 = 1;
+	
+	while ($result_row = mysqli_fetch_row(($result4)))
+	{
+		$date1 = date( "y-m-d",strtotime($result_row[6]));
+		$time1 = date( "H:i:s", strtotime($result_row[6] ) );
+	
+		$messa[0] = $result_row[0];       #amount
+		$messa[1] = $result_row[1];       #creator
+		$messa[2] = $result_row[2];       #product
+		$messa[3] = $result_row[3];       #product
+		$messa[4] = $result_row[4];       #product
+	
+		$messa[5] = $date1;
+		$messa[6] = $time1;
+	
+		$mess1 [$i1] = $messa;
+		$messa = null;
+		$i1++;
+	}
+	return $mess1;
+}
 
 
+
+function listdivs3( $startfrom, $results, $cr2 )
+{
+	$result4 = myquery( "select 
+	 cr1, 	pr1, 	cr2,	pr2,
+	 rate, 	doessend, 	datetime
+	 from divtotal
+	 where
+	 cr1 = \"$cr2\" or
+	 cr2 = \"$cr2\" 
+	 order by datetime desc limit $startfrom, $results " );
+	
+	$result5 = myquery( "select uniqueX from divtotal
+	 where
+	 cr1 = \"$cr2\" or
+	 cr2 = \"$cr2\"" );
+	$numrows = mysqli_num_rows( $result5 );
+	
+	$mess1 [0] = $numrows;
+	$i1 = 1;
+	
+	while ($result_row = mysqli_fetch_row(($result4)))
+	{
+		$date1 = date( "y-m-d",strtotime($result_row[6]));
+		$time1 = date( "H:i:s", strtotime($result_row[6] ) );
+	
+		$messa[0] = $result_row[0];       #amount
+		$messa[1] = $result_row[1];       #creator
+		$messa[2] = $result_row[2];       #product
+		$messa[3] = $result_row[3];       #product
+		$messa[4] = $result_row[4];       #product
+	
+		$messa[5] = $date1;
+		$messa[6] = $time1;
+	
+		$mess1 [$i1] = $messa;
+		$messa = null;
+		$i1++;
+	}
+	return $mess1;
+}
+
+
+
+
+function countdivs1( $cr1, $pr1 )
+{
+	$result5 = myquery( "select uniqueX from divtotal
+	 where
+	 cr1 = \"$cr1\" and pr1 = \"$pr1\" or
+	 cr2 = \"$cr1\" and pr2 = \"$pr1\" " );
+	$numrows = mysqli_num_rows( $result5 );
+
+	return $numrows;
+}
+
+function countdivs2( $cr2 )
+{
+	$result5 = myquery( "select uniqueX from divtotal
+	 where
+	 cr1 = \"$cr2\" or
+	 cr2 = \"$cr2\"" );
+	$numrows = mysqli_num_rows( $result5 );
+
+	return $numrows;
+}
 
 ?>

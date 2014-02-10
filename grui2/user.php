@@ -30,6 +30,13 @@ $mess2d = '<a href="listproducts1.php?
 $mess2e = '<a href="listprices2.php?
 			cr2=' . $cr1 . '"
 			>prices</a>';
+
+include_once '../funcss/divs.php';
+$mess2e3 = countdivs2( $cr1 );
+
+$mess2e2 = '<a href="dividends.php?
+			cr2=' . $cr1 . '"
+			>dividends( '.$mess2e3.' )</a>';
 $mess2f = '<a href="sendmessage1.php?
 			cr1=' . $cr1 . '"
 			>send message</a>';
@@ -74,7 +81,7 @@ for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
 
 $mess2 = $displayResults . "<br>";
 
-$mess0 .= "$mess2c<br>$mess2d<br>$mess2e<br><br>$mess2f<br>$mess2g<br>$mess2j";
+$mess0 .= "$mess2c<br>$mess2d<br>$mess2e<br>$mess2e2<br><br>$mess2f<br>$mess2g<br>$mess2j";
 // $mess0 .= "<br><br><br><h2>comments</h2>";
 // $mess0 .= "<br>$displayResults<br>$mess2i$mess3";
 

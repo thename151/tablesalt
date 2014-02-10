@@ -8,10 +8,37 @@ include '../funcss/divs.php';
 $startfrom = '';
 $results = '';
 
+$cr1 = '';
+$pr1 = '';
+$cr2 = '';
+
 if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
 if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
 
-$mess1 = listdivs( $name1, $startfrom, $results );
+if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
+if (isset($_GET['pr1'])){ $pr1 = $_GET['pr1'];}else{$pr1 = "";}
+if (isset($_GET['cr2'])){ $cr2 = $_GET['cr2'];}else{$cr2 = "";}
+
+
+if(( $cr1 != "") && ($pr1 != "") )
+{
+	$mess1 = listdivs2( $startfrom, $results, $cr1, $pr1 );
+	$title1 = "list $cr1 $pr1 dividends";
+}
+else
+{
+	if( $cr2 != "" )
+	{	
+		$mess1 = listdivs3( $startfrom, $results, $cr2 );
+		$title1 = "list $cr2 dividends";
+	}
+	else
+	{
+		$mess1 = listdivs( $startfrom, $results );
+	}
+}
+
+
 $mess4 = "dividends.php?";
 
 include_once( "incs3.php" );

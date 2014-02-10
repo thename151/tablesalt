@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2014 at 06:52 AM
+-- Generation Time: Feb 10, 2014 at 10:56 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -23,6 +23,41 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `divs`
+--
+
+CREATE TABLE IF NOT EXISTS `divs` (
+  `UniqueX` int(11) NOT NULL AUTO_INCREMENT,
+  `totalx` int(11) NOT NULL,
+  `user` varchar(25) NOT NULL,
+  `amount` decimal(6,3) NOT NULL,
+  `wouldsend` decimal(7,6) NOT NULL,
+  `doessend` decimal(4,3) NOT NULL,
+  PRIMARY KEY (`UniqueX`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `divtotal`
+--
+
+CREATE TABLE IF NOT EXISTS `divtotal` (
+  `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
+  `cr1` varchar(25) NOT NULL,
+  `pr1` varchar(40) NOT NULL,
+  `cr2` varchar(25) NOT NULL,
+  `pr2` varchar(40) NOT NULL,
+  `rate` decimal(6,3) NOT NULL,
+  `wouldsend` decimal(9,6) NOT NULL,
+  `doessend` decimal(6,3) NOT NULL,
+  `datetime` datetime NOT NULL,
+  PRIMARY KEY (`uniqueX`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `login1`
 --
 
@@ -31,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `login1` (
   `loginName` varchar(25) NOT NULL,
   `loginTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=481 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=495 ;
 
 -- --------------------------------------------------------
 
@@ -65,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `products1` (
   `status1` varchar(25) NOT NULL DEFAULT 'okay',
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
 
 -- --------------------------------------------------------
 
@@ -164,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `querylog` (
   `theQuery` varchar(250) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=2810 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=3190 ;
 
 -- --------------------------------------------------------
 
@@ -185,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `sales3` (
   `user` varchar(25) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1078 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1085 ;
 
 -- --------------------------------------------------------
 
@@ -198,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `salesactive` (
   `saleId` int(11) NOT NULL,
   `stock` decimal(6,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=261 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=266 ;
 
 -- --------------------------------------------------------
 
@@ -252,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `scores1` (
   `product` varchar(40) NOT NULL,
   `amount` decimal(6,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=129 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=141 ;
 
 -- --------------------------------------------------------
 
@@ -270,7 +305,7 @@ CREATE TABLE IF NOT EXISTS `sendreclog1` (
   `sendsort` varchar(25) NOT NULL,
   `dateLog` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1770 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1892 ;
 
 -- --------------------------------------------------------
 

@@ -1,7 +1,7 @@
 <?php
 include_once( "dbfuncs.php" );
 include_once( "hilovalues.php" );
-include( "lib/password.php" );
+include_once( "lib/password.php" );
 
 function check_name($fname,$label,$flen)
 {
