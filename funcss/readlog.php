@@ -60,6 +60,11 @@ function readlog( $name1, $startfrom, $results )
 		{
 			$thename = "<i>recall</i>";
 		}
+
+		if( $result_row[6] == "dividend" )
+		{
+			$thename = "dividend";
+		}
 	
 		$to1 = $result_row[2];
 		$message = $result_row[3];

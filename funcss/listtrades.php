@@ -100,14 +100,25 @@ function showHowMuch2( $cr1, $pr1, $user )
 	$row = mysqli_fetch_row($q1);
 	
 	include( "hilovalues.php" );
-	
+		
 	if( $row != null )
 	{
 		if ( $user == $cr1 )
 		{
-			$availbl = $hiscore - $row[0];
-			// echo"avalable $availbl<br>";
-			return $availbl;
+			$var1 = 1000 * $hiscore;
+			$var2 = 1000 * $row[0];
+			
+			$var3 = $var1- $var2;
+			$var4 = $var3 / 1000;
+
+			return $var4;
+			
+			//~ echo "here 5 $var3 <br>";
+			//~ echo "here 6 $var4 <br>";
+			//~ 
+			//~ $availbl = $hiscore - $row[0];
+			 //~ echo"avalable $availbl<br>";
+			//~ return $availbl;
 		}
 		
 		return $row[0];
@@ -115,10 +126,29 @@ function showHowMuch2( $cr1, $pr1, $user )
 	
 	if( $user == $cr1 )
 	{
+		echo "here 1 $hiscore<br>";
 		return $hiscore;
 	}
 	return 0;
 }
+
+
+function showHowLess( $cr1, $pr1 )
+{
+	$q1 = myquery( "select amount from scores1 where who1 = \"$cr1\" and creator = \"$cr1\" and product =\"$pr1\"" );
+	$row = mysqli_fetch_row($q1);
+	
+	include( "hilovalues.php" );
+		
+	if( $row != null )
+	{
+			return $row[0];
+	}
+		
+	return "product not found";
+}
+
+
 
 
 function listprofilestrades( $name1 )

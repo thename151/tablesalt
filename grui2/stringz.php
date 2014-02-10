@@ -18,7 +18,10 @@ $header1 =
 <title>
 ';
 
-$sitename = "tradesss";
+include( '../sitename.inc' );
+
+
+//$sitename = "inc";
 
 $header2 ='
 </title>
@@ -95,14 +98,15 @@ Password<br><input type="password" name="passx"" maxlength="25"><br>
 $leftnav3 = '
 <div id="leftnav">
 
-<a href="listprofiles.php">list profiles</a><br>
-<a href="showscores1.php">scores</a><br><br>
-<a href="listproducts1.php">products</a><br>
-<a href="listpproducts1.php">my products</a><br><br>
-<a href="sendproduct1.php">send product</a><br>
-<a href="readlog1.php">send receive log</a><br><br>
-<a href="listprices2.php">prices</a><br>
+<a href="showscores1.php">scores</a><br>
+<a href="listprices2.php">prices</a><br><br>
+<a href="listpproducts1.php">my products</a><br>
 <a href="listptrades1.php">my trades</a><br><br>
+<a href="listprofiles.php">profiles</a><br>
+<a href="listproducts1.php">products</a><br><br>
+<a href="dividends.php">dividends</a><br><br>
+<a href="sendproduct1.php">send product</a><br>
+<a href="readlog1.php">transactions</a><br><br>
 <a href="sendmessage1.php">send message</a><br>
 <a href="readmessages1.php?startfrom=0&results=5">read messages</a><br><br>
 <a href="changepass1.php">change password</a><br>
@@ -176,7 +180,7 @@ $footer = '
 		mess
 	</div>
 	<div id="rbox">
-		<a href="about.php">2013</a>
+		<a href="about.php">2014</a>
 	</div>
 </div>
 </div>

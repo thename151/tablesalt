@@ -33,22 +33,36 @@ function sendproduct2( $name1, $pcrea, $pname, $amount, $name2 )# name1 sends to
 function sendproductbalance( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
 {
 	$mess = sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort );
-// 	include_once ("balance2.php");
-	
-// 	return $mess . balanceuser( $name2, $pcrea, $pname );
-
-	// include_once ("balance3.php");
-	// subtract stock
-	// subtractstock( $name1, $pcrea, $pname, $amount );
-	
-	// add stock
-	// addstock( $name2, $pcrea, $pname );
-	
 	include_once ("balance4.php");
 	
 	newSend( $pcrea, $pname, $name1, $name2 );
 	
 	return $mess;
+}
+
+
+function sendprDiv1( $name, $cr1, $pr1, $amount )
+{
+	$checkr1 = invname1( $name, $cr1, $pr1, $amount );
+
+	if( $checkr1[0] == "insufficient funds" )
+	{
+		return "insufficient funds" . $checkr1[1];
+	}
+
+	sendproduct5( $name, $cr1, $pr1, $checkr1[1], $checkr1[0] );
+	return sendlog($name, $cr1, $pr1, $amount, "divholder", "dividend" );
+
+	return "a success : $name, $cr1, $pr1, $amount, div, div<br>";
+}
+
+
+function sendprDiv2( $name, $cr1, $pr1, $amount )
+{
+	$checkr2 = invname2( $name, $cr1, $pr1, $amount );
+	
+	sendproduct5( $name, $cr1, $pr1, $checkr2[1], $checkr2[0] );
+	sendlog($name, $cr1, $pr1, $amount, "divholder", "dividend" );
 }
 
 function sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
@@ -87,7 +101,6 @@ function sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
 #		echo "ww : $var1";
 		if( $var1 != 0 )
 		{
-			
 			return "$pcrea $pname can't have decimal places : $var1";
 		}
 	}

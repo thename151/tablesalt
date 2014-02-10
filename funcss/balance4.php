@@ -23,13 +23,30 @@ function newSend( $cr1, $pr1, $user1, $user2 )
 	$stopId = 0;
 	
 	if($row != null )
-	{	
+	{
 		$stopId = $row[0];
 	}
 
 	updateStock( $cr1, $pr1, $user1 );
 	updateStock( $cr1, $pr1, $user2 );
+
+	updateActiveSales( $stopId );
+}
+
+
+function newSendDiv( $cr1, $pr1, $user1 )
+{
+	$q1 = myquery( "select uniqueX from salesactive order by uniqueX desc limit 1" );
+	$row = mysqli_fetch_row( $q1 );
+	$stopId = 0;
 	
+	if($row != null )
+	{
+		$stopId = $row[0];
+	}
+
+	updateStock( $cr1, $pr1, $user1 );
+
 	updateActiveSales( $stopId );
 }
 
@@ -534,7 +551,7 @@ function updatesalesTotal( $Id, $var1 )
 
 function updateStock( $cr1, $pr1, $user )
 {
-	// 001 echo "updateStock( $cr1, $pr1, $user )<br>";
+	echo "updateStock( $cr1, $pr1, $user )<br>";
 	$curcr = "";
 	$curpr = "";
 	

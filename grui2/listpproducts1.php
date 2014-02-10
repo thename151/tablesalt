@@ -31,6 +31,7 @@ for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
 	$mess2a .= "<td>" . $mess1[$i2][0] . "</td>";
 	$mess2a .= "<td>" . $mess1[$i2][1] . "</td>";
 
+	$mess2a .= "<td><a href='div1.php?pr1=".$mess1[$i2][2] ."'>pay dividend</a></td>";
 	$mess2a .= "<td>" . $mess1[$i2][3] . "</td>";
 	$mess2a .= "</tr>";
 }

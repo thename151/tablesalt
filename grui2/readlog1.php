@@ -34,7 +34,7 @@ for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
 	$mess2a .= "<td><center>" . $mess1[$i2][3] . "</center></td>";
 
 //	$mess2a .= "<td>" . $mess1[$i2][4] . "</td>";
-//echo "qwe" . $mess1[$i2][4] . "ew";
+//echo "qwe" . $mess1[$i2][4] . "ew<br>";
 if( $mess1[$i2][4] == "<i>trade</i>" )
 {
 	$mess2a .= "<td>trade</td>";
@@ -42,6 +42,14 @@ if( $mess1[$i2][4] == "<i>trade</i>" )
 else if( $mess1[$i2][4] == "<i>recall</i>" )
 {
 	$mess2a .= "<td>recall</td>";
+}
+else if( $mess1[$i2][4] == "<i>dividend</i>" )
+{
+	$mess2a .= "<td>dividend</td>";
+}
+else if( $mess1[$i2][4] == "dividend" )
+{
+	$mess2a .= "<td>dividend</td>";
 }
 else
 {
