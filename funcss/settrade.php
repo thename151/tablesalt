@@ -60,7 +60,7 @@ function edittrade( $amount,  $crea1, $pname1,
 	if( $check1 != "is valid" )	{
 		return $check1;
 	}
-	$check1 = check_number( $amount, $loscore, $hiscore );
+	$check1 = check_number( $amount, 0, $hiscore );
 	if( $check1 != "is valid" )	{
 		return $check1;
 	}
@@ -123,21 +123,6 @@ function edittrade20( $amount,  $crea1, $pname1,
 	# enter sale
 	$date1 = date("y-m-d H:i:s",time());
 
-	include( "hilovalues.php" );
-	$check1 = check_number( $amount, $loscore, $hiscore );
-
-	if( $check1 != "is valid" )
-	{
-		return "sale not added : price too big";
-	}
-
-	$check1 = check_number( $price, $loscore, $hiscore );
-
-	if( $check1 != "is valid" )
-	{
-		return "sale not added : price too small";
-	}
-	
 	$price1 = 0;
 	$price2 = 0;
 
@@ -215,7 +200,7 @@ function settradeb( $name1, $amount, $crea1,  $pname1,
 	if( $check1 != "is valid" )	{
 		return $check1;
 	}
-	$check1 = check_number( $amount, $loscore, $hiscore );
+	$check1 = check_number( $amount, 0, $hiscore );
 	if( $check1 != "is valid" )	{
 		return $check1;
 	}
@@ -317,12 +302,12 @@ function settradeb2( $name1, $amount, $crea1, $pname1,
 			$pname2 = $pname3;
 		}
 		
-		include( "hilovalues.php" );
-		$check1 = check_number( $amount1, $loscore, $hiscore );
-		if( $check1 != "is valid" )
-		{
-			return "sale not added : amount, price too big";
-		}
+		//~ include( "hilovalues.php" );
+		//~ $check1 = check_number( $amount1, $loscore, $hiscore );
+		//~ if( $check1 != "is valid" )
+		//~ {
+			//~ return "sale not added : amount, price too big";
+		//~ }
 		
 		$date1 = date("y-m-d H:i:s",time());
 		

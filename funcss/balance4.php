@@ -536,8 +536,10 @@ function updatesalesTotal( $Id, $var1 )
 	if( $newamount <= 0 )
 	{
 		// 001 echo "update sales total : delete<br>";
-		my2query( "delete from sales3 where uniqueX = \"$Id\" " );		
-		my2query( "delete from salesactive where saleId = \"$Id\" " );		
+		
+		my2query( "update sales3 set amount1 = \"0\" where uniqueX = \"$Id\" " );
+//		my2query( "delete from sales3 where uniqueX = \"$Id\" " );
+		my2query( "delete from salesactive where saleId = \"$Id\" " );
 	}
 	else
 	{
