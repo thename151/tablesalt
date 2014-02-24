@@ -12,13 +12,13 @@ else
 if( $qe == "blank" )
 {
 	$title1 = "now";
-	$messagez = "
+	$messagez = '
 	<h2>rinc</h2>
 	<p>
 	On this website products can be created and traded.
 	</p>
-	source : <a href=https://github.com/thename151/tablesalt>github.com/thename151/tablesalt</a><br>
-	";
+	source : <a href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt</a><br>
+	';
 }
 
 

@@ -51,7 +51,7 @@ Password<br><input type="password" name="passx" maxlength="25"><br>
 <p>
 On this website products can be created and traded.
 </p>
-source : <a href=https://github.com/thename151/tablesalt>github.com/thename151/tablesalt</a><br>
+source : <a href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt</a><br>
 <p>
 You are not logged in.
 </p>
