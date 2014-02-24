@@ -21,8 +21,14 @@ function readmessages( $name1, $startfrom, $results  )
 		return $mess1;
 	}
 	
-	$result1 = myquery( "select from1, to1, message1, datetime, type, product from messages1 where from1 = \"$name1\" or
-	to1 = \"$name1\" order by datetime desc limit $startfrom, $results " );
+	$result1 = myquery( "select 
+						from1, to1, message1, datetime, type, product 
+						from messages1 
+						where from1 = \"$name1\" 
+						or
+						to1 = \"$name1\" 
+						order by datetime desc 
+						limit $startfrom, $results " );
 	
 	$result2 = myquery( "select * from messages1 where from1 = \"$name1\" or 
     to1 = \"$name1\" " );
@@ -138,9 +144,6 @@ function readProductComments( $name1, $pr1, $startfrom, $results  )
 }
 
 
-
-
-
 function readmessagesfew( $name1, $startfrom, $results, $cr1 )
 {
 	$check1 = readmessages2( $name1, $startfrom, $results  );
@@ -149,17 +152,19 @@ function readmessagesfew( $name1, $startfrom, $results, $cr1 )
 		$mess1[0] = $check1;
 		return $mess1;
 	}
-	
-	
-	$result1 = myquery( "select from1, to1, message1, datetime from messages1 where 
+
+	$result1 = myquery( "select 
+						from1, to1, message1, datetime, type, product 
+						from messages1 
+						where 
 						(from1 = \"$name1\" and
 						to1 = \"$cr1\")
 						or
 						(from1 = \"$cr1\" and
 						to1 = \"$name1\")
-						order by datetime desc limit $startfrom, $results
+						order by datetime desc 
+						limit $startfrom, $results
 						" );
-	
 
 	$result2 = myquery( "select * from messages1 where
 						(from1 = \"$name1\" and
@@ -186,6 +191,9 @@ function readmessagesfew( $name1, $startfrom, $results, $cr1 )
 		$messa[2] = $from1;
 		$messa[3] = $to1;
 		$messa[4] = $message;
+
+		$messa[5] = $result_row[4];
+		$messa[6] = $result_row[5];
 		
 		$mess1 [$i1] = $messa;
 		$messa = null;
