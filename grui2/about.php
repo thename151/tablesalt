@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <body bgcolor="black">
@@ -14,7 +13,12 @@ about
 <body><div id="container">
 
 <div id="top">
-<h1><a href="index.php">drinc</a></h1>
+<h1><a href="index.php">
+<?php
+include( '../sitename.inc' );
+echo $sitename;
+?>	
+</a></h1>
 </div>
 <div id="content2">source : <a href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt </a><br><br><i>helpful links :</i><br>
 <br><a href="http://freedns.afraid.org" target="_blank">freedns.afraid.org</a>

@@ -1,5 +1,5 @@
 <?php
 
-header("Location: page.php");
+header("Location: page2.php?qe=start");
 
 ?>

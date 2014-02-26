@@ -1,20 +1,3 @@
-<?php
-session_start();
-if( isset( $_SESSION['login'] )  )
-{
-	if( $_SESSION['login'] == "yes" )
-	{
-		header("Location: page.php");
-	}
-}
-
-include( "incmain2.php" );
-
-?>
-
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 
@@ -24,9 +7,7 @@ include( "incmain2.php" );
 <meta name="description" content="" />
 <link href="style2.css" rel="stylesheet">
 <title>
-<?php
-echo $title1;
-?>	
+start
 </title>
 </head>
 <body bgcolor="black">
@@ -65,11 +46,16 @@ Password<br><input type="password" name="passx" maxlength="25"><br>
 </div>
 
 <div id="contentpre">
-<?php
 
-echo $messagez;
+<h2>rinc</h2>
+<p>
+On this website products can be created and traded.
+</p>
+source : <a href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt</a><br>
+<p>
+You are not logged in.
+</p>
 
-?>
 </div>
 
 <div id="footer">
