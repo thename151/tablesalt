@@ -78,7 +78,7 @@ if( $qe == "prices" )
 
 if( $qe == "market" )
 {
-	$link1 = "page2.php";
+	$link1 = "page.php";
 	include 'incmains.php';
 }
 
