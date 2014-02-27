@@ -1226,7 +1226,7 @@ if( $qe == "settrade1" )
 	$mess2 = '
 	<form action="page.php?qe=settrade2"
 	method="POST">
-	<TABLE >
+	<TABLE id="tableft">
 	<tr class="trq">
 
 	<td></td>
@@ -1254,13 +1254,16 @@ if( $qe == "settrade1" )
 	<td><input type="text" name="cr2" maxlength="25"value="' . $cr2 . '"</td>
 	<td><input type="text" name="pr2" maxlength="25"value="' . $pr2 . '"</td>
 	<td>each</td></tr>
+			<tr class="trq">
+			  
+			</tr>
+			<tr class="trq"><td></td><td></td><td><input type="submit" value="send"></td><td></td><td></td></tr>  
 			
-	<tr class="trq"><td></td><td><input type="submit" value="send"></td><td></td><td></td><td></td></tr>
-			
-
 	</TABLE >
 	</form>
 	';
+
+//<th colspan="5"><input type="submit" value="send"></th>
 
 	$messagez = $mess2;
 }

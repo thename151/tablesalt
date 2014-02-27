@@ -1,9 +1,8 @@
+
 #prenex
 {
 	float:auto;
-/*
-	width:99%;
-*/
+/*	width:99%;*/
 }
 
 #pre
@@ -16,8 +15,6 @@
 	float:right;
 }
 
-
-
 #t3
 {
 	width:33%;
@@ -28,6 +25,7 @@
 #t3
 { 
 	float:auto;
+	text-align:left;
 }  
 
 #myText { text-align:right; } 
@@ -42,11 +40,13 @@
 #t1
 {
 	float:left;
+	text-align:left;
 }  
 
 #t2
 { 
     float:right;
+    text-align:left;
 }  
 
 
@@ -58,8 +58,9 @@ body
 
 table
 {
-   border-collapse: collapse;
+	border-collapse: collapse;
 	width:100%;
+	text-align:center;
 }
 
 table.blue
@@ -90,6 +91,7 @@ background-color: black;
 
 tr.trq 
 {
+/*	text-align:left;*/
   background-color:#383858;
 }
 

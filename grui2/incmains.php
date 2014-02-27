@@ -105,7 +105,7 @@ if( $qe == "prices" )
 				&pr1=' . $mess1[$i2][1] . '			
 				&cr2=' . $mess1[$i2][2] . '			
 				&pr2=' . $mess1[$i2][3] . '"			
-				> ' . $mess1[$i2][5] . '</a></td>'; //'.$mess1[$i2][6].'
+				>' . $mess1[$i2][5] . '</a></td>'; //'.$mess1[$i2][6].'
 		}		
 		$mess2a .= '</tr>';
 	}
@@ -144,8 +144,6 @@ if( $qe == "market" )
 
 	$var1 = $mess7[0];
 
-	//~ echo "qwe : $var1 <br>";
-
 	for( $i2 = 0; $i2 < sizeof( $mess7[1] ); $i2++ )
 	{
 		$sum = $mess7[1][$i2][0] / $mess7[1][$i2][1];
@@ -167,7 +165,6 @@ if( $qe == "market" )
 
 	for( $i2 = 0; $i2 < sizeof($mess7[2]); $i2++ )
 	{
-	#	echo $i2 . " :; " . $mess5[$i2][0] . " :: " . $mess5[$i2][1] . " .. " . $mess5[$i2][0] * $mess5[$i2][1] . "<br>";
 		$sum = $mess7[2][$i2][0] * $mess7[2][$i2][1];
 		$mess6 .= "<tr><td>" . 1 * $mess7[2][$i2][0] . "</td>";
 		$mess6 .= "<td>for</td>";
@@ -180,7 +177,6 @@ if( $qe == "market" )
 			$lowask = (float)number_format( $mess7[2][$i2][1],6);
 		}
 	}
-
 
 	if ( $var1 == 0 )
 	{
@@ -215,7 +211,7 @@ if( $qe == "market" )
 				&pr2=' . $pr1 . '""><b>_/&#175' . $var10 . '</b></a>';
 				
 	$mess9 = '
-			<center>    <table  id="t3">
+			<center> <table  id="t3">
 				  <tr>
 					 <td>
 					 <a href="'.$link1.'?qe=user&cr1=' . $cr1 . '">'.$cr1 .' </a>
@@ -238,7 +234,6 @@ if( $qe == "market" )
 					  <a href="'.$link1.'?qe=product&cr1=' . $cr2 . '&pr1=' . $pr2 . '">' . $pr2 . '</a>
 					  </div>
 					  </td>
-					  
 				  </tr>
 			  </table>
 			  <center>
@@ -248,7 +243,6 @@ if( $qe == "market" )
 				  <tr>
 					 <td><b>' . $bidlink . '</b></td><td></td><td></td><td></td><td></td>
 				  </tr>';
-
 	$mess92 =  '
 			</table>
 				
