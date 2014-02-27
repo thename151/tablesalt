@@ -70,7 +70,7 @@ echo $name1;
 <div id="content">
 
 <?php
-echo $messagez;
+echo "$messagez";
 ?>
 
 </div>

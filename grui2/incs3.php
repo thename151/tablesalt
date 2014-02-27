@@ -14,11 +14,16 @@ $displayResults = "there are no results";
 if($mess1[0] != 0 )
 {
 	$displayResults = "displaying results $startfrom1 to $endfrom of " . $mess1[0] . "<br>";
-	$mess3 = addcontrol( $startfrom, $results, $mess1[0], $mess4 );
+	$nextvar = "";
+	if( $endfrom < $mess1[0] )
+	{
+		$nextvar = "next";
+	}
+	$mess3 = addcontrol( $startfrom, $results, $mess1[0], $mess4, $nextvar );
 }
 
 
-function addcontrol( $startfrom, $results, $numrows, $adrres )
+function addcontrol( $startfrom, $results, $numrows, $adrres, $nextvar )
 {
 	if($startfrom >= $numrows)
 	{
@@ -38,24 +43,39 @@ function addcontrol( $startfrom, $results, $numrows, $adrres )
 		$x2 = $startfrom;
 	}
 
-	$mess1 = "<a href='";
-	$mess1 .= $adrres;
-	$mess1 .= "startfrom=";
-	$mess1 .= $x1;
-	$mess1 .= "&results=";
-	$mess1 .= $results;
-	$mess1 .= "'>previous</a>";
+	$mess1 = '<center><div id="prenex">';
+	$mess1 .= '<div id="pre">';
 
-	$mess1 .= " ";
+	if( $startfrom > 1 )
+	{
+		$mess1 .= "<a href='";
+		$mess1 .= $adrres;
+		$mess1 .= "startfrom=";
+		$mess1 .= $x1;
+		$mess1 .= "&results=";
+		$mess1 .= $results;
+		$mess1 .= "'>previous</a>";
+	}
+	
+	$mess1 .= "</div>";
+	$mess1 .= '<div id="nex">';
 
-	$mess1 .= "<a href='";
-	$mess1 .= $adrres;
-	$mess1 .= "startfrom=";
-	$mess1 .= $x2;
-	$mess1 .= "&results=";
-	$mess1 .= $results;
-	$mess1 .= "'>next</a>";
+	if( $nextvar == "next" )
+	{
+		$mess1 .= "<a href='";
+		$mess1 .= $adrres;
+		$mess1 .= "startfrom=";
+		$mess1 .= $x2;
+		$mess1 .= "&results=";
+		$mess1 .= $results;
+		$mess1 .= "'>next</a>";
+	}
+	
+	$mess1 .= "</div>";
+	$mess1 .= "</div></center>";
 
+	$rrr = $startfrom + $numrows;
+//	echo $rrr;
 	return $mess1;
 }
 ?>

@@ -12,7 +12,7 @@ else
 
 if ( $qe == "start" )
 {
-	$messagez = '<h2>rinc</h2>
+	$messagez = '
 	<p>
 	On this website products can be created and traded.
 	</p>

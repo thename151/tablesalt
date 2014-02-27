@@ -13,7 +13,6 @@ if( $qe == "blank" )
 {
 	$title1 = "now";
 	$messagez = '
-	<h2>rinc</h2>
 	<p>
 	On this website products can be created and traded.
 	</p>
@@ -677,11 +676,20 @@ if( $qe == "deletetrade1" )
 	$messagez = $mess2;
 }
 
+if( $qe == "deletetrade2" )
+{
+	$traden = $_POST["traden"];
+	include( "../funcss/settrade.php" );
+
+	$mess2 = removetrade( $name1, $traden );
+	$mess2 = "$mess2<br><br><a href=\"page.php?qe=mytrades\">back</a>";
+	
+	$messagez = $mess2;
+}
+
 if( $qe == "div1" )
 {
 	$title1 = "send dividend";
-
-	
 
 	$pr1 = "";
 
