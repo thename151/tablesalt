@@ -891,7 +891,7 @@ if( $qe == "edittrade1" )
 
 	$mess4 = "
 			<br><center>
-			<a href=\"edittrade3.php?tdn=$txno\">or</a>
+			<a href=\"page.php?qe=edittrade3&tdn=$txno\">or</a>
 			</center>
 	";
 	$mess3 .= $mess4;
@@ -1362,14 +1362,31 @@ if( $qe == "de-po" )
 	$title1 = "deposit";
 	include( "../funcss/coins.php" );
 
-
-	$date = date_create();
-	date_timestamp_set($date, time() );
-	echo date_format($date, 'U = Y-m-d H:i:s') . "\n";
-
-	$messagez =  getNewAddress($name1);
-//	$messagez =  getAddress($name1);
+	$thing = getAddress($name1);
+	
+//	$messagez = $thing[0] . '<br>' . $thing[1] . '<br>';
+	$messagez = $thing[0] . '<br><br>';
+	$messagez .= '<img src="' . '../qrcodes/' . $thing[1] . '.png"/>';
+	
+	$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
 }
+
+
+
+if( $qe == "de-po2" )
+{
+	$title1 = "deposit";
+	include( "../funcss/coins.php" );
+
+	$thing = getNewAddress($name1);
+	
+//	$messagez = $thing[0] . '<br>' . $thing[1] . '<br>';
+	$messagez = $thing[0] . '<br><br>';
+	$messagez .= '<img src="' . '../qrcodes/' . $thing[1] . '.png"/>';
+	
+	$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
+}
+
 
 if( $qe == "callback" )
 {
