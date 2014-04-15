@@ -25,7 +25,11 @@ include( "incmain2.php" );
 <link href="style2.css" rel="stylesheet">
 <title>
 <?php
-echo $title1;
+
+include( '../sitename.inc' );
+
+echo $sitename;
+
 ?>	
 </title>
 </head>

@@ -1,9 +1,13 @@
 <?php
 		
-function drawCode( $name )
+function drawCode( $vardir, $name )
 {
+//	$vardir = '../qrcodes';
+	
     //set it to writable location, a place for temp generated PNG files
-    $PNG_TEMP_DIR = dirname(__FILE__).DIRECTORY_SEPARATOR.'../qrcodes'.DIRECTORY_SEPARATOR;
+
+//  $PNG_TEMP_DIR = dirname(__FILE__).DIRECTORY_SEPARATOR.'../qrcodes'.DIRECTORY_SEPARATOR;
+    $PNG_TEMP_DIR = dirname(__FILE__).DIRECTORY_SEPARATOR. $vardir.DIRECTORY_SEPARATOR;
     
     include "qrlib.php";    
     

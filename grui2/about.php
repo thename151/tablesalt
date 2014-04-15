@@ -28,6 +28,9 @@ echo $sitename;
 <br><a href="http://www.apachefriends.org/index.html" target="_blank">xampp</a>
 <br><a href="http://notepad-plus-plus.org/" target="_blank">notepad++</a>
 <br><a href="http://www.geany.org/" target="_blank">geany</a>
+<br><a href="http://sourceforge.net/projects/phpqrcode/" target="_blank">phpqrcode</a>
+
+
 <br>
 </div>
 <div id="footer">

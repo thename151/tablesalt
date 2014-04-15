@@ -201,14 +201,14 @@ if( $qe == "market" )
 			&pr2=' . $pr2 . '"
 			>asks</a></td>';
 	}
-
-	$var10 = "";
+				
+	$var10 = '' . "_/&#175;";
 
 	$revers = '<a href="'.$link1.'?qe=market
 				&cr1=' . $cr2 . '			
 				&pr1=' . $pr2 . '			
 				&cr2=' . $cr1 . '			
-				&pr2=' . $pr1 . '""><b>_/&#175' . $var10 . '</b></a>';
+				&pr2=' . $pr1 . '">' . $var10 . '</a>';
 				
 	$mess9 = '
 			<center> <table  id="t3">
@@ -220,7 +220,7 @@ if( $qe == "market" )
 					 <a href="'.$link1.'?qe=product&cr1=' . $cr1 . '&pr1=' . $pr1 . '">' . $pr1 . '</a>
 					 </td>
 					 
-					 <td>
+					 <td nowrap>
 					 <center>'.$revers.'</center>
 					 </td>
 					 

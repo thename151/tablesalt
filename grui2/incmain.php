@@ -1351,10 +1351,19 @@ if( $qe == "sendcomment2" )
 if( $qe == "coins" )
 {
 	$title1 = "cns";
-	$messagez = '
-	<a href="page.php?qe=depo">deposit</a><br>
-	<a href="page.php?qe=depo">trade</a><br>
-	<a href="page.php?qe=depo">withdraw</a>';
+	include( "../funcss/coins.php" );
+//	fillTable();
+	$balance = 'bitcoin : ' . getQuickBalance( $name1 );
+
+	include_once( "../funcss/listtrades.php" );
+	$balance2 = showHowMuch2( "bitcoin", "mBTC", $name1 ) * 1;
+
+	$messagez = $balance . '<br>
+	<a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
+	 products : ' . $balance2 . '<br><br>' . '
+	<a href="page.php?qe=de-po">deposit</a><br>
+	<a href="page.php?qe=tradecoin">trade</a><br>
+	<a href="page.php?qe=wraw">withdraw</a>';
 }
 
 if( $qe == "de-po" )
@@ -1366,12 +1375,10 @@ if( $qe == "de-po" )
 	
 //	$messagez = $thing[0] . '<br>' . $thing[1] . '<br>';
 	$messagez = $thing[0] . '<br><br>';
-	$messagez .= '<img src="' . '../qrcodes/' . $thing[1] . '.png"/>';
+	$messagez .= '<img src="' . 'qrcodes/' . $thing[1] . '.png"/>';
 	
 	$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
 }
-
-
 
 if( $qe == "de-po2" )
 {
@@ -1379,23 +1386,185 @@ if( $qe == "de-po2" )
 	include( "../funcss/coins.php" );
 
 	$thing = getNewAddress($name1);
-	
-//	$messagez = $thing[0] . '<br>' . $thing[1] . '<br>';
-	$messagez = $thing[0] . '<br><br>';
-	$messagez .= '<img src="' . '../qrcodes/' . $thing[1] . '.png"/>';
-	
-	$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
+	header("Location: page.php?qe=de-po");
 }
 
 
-if( $qe == "callback" )
+if( $qe == "wraw" )
 {
-	$msg1 = '';
+	$form = '
+	<form action="page.php?qe=wraw2"
+	method="POST">
+	<TABLE id="tableft">
+	<tr class="trq">
 
-	if (isset($_GET['msg1'])){ $msg1 = $_GET['msg1'];}else{$msg1 = "";}
+	<td>amount</td>
+	<td><input type="text" name="amount" maxlength="25" value="1"></td>
+	</tr>
+			
+	<tr class="trq">
+	<td>destination</td>
+	<td><input type="text" name="destination" maxlength="40" value="1"></td>
+	
+	</tr>
+	<tr class="trq">
+	<td>
+	<input type="submit" value="send">
+	</td>
+	<td>
+	</td>
+	</tr>
+			
+	</TABLE >
+	</form>
+	';
+
+	$title1 =  "wraW";
+
+	include( "../funcss/coins.php" );
+	$balance = 0;
+	$balance = getQuickBalance( $name1 );
+	$messagez = 'balance : ' . $balance . '<br><br>';
+	
+	$messagez .=  $form;
+}
+
+if( $qe == "wraw2" )
+{
+	$amount = '';
+	$destination = '';
+
+	if (isset($_POST['amount'])){ $amount = $_POST['amount'];}else{$amount = "";}
+	if (isset($_POST['destination'])){ $destination = $_POST['destination'];}else{$destination = "";}
 	
 	include( "../funcss/coins.php" );
-	$messagez = callback($msg1);
+
+	echo "qwew".$amount.'oo';
+	if( "okay" == coinwraw( $name1, $amount, $destination ) )
+	{
+		header("Location: page.php?qe=okay");
+	}
+	else
+	{
+		header("Location: page.php?qe=nofunds");
+	}
+}
+
+if( $qe == "nofunds" )
+{
+	$title1 =  "insufficient funds";
+	$messagez = "insufficient funds";
+}
+
+if( $qe == "tradecoin" )
+{
+	$title1 =  "trade coins";
+
+	include( "../funcss/coins.php" );
+
+	$balance = getQuickBalance( $name1 );
+	//~ $messagez = 'bitcoin : ' . $balance . '<br>';
+	
+	include_once( "../funcss/listtrades.php" );
+	$balance2 = showHowMuch2( "bitcoin", "mBTC", $name1 ) * 1;
+	//~ $messagez .= 'mBTC products : ' . $balance2 * 1 . '<br><br>';
+	
+	//$messagez .=  "trade<br>";
+	//~ $messagez .=  "buy ??? mBTC products at 0.001 bitcoin each  send<br>";
+	//~ $messagez .=  "sell ??? mBTC products at 0.001 bitcoin each  send<br>";   
+//	$messagez .=  "<br><br><br><br>";  	
+
+//<a href="page.php?qe=user&cr1=bitcoin">bitcoin</a>
+	
+	$balancetable = '
+
+	<TABLE>
+
+	<tr class="trq">
+	<td>bitcoin</td>
+	<td>'.$balance.'</td>
+	</tr>
+	<tr class="trq">
+	<td>
+	<a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
+	 products</td>
+	<td>'.$balance2.'</td>
+	</tr>
+
+	</TABLE >';
+
+	$form = '
+	<TABLE id="tableft">
+	<form action="page.php?qe=coinbuy"method="POST">
+	<tr class="trq">
+	<td>buy</td>
+	<td><input type="text" name="amount1" maxlength="25" value="1"></td>
+	<td><a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
+     products at 0.001 bitcoin each</td>
+	<td><input type="submit" value="send"></td>
+	</tr>
+	</form>
+
+	<tr class="trq">
+
+	<form action="page.php?qe=coinsell"method="POST">
+	<td>sell</td>
+	<td><input type="text" name="amount2" maxlength="25" value="1"></td>
+	<td><a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
+     products at 0.001 bitcoin each</td>
+	<td><input type="submit" value="send"></td>
+	</tr>
+	</form>
+			
+	</TABLE >';
+
+	$messagez .=  $balancetable . '<br>';
+	$messagez .=  $form;
+}
+
+
+if( $qe == "coinbuy" )
+{
+	$amount = '';
+
+	if (isset($_POST['amount1'])){ $amount = $_POST['amount1'];}else{$amount = "";}
+	
+	include( "../funcss/coins.php" );
+
+	if( "okay" == coinbuy( $name1, $amount ) )
+	{
+		header("Location: page.php?qe=okay");
+	}
+	else
+	{
+		header("Location: page.php?qe=nofunds");
+	}
+}
+
+
+if( $qe == "coinsell" )
+{
+	$amount = '';
+
+	if (isset($_POST['amount2'])){ $amount = $_POST['amount2'];}else{$amount = "";}
+	
+	include( "../funcss/coins.php" );
+
+	if( "okay" == coinsell( $name1, $amount ) )
+	{
+		header("Location: page.php?qe=okay");
+	}
+	else
+	{
+		header("Location: page.php?qe=nofunds");
+	}
+}
+
+
+if( $qe == "okay" )
+{
+	$title1 = "okay";
+	$messagez = "okay";
 }
 
 ?>
