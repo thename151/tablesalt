@@ -2,5 +2,7 @@
 dbdets.inc
 sitename.inc
 grui2/taskscron.php
+grui2/qrcodes/qrcodeshere.txt
+tasks/taskshere.txt
 grui2/qrcodes
 tasks
