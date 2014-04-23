@@ -185,13 +185,16 @@ function checknamepass2b( $name1, $pass1 )
 		return "incorrect username or password";
 	}
 
-	if (password_verify($pass1, $row[0]))
+	if( $row[0] != null )
 	{
-		$date1 = date("y-m-d H:i:s",time());
-		$result2 = my2query( "INSERT INTO login1 ( loginName, LoginTime ) VALUES (\"$name1\",\"$date1\")" );
-		return 'goodpass';
+		if (password_verify($pass1, $row[0]))
+		{
+			$date1 = date("y-m-d H:i:s",time());
+			$result2 = my2query( "INSERT INTO login1 ( loginName, LoginTime ) VALUES (\"$name1\",\"$date1\")" );
+			return 'goodpass';
+		}
+		return 'bad password';
 	}
-	return 'bad password';
 }
 
 

@@ -538,7 +538,10 @@ function updatesalesTotal( $Id, $var1 )
 		// 001 echo "update sales total : delete<br>";
 		
 		my2query( "update sales3 set amount1 = \"0\" where uniqueX = \"$Id\" " );
+
 //		my2query( "delete from sales3 where uniqueX = \"$Id\" " );
+		my2query( "delete from sales3 where uniqueX = \"$Id\" and keeptrade != \"dokeep\" " );
+
 		my2query( "delete from salesactive where saleId = \"$Id\" " );
 	}
 	else

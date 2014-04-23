@@ -23,6 +23,12 @@ function deleteproduct( $name1, $pass1, $pname )
 		return $check1;
 	}
 	
+	return deleteproductpassed( $name1, $pname );
+}
+
+
+function deleteproductpassed( $name1, $pname )
+{	
 	$result1 = myquery( "select * from products1 where productName = \"$pname\" and profileName = \"$name1\"" );
 	$row1 = mysqli_fetch_row( $result1 );
 	
@@ -38,7 +44,7 @@ function deleteproduct( $name1, $pass1, $pname )
 				sendproduct($row3[0], $name1, $pname, $row3[1], $name1, "recall" );
 			}
 		}
-
+		// call delete trade here
 		$q2 = myquery( "select uniqueX from sales3 where ( creator1 = \"$name1\" and product1 = \"$pname\")
 														 or
 														 ( creator2 = \"$name1\" and product2 = \"$pname\")" );
@@ -55,5 +61,6 @@ function deleteproduct( $name1, $pass1, $pname )
 	}
 	return "product not found";
 }
+
 
 ?>

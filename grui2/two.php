@@ -36,7 +36,8 @@ if( $_SESSION['login'] != "yes" )
 	}
 	else
 	{
-		$mess3 = "bad password";
+//		$mess3 = $mess2;
+		$mess3 = "incorrect username or password";
 	}
 }
 else

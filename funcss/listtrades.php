@@ -156,7 +156,7 @@ function listprofilestrades( $name1 )
 	$result7 = myquery( "select 
 			uniqueX, amount1, type1,
 			creator1,product1, creator2,product2,
-			price1,price2
+			price1,price2, keeptrade
 			from sales3 where user = \"$name1\"" );
 	$mess1 = null;
 	$i1 = 0;
@@ -166,7 +166,8 @@ function listprofilestrades( $name1 )
 		$messa[0] = $lst[0];
 		$messa[1] = $lst[2];
 		$messa[2] = $lst[1];
-		
+		$messa[8] = $lst[9];
+			
 		if( $lst[2] == "sell" )
 		{
 			$messa[4] = $lst[3];

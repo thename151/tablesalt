@@ -7,7 +7,7 @@ function gettrade( $name1, $txno )
 			amount1,
 			creator1, product1,
 			creator2, product2,
-			price1, price2, type1
+			price1, price2, type1, keeptrade
 			from sales3 where user = \"$name1\" and uniqueX = \"$txno\"" );
 	
 	$messa = null;
@@ -20,6 +20,7 @@ function gettrade( $name1, $txno )
 		$messa[3] = $lst[3];
 		$messa[4] = $lst[4];
 		$messa[6] = $lst[7];
+		$messa[7] = $lst[8];
 		
 		$messa[5] = " $lst[5] sdgdg";
 	

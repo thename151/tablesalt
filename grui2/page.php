@@ -42,9 +42,14 @@ echo $sitename;
 </div>
 <div id="lname">
 
+
+
 <?php
-echo $name1;
+echo $name1; //<a href="page.php?qe=settins"></a>
 ?>
+
+
+
  logged in
 
 </div>
@@ -63,7 +68,7 @@ echo $name1;
 <a href="page.php?qe=dividends">dividends</a><br><br>
 <a href="page.php?qe=sendmessage1">send message</a><br>
 <a href="page.php?qe=readmessages&startfrom=0&results=5">read messages</a><br><br>
-<a href="page.php?qe=changepassword1">change password</a><br>
+<a href="page.php?qe=settins">settins</a><br>
 <a href="logout.php">logout</a>
 		</div>
 

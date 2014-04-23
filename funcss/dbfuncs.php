@@ -8,7 +8,7 @@ function myquery( $fquery )
 
 	$query = $fquery;
 
-	//  echo $fquery;
+//	echo $fquery . '<br>';
 
 	$result = mysqli_query($cxn,$query)
 	or die ("Couldn’t executes query! : <br>$query");
@@ -25,11 +25,10 @@ function my2query( $fquery )
 	$cxn = mysqli_connect( $host1, $usrname1,$passw1, $dbname1 )
 	or die ("couldn’t connect 2 server");
 
-
 	$date1 = date("y-m-d H:i:s",time());
 	$query = $fquery;
 
-// 	echo $fquery;
+//	echo $fquery . '<br>';
 	
 	$result = mysqli_query($cxn,$query)
 	or die ("Couldn’t executes query! 2 : <br>$query");

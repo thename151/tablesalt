@@ -138,6 +138,12 @@ if( $qe == "mytrades" )
 
 	for( $i2 = 0; $i2 < $sizemess; $i2++ )
 	{
+		$sellbuy = $mess1[$i2][1];
+		if ( $mess1[$i2][8] == "dokeep" )
+		{
+			$sellbuy = "<i>" . $sellbuy . "</i>";
+		}
+
 		$mess31 = 1 * $mess1[$i2][2];
 		$mess32 = 1 * $mess1[$i2][3];
 		$mess4 = $mess1[$i2][0];
@@ -145,7 +151,7 @@ if( $qe == "mytrades" )
 		$mess2 .= "<tr><td><a href='page.php?qe=deletetrade1&trd1=". $mess4 ."'>delete</a></td>";
 		$mess2 .= "<td><a href='page.php?qe=edittrade1&txno=". $mess1[$i2][0] ."'> ". $mess1[$i2][0] . "</a></td>";
 		
-		$mess2 .= "<td>" . $mess1[$i2][1] . "</td>";
+		$mess2 .= "<td>" . $sellbuy . "</td>";
 		$mess2 .= "<td>$mess31</td>";
 
 		$mess2 .= '<td><a href="page.php?qe=user&cr1=' . $mess1[$i2][4] . '">'.$mess1[$i2][4].' </a> </td>';
@@ -395,41 +401,29 @@ if( $qe == "transactions" )
 
 	for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
 	{
-		$mess2a .= "<tr><td>" . (float)$mess1[$i2][0] . "</td>";
+		$mess1[$i2][0] = (float)$mess1[$i2][0];
 
-
-	//	$mess2a .= "<td>" . $mess1[$i2][1] . "</td>";
-		$mess2a .= '<td><a href="page.php?qe=user&cr1=' . $mess1[$i2][1] . '">'.$mess1[$i2][1].' </a> </td>';
-
-		$mess2a .= '<td> <a href="page.php?qe=product
+		$mess1[$i2][2] = '<a href="page.php?qe=product
 				&cr1=' . $mess1[$i2][1] . '			
-				&pr1=' . $mess1[$i2][2] . '"">' . $mess1[$i2][2] . '</a> </td>';
-		$mess2a .= "<td><center>" . $mess1[$i2][3] . "</center></td>";
+				&pr1=' . $mess1[$i2][2] . '"">' . $mess1[$i2][2] . '</a>';
 
-	//	$mess2a .= "<td>" . $mess1[$i2][4] . "</td>";
-	//echo "qwe" . $mess1[$i2][4] . "ew<br>";
-	if( $mess1[$i2][4] == "<i>trade</i>" )
-	{
-		$mess2a .= "<td>trade</td>";
-	}
-	else if( $mess1[$i2][4] == "<i>recall</i>" )
-	{
-		$mess2a .= "<td>recall</td>";
-	}
-	else if( $mess1[$i2][4] == "<i>dividend</i>" )
-	{
-		$mess2a .= "<td>dividend</td>";
-	}
-	else if( $mess1[$i2][4] == "dividend" )
-	{
-		$mess2a .= "<td>dividend</td>";
-	}
-	else
-	{
-		$mess2a .= '<td><a href="page.php?qe=user&cr1=' . $mess1[$i2][4] . '">'.$mess1[$i2][4].' </a> </td>';
-	}
+		$mess1[$i2][1] = '<a href="page.php?qe=user&cr1=' . $mess1[$i2][1] . '">'. $mess1[$i2][1] .' </a>';
+		
+		if( $mess1[$i2][7] == "ordinary" )
+		{
+			$mess1[$i2][4] = '<a href="page.php?qe=user&cr1=' . $mess1[$i2][4] . '">'.$mess1[$i2][4].' </a>';
+		}
+		
+		$mess2a .= "<tr>";
+		$mess2a .= "<td>" . $mess1[$i2][0] . "</td>";
+		$mess2a .= "<td>" . $mess1[$i2][1] . "</td>";
+		$mess2a .= "<td>" . $mess1[$i2][2] . "</td>";
+		$mess2a .= "<td>" . $mess1[$i2][3] . "</td>";
+		$mess2a .= "<td>" . $mess1[$i2][4] . "</td>";
 		$mess2a .= "<td>" . $mess1[$i2][5] . "</td>";
-		$mess2a .= "<td>" . $mess1[$i2][6] . "</td></tr>";
+		$mess2a .= "<td>" . $mess1[$i2][6] . "</td>";
+//		$mess2a .= "<td>" . $mess1[$i2][7] . "</td>";
+		$mess2a .= "</tr>";
 	}
 
 	$mess2 .= "<table>" . $mess2a . "</table>";
@@ -830,6 +824,13 @@ if( $qe == "edittrade1" )
 
 	$mess2 = gettrade( $name1, $txno );
 
+	$checked = "";
+
+	if( $mess2[7] == "dokeep")
+	{
+		$checked = "checked";
+	}
+
 	$mess30 = '
 	<option selected value="sell">sell</option>
 	<option value="buy">buy</option>
@@ -882,6 +883,19 @@ if( $qe == "edittrade1" )
 	<td><input type="text" name="pr2" maxlength="25" value="'.$mess2[4].'"</td>
 	<td>each</td></tr>
 
+	<tr class="trq">
+	
+	<td></td>
+
+<td colspan="3">
+<input type="checkbox" name="vehicle" value="dokeep" '.$checked.'>keep trade after it is completed, for editing<br>
+</td>
+
+<td  colspan="1" >
+</tr>
+
+
+
 	<input type="hidden" name="txno" value="' . $txno . '">
 	<tr class="trq"><td></td><td><input type="submit" value="send"></td><td></td><td></td><td></td></tr>
 			
@@ -914,11 +928,19 @@ if( $qe == "edittrade2" )
 	$pcrea2 = $_POST["cr2"];
 	$product2 = $_POST["pr2"];
 
+//	$vehicle = "no vehicle";
+	$vehicle = "";
+
+
+	if (isset($_POST['vehicle'])) $vehicle = $_POST['vehicle'];
+	
+	echo $vehicle . "wer<br>";
+
 	include( "../funcss/settrade.php" );
 
 	$messagez = edittrade( $amount1, $pcrea1, $product1,
  					$amount2, $pcrea2, $product2,
- 					$buysell, $name1,  $txno );
+ 					$buysell, $name1,  $txno, $vehicle );
 
 }
 
@@ -1118,73 +1140,78 @@ if( $qe == "user" )
 	$mess0 = "";
 
 	$title1 = "user $cr1";
-
-	$mess0 = "<b>$cr1</b><br><br>";
-
-
-	$mess2c = '<a href="page.php?qe=sendproduct1
-				&cr2=' . $cr1 . '">send to</a>';
-	$mess2d = '<a href="page.php?qe=products
-				&cr1=' . $cr1 . '"
-				>products</a>';
-	$mess2e = '<a href="page.php?qe=prices
-				&cr2=' . $cr1 . '"
-				>prices</a>';
-
-	include_once '../funcss/divs.php';
-	$mess2e3 = countdivs2( $cr1 );
-
-	$mess2e2 = '<a href="page.php?qe=dividends
-				&cr2=' . $cr1 . '"
-				>dividends( '.$mess2e3.' )</a>';
-	$mess2f = '<a href="page.php?qe=sendmessage1
-				&cr1=' . $cr1 . '"
-				>send message</a>';
-	$mess2g = '<a href="page.php?qe=readmessages
-				&cr1=' . $cr1 . '"
-				>read messages</a>';
-	$mess2j = '<a href="page.php?qe=sendcomment1
-				&cr1=' . $cr1 . '"
-				>place comment</a>';
-
-	include '../funcss/readmessages.php';
-
-	$mess1 = readUserComments( $cr1, $startfrom, $results );
-
-	$mess4 = "page.php?qe=user&cr1=$cr1&";
-
-	include_once( "incs3.php" );
-
-	$mess2i = "";
-
-	for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
+	
+	$checkuser = checkuser( $cr1);
+	$messagez = $checkuser;
+	if ( $checkuser == "good" )
 	{
-		$mess2i .= "<table><tr><td>";
+		$mess0 = "<b>$cr1</b><br><br>";
+		
+		$mess2c = '<a href="page.php?qe=sendproduct1
+					&cr2=' . $cr1 . '">send to</a>';
+		$mess2d = '<a href="page.php?qe=products
+					&cr1=' . $cr1 . '"
+					>products</a>';
+		$mess2e = '<a href="page.php?qe=prices
+					&cr2=' . $cr1 . '"
+					>prices</a>';
 
-		$mess2i .= "from : ";
-		$mess2i .= '<a href="page.php?qe=user&cr1=' . $mess1[$i2][2] . '">'.$mess1[$i2][2].' </a>';
-		$mess2i .= "</td><td>";
+		include_once '../funcss/divs.php';
+		$mess2e3 = countdivs2( $cr1 );
 
-		$mess2i .= $mess1[$i2][1];
-		$mess2i .= "</td><td>";
-		$mess2i .= $mess1[$i2][0];
+		$mess2e2 = '<a href="page.php?qe=dividends
+					&cr2=' . $cr1 . '"
+					>dividends( '.$mess2e3.' )</a>';
+		$mess2f = '<a href="page.php?qe=sendmessage1
+					&cr1=' . $cr1 . '"
+					>send message</a>';
+		$mess2g = '<a href="page.php?qe=readmessages
+					&cr1=' . $cr1 . '"
+					>read messages</a>';
+		$mess2j = '<a href="page.php?qe=sendcomment1
+					&cr1=' . $cr1 . '"
+					>place comment</a>';
 
-		$mess2i .= "</td></tr>";
-		$mess2i .= "</table>";
+		include '../funcss/readmessages.php';
 
-		$mess2i .= $mess1[$i2][3] . "<br><br>";
+		$mess1 = readUserComments( $cr1, $startfrom, $results );
+
+		$mess4 = "page.php?qe=user&cr1=$cr1&";
+
+		include_once( "incs3.php" );
+
+		$mess2i = "";
+
+		for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
+		{
+			$mess2i .= "<table><tr><td>";
+
+			$mess2i .= "from : ";
+			$mess2i .= '<a href="page.php?qe=user&cr1=' . $mess1[$i2][2] . '">'.$mess1[$i2][2].' </a>';
+			$mess2i .= "</td><td>";
+
+			$mess2i .= $mess1[$i2][1];
+			$mess2i .= "</td><td>";
+			$mess2i .= $mess1[$i2][0];
+
+			$mess2i .= "</td></tr>";
+			$mess2i .= "</table>";
+
+			$mess2i .= $mess1[$i2][3] . "<br><br>";
+		}
+
+		$mess2 = $displayResults . "<br>";
+
+		$mess0 .= "$mess2c<br>$mess2d<br>$mess2e<br>$mess2e2<br><br>$mess2f<br>$mess2g<br>$mess2j";
+
+		$mess0 .= "<br><br><br><b>comments : </b>";
+		$mess0 .= "$displayResults<br>";
+
+		$mess0 .= $mess2i . $mess3;
+
+		$messagez = $mess0;		
 	}
-
-	$mess2 = $displayResults . "<br>";
-
-	$mess0 .= "$mess2c<br>$mess2d<br>$mess2e<br>$mess2e2<br><br>$mess2f<br>$mess2g<br>$mess2j";
-
-	$mess0 .= "<br><br><br><b>comments : </b>";
-	$mess0 .= "$displayResults<br>";
-
-	$mess0 .= $mess2i . $mess3;
-
-	$messagez = $mess0;
+	
 }
 
 
@@ -1565,6 +1592,79 @@ if( $qe == "okay" )
 {
 	$title1 = "okay";
 	$messagez = "okay";
+}
+
+
+if( $qe == "settins" )
+{
+	$title1 = "settins";
+	$messagez = '
+	<a href="page.php?qe=changepassword1">change password</a><br>
+	<a href="page.php?qe=closeuser">close user</a><br>
+	<a href="page.php?qe=">colour scheme</a>';
+}
+
+
+if( $qe == "closeuser" )
+{
+	$title1 = "close user";
+	$messagez = '
+	recall and delete all your products<br>
+	send all other products back to who created them</a><br>
+	no longer be able to log in as this user ?<br><br>
+	
+	
+	<form action="page.php?qe=closeuser2"
+	method="POST">
+	<TABLE >
+	<tr class="trq"><td>password</td></tr>
+	<tr class="trq"><td><input type="text" name="pass1" maxlength="25"></td></tr>
+	<tr class="trq"><td><input type="submit" value="close user"></td></tr>
+	</TABLE >
+	</form>
+	';
+}
+
+if( $qe == "closeuser2" )
+{
+	$title1 = "close user";
+
+	$pass1 = "";
+	
+	if (isset($_POST['pass1'])){ $pass1 = $_POST['pass1'];}else{$amount = "";}
+
+	include( "../funcss/funcs.php" );
+	$check1 = checknamepass( $name1, $pass1 );
+
+	if ( $check1 == "goodpass" )
+	{
+		$messagez = '
+		recall and delete all your products<br>
+		send all other products back to who created them</a><br>
+		no longer be able to log in as this user ?<br><br>
+
+		<form action="page.php?qe=closeuser3"
+		method="POST">
+		<TABLE >
+		<tr class="trq"><td>are you sure ?</td></tr>
+		<tr class="trq"><td><input type="submit" value="close user"></td></tr>
+		</TABLE >
+		</form>
+		';
+	}
+	else
+	{
+		$messagez = $check1;
+	}
+}
+
+
+if( $qe == "closeuser3" )
+{
+	include( "../funcss/closeuser.php" );
+	closeuser( $name1 );
+	
+//	header("Location: logout.php");
 }
 
 ?>

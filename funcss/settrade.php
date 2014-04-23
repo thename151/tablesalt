@@ -46,9 +46,15 @@ function removetrade2( $name1, $traden )
 
 function edittrade( $amount,  $crea1, $pname1,
 					$price,   $crea2, $pname2,
-					$buysell, $name1, $txno )
+					$buysell, $name1, $txno, $keepon )
 {
 	//check inputs
+	
+	if ( !(( $keepon == "" ) || ( $keepon == "dokeep" )) )
+	{
+		return "keep values bad : " . $keepon;
+	}
+	
 	if( ( $crea1 == $crea2 ) && ( $pname1 == $pname2 ) )
 	{
 		return "too many names are the same";
@@ -88,14 +94,14 @@ function edittrade( $amount,  $crea1, $pname1,
 	{
 		return edittrade20( $amount,  $crea1, $pname1,
 						    $price,   $crea2, $pname2,
-						    $buysell, $name1, $txno );
+						    $buysell, $name1, $txno, $keepon );
 	}
 	return "unknown";
 }
 
 function edittrade20( $amount,  $crea1, $pname1,
 			  		  $price,   $crea2, $pname2,
-					  $buysell, $name1, $txno )
+					  $buysell, $name1, $txno, $keepon )
 {
 	$result4 = myquery( "select productName from products1 where 
 						 profileName = \"$crea1\" and 
@@ -157,7 +163,8 @@ function edittrade20( $amount,  $crea1, $pname1,
 	price1 = \"$price1\",
 	price2 = \"$price2\",
 
-	type1 = \"$buysell\"
+	type1 = \"$buysell\",
+	keeptrade = \"$keepon\"
 	where uniqueX = \"$txno\"" );
 
 	$mess1 = "sale edited";

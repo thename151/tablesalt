@@ -11,8 +11,8 @@ function listusers2( $startfrom, $results  )
 		return $check1;
 	}
 	
-	$result1 = myquery( "select loginName from users1 order by loginName limit $startfrom, $results " );
-	$result2 = myquery( "select loginName from users1" );
+	$result1 = myquery( "select loginName from users1 where closeDate is null order by loginName limit $startfrom, $results " );
+	$result2 = myquery( "select loginName from users1 where closeDate is null" );
 	
 	$numrows = mysqli_num_rows( $result2 );
 
