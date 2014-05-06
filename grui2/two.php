@@ -29,8 +29,10 @@ if( $_SESSION['login'] != "yes" )
 	$mess2 = checknamepass( $name1, $pass1 );
 	if( $mess2 == "goodpass" )
 	{
+		echo "qwe here 333";
 		$_SESSION['name1'] = $name1;
 		$_SESSION['login'] = "yes";
+		$_SESSION['cssfile'] = "style-dark.css";
 
 		$mess3 = "logged in";
 	}
@@ -83,8 +85,8 @@ echo $sitename;
 method="POST">
 <tr class="blank"><td><center>
 login<br>
-<input type="text" name="namex" maxlength="25"><br>
-Password<br><input type="password" name="passx"" maxlength="25"><br>
+<input type="text" name="namex" maxlength="25" size="10"><br>
+Password<br><input type="password" name="passx"" maxlength="25" size="10"><br>
 </center>
 </td></tr>
 <tr class="blank"><td><center>

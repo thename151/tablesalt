@@ -53,8 +53,8 @@ method="POST">
 <table>
 <tr class="blank"><td><center>
 login<br>
-<input type="text" name="namex" maxlength="25"><br>
-Password<br><input type="password" name="passx" maxlength="25"><br>
+<input type="text" name="namex" maxlength="25" size="10"><br>
+Password<br><input type="password" name="passx" maxlength="25" size="10"><br>
 </center>
 </td></tr>
 <tr class="blank"><td><center>

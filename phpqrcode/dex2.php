@@ -28,10 +28,17 @@ function drawCode( $vardir, $name )
     if (isset($_REQUEST['size']))
         $matrixPointSize = min(max((int)$_REQUEST['size'], 1), 10);
 
-
 	$dir = $PNG_TEMP_DIR;
 	$files1 = scandir($dir);
-	$zipname = $files1[count($files1) - 1];
+	$zipname = $files1[count($files1) - 2];
+
+	//~ echo "0 " . $files1[count($files1) - 0] . "<br>";
+	//~ echo "1 " . $files1[count($files1) - 1] . "<br>";
+	//~ echo "2 " . $files1[count($files1) - 2] . "<br>";
+	//~ echo "3 " . $files1[count($files1) - 3] . "<br>";
+	//~ echo "4 " . $files1[count($files1) - 4] . "<br>";
+	//~ echo "5 " . $files1[count($files1) - 5] . "<br>";
+	//~ echo "6 " . $files1[count($files1) - 6] . "<br>";
 
 	$pieces = explode(".", $zipname);
 

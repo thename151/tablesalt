@@ -55,4 +55,3 @@ echo hexavig();
 </div>
 </div>
 </body></html>
-x	

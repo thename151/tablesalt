@@ -18,7 +18,16 @@ include_once( "incmain.php" );
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link href="style2.css" rel="stylesheet">
+
+
+<?php
+echo '<link href="' . $_SESSION['cssfile'] . '" rel="stylesheet">';
+//<link href="style2.css" rel="stylesheet">
+//echo "qweewqqwe" . $_SESSION['name1'] . "qwe " . $_SESSION['cssfile'];
+?>	
+
+
+
 <title>
 
 <?php

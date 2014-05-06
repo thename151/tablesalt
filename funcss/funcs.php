@@ -33,9 +33,9 @@ function check_name2($fname,$label,$flen)
 	# username, password, productname.
 
 	$len = strlen($fname);
-	if( $len < 1 )
+	if( $len < 2 )
 	{
-		return "$label must be 1 character or more";
+		return "$label must be 2 character or more";
 	}
 	if( $len > $flen )
 	{

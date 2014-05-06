@@ -2,19 +2,34 @@
 
 include_once( "funcs.php" );
 include_once( "deleteproduct.php" );
+include_once( "../funcss/settrade.php" );
 
 function closeuser( $name )
 {
 	echo "close user";
-	// delete products, close trades
+
+	// close trades
+
+
+	$result3 = myquery( "select uniqueX
+						 from sales3 user = \"$name\" and 
+						 status1 = \"okay\"" );
+
+	while( $row3 = mysqli_fetch_array($result) )
+	{
+		removetrade( $name, $row3[0] );
+	}
+
+
+	// delete products
 
 	$result = myquery( "select productName from products1 where 
 						 profileName = \"$name\" and 
 						 status1 = \"okay\" " );
 
-	while( $row2 = mysqli_fetch_array($result) )
+	while( $row = mysqli_fetch_array($result) )
 	{
-		deleteproductpassed( $name, $row2[0] );
+		deleteproductpassed( $name, $row[0] );
 	}
 
 	// return scores, closed user

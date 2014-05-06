@@ -57,7 +57,7 @@ function createprofile2( $fname1, $pass1, $pass2 )
 {
 	include( "hilovalues.php" );
 	#check name is valid
-	$check1 = check_name2( $fname1, "login", $namelength );
+	$check1 = check_name2( $fname1, "login", 2 );
 	if ($check1 != "is valid" )
 	{
 		return $check1;

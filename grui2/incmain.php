@@ -1,13 +1,21 @@
 <?php
 
+/*
+every 3 minutes do tasks
+every 15 minutes check stp
+every hour check bp
+every hour check add
+*/
+
+
 $qe = '';
 $messagez = '';
 $title1 = '';
 
 if (isset($_GET['qe']))
-{	$qe = $_GET['qe'];	}
+{	$qe = $_GET['qe']; }
 else
-{	$qe = "blank";	}
+{	$qe = "blank"; }
 
 if( $qe == "blank" )
 {
@@ -981,10 +989,10 @@ if( $qe == "edittrade3" )
 			$tdn = "<b>$tdn</b>";
 		}
 		$mess2 ="			
-	page.php?qe=edittrade3<br>
+	page.php?qe=edittrade3&<br>
+	tdn=$tdn&<br>
 	nm1=<b>$name1</b>&<br>
 	passw=<i>password</i>&<br>
-	tdn=$tdn&<br>
 	amount=<i>amount</i>&<br>
 	price=<i>price</i>
 				<br><br>
@@ -1375,6 +1383,83 @@ if( $qe == "sendcomment2" )
 	$messagez = $mess2;	
 }
 
+
+
+
+if( $qe == "settins" )
+{
+	$title1 = "settins";
+	$messagez = '
+	<a href="page.php?qe=changepassword1">change password</a><br>
+	<a href="page.php?qe=colours">colour scheme</a><br>
+	<a href="page.php?qe=closeuser">close user</a>';
+}
+
+
+if( $qe == "closeuser" )
+{
+	$title1 = "close user";
+	$messagez = '
+	recall and delete all your products<br>
+	send all other products back to who created them</a><br>
+	no longer be able to log in as this user ?<br><br>
+	
+	
+	<form action="page.php?qe=closeuser2"
+	method="POST">
+	<TABLE >
+	<tr class="trq"><td>password</td></tr>
+	<tr class="trq"><td><input type="text" name="pass1" maxlength="25"></td></tr>
+	<tr class="trq"><td><input type="submit" value="close user"></td></tr>
+	</TABLE >
+	</form>
+	';
+}
+
+if( $qe == "closeuser2" )
+{
+	$title1 = "close user";
+
+	$pass1 = "";
+	
+	if (isset($_POST['pass1'])){ $pass1 = $_POST['pass1'];}else{$amount = "";}
+
+	include( "../funcss/funcs.php" );
+	$check1 = checknamepass( $name1, $pass1 );
+
+	if ( $check1 == "goodpass" )
+	{
+		$messagez = '
+		recall and delete all your products<br>
+		send all other products back to who created them</a><br>
+		no longer be able to log in as this user ?<br><br>
+
+		<form action="page.php?qe=closeuser3"
+		method="POST">
+		<TABLE >
+		<tr class="trq"><td>are you sure ?</td></tr>
+		<tr class="trq"><td><input type="submit" value="close user"></td></tr>
+		</TABLE >
+		</form>
+		';
+	}
+	else
+	{
+		$messagez = $check1;
+	}
+}
+
+
+if( $qe == "closeuser3" )
+{
+	include( "../funcss/closeuser.php" );
+	closeuser( $name1 );
+	
+//	header("Location: logout.php");
+}
+
+
+
 if( $qe == "coins" )
 {
 	$title1 = "cns";
@@ -1393,28 +1478,12 @@ if( $qe == "coins" )
 	<a href="page.php?qe=wraw">withdraw</a>';
 }
 
-if( $qe == "de-po" )
+if( $qe == "okay" )
 {
-	$title1 = "deposit";
-	include( "../funcss/coins.php" );
-
-	$thing = getAddress($name1);
-	
-//	$messagez = $thing[0] . '<br>' . $thing[1] . '<br>';
-	$messagez = $thing[0] . '<br><br>';
-	$messagez .= '<img src="' . 'qrcodes/' . $thing[1] . '.png"/>';
-	
-	$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
+	$title1 = "okay";
+	$messagez = "okay";
 }
 
-if( $qe == "de-po2" )
-{
-	$title1 = "deposit";
-	include( "../funcss/coins.php" );
-
-	$thing = getNewAddress($name1);
-	header("Location: page.php?qe=de-po");
-}
 
 
 if( $qe == "wraw" )
@@ -1451,7 +1520,7 @@ if( $qe == "wraw" )
 	include( "../funcss/coins.php" );
 	$balance = 0;
 	$balance = getQuickBalance( $name1 );
-	$messagez = 'balance : ' . $balance . '<br><br>';
+	$messagez = 'balance : ' . $balance . '<br><br>transaction fee is 0.0002 bitcoin';
 	
 	$messagez .=  $form;
 }
@@ -1587,84 +1656,109 @@ if( $qe == "coinsell" )
 	}
 }
 
-
-if( $qe == "okay" )
+if( $qe == "de-po" )
 {
-	$title1 = "okay";
-	$messagez = "okay";
+	$title1 = "deposit";
+	
+	include( "../funcss/coins.php" );
+
+	$thing = getAddress($name1);
+	
+	if( $thing[0] == "no" )
+	{
+		$messagez = 'at the moment there are no more new addresses';		
+	}
+	if( $thing[0] == "okay" )
+	{
+		$messagez = $thing[1] . '<br><br>';
+		$messagez .= '<img src="' . 'qrcodes/' . $thing[2] . '.png"/>';
+		$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
+	}
 }
 
 
-if( $qe == "settins" )
+if( $qe == "de-po2" )
+{
+	$title1 = "deposit";
+	include( "../funcss/coins.php" );
+
+	$thing = getNewAddress($name1);
+
+	if ( $thing[0] == "okay" )
+	{
+		header("Location: page.php?qe=de-po");
+	}
+	if ( $thing[0] == "wait" )
+	{
+		header("Location: page.php?qe=de-po-wait");
+	}
+	if ( $thing[0] == "no" )
+	{
+		header("Location: page.php?qe=de-po-add");
+	}
+}
+
+
+if( $qe == "de-po-wait" )
+{
+	$title1 = "deposit";
+	
+	include( "../funcss/coins.php" );
+
+	$thing = getAddress($name1);
+	
+	$messagez = 'wait a few minutes before requesting a new address<br><br>';
+
+	$messagez .= $thing[1] . '<br><br>';
+	$messagez .= '<img src="' . 'qrcodes/' . $thing[2] . '.png"/>';
+	
+	$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
+}
+
+if( $qe == "de-po-add" )
+{
+	$title1 = "deposit";
+	
+	include( "../funcss/coins.php" );
+
+	$thing = getAddress($name1);
+	
+	if( $thing[0] == "okay" )
+	{
+		$messagez = 'at the moment there are no more new addresses<br><br>';
+		$messagez .= $thing[1] . '<br><br>';
+		$messagez .= '<img src="' . 'qrcodes/' . $thing[2] . '.png"/>';
+		$messagez .= '<br><br><a href="page.php?qe=de-po2">new address</a>';
+	}	
+}
+
+
+
+if( $qe == "colours" )
 {
 	$title1 = "settins";
-	$messagez = '
-	<a href="page.php?qe=changepassword1">change password</a><br>
-	<a href="page.php?qe=closeuser">close user</a><br>
-	<a href="page.php?qe=">colour scheme</a>';
-}
 
+	$q2 = '';
 
-if( $qe == "closeuser" )
-{
-	$title1 = "close user";
-	$messagez = '
-	recall and delete all your products<br>
-	send all other products back to who created them</a><br>
-	no longer be able to log in as this user ?<br><br>
+	if (isset($_GET['q2'])){ $q2 = $_GET['q2'];}else{$q2 = "";}
+
 	
+	$messagez = '';
 	
-	<form action="page.php?qe=closeuser2"
-	method="POST">
-	<TABLE >
-	<tr class="trq"><td>password</td></tr>
-	<tr class="trq"><td><input type="text" name="pass1" maxlength="25"></td></tr>
-	<tr class="trq"><td><input type="submit" value="close user"></td></tr>
-	</TABLE >
-	</form>
-	';
-}
-
-if( $qe == "closeuser2" )
-{
-	$title1 = "close user";
-
-	$pass1 = "";
-	
-	if (isset($_POST['pass1'])){ $pass1 = $_POST['pass1'];}else{$amount = "";}
-
-	include( "../funcss/funcs.php" );
-	$check1 = checknamepass( $name1, $pass1 );
-
-	if ( $check1 == "goodpass" )
+	if( $q2 == "dark" )
 	{
-		$messagez = '
-		recall and delete all your products<br>
-		send all other products back to who created them</a><br>
-		no longer be able to log in as this user ?<br><br>
-
-		<form action="page.php?qe=closeuser3"
-		method="POST">
-		<TABLE >
-		<tr class="trq"><td>are you sure ?</td></tr>
-		<tr class="trq"><td><input type="submit" value="close user"></td></tr>
-		</TABLE >
-		</form>
-		';
+	//	$messagez = 'dark<br>';
+		$_SESSION['cssfile'] = "style-dark.css";
 	}
-	else
-	{
-		$messagez = $check1;
-	}
-}
-
-
-if( $qe == "closeuser3" )
-{
-	include( "../funcss/closeuser.php" );
-	closeuser( $name1 );
 	
-//	header("Location: logout.php");
+	if( $q2 == "light" )
+	{
+//		$messagez = 'light<br>';
+		$_SESSION['cssfile'] = "style-light.css";
+	}
+	$messagez .= '
+	<a href="page.php?qe=colours&q2=light">light</a><br>
+	<a href="page.php?qe=colours&q2=dark">dark</a>';
 }
 
 ?>

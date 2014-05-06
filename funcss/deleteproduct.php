@@ -45,9 +45,11 @@ function deleteproductpassed( $name1, $pname )
 			}
 		}
 		// call delete trade here
-		$q2 = myquery( "select uniqueX from sales3 where ( creator1 = \"$name1\" and product1 = \"$pname\")
-														 or
-														 ( creator2 = \"$name1\" and product2 = \"$pname\")" );
+		$q2 = myquery( "select uniqueX from sales3 where 
+			( creator1 = \"$name1\" and product1 = \"$pname\")
+			or
+			( creator2 = \"$name1\" and product2 = \"$pname\")" );
+
 		$var1 = 0;
 		while ( $rowa = mysqli_fetch_row( ( $q2 ) ) )
 		{

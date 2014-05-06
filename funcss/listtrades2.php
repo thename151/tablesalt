@@ -54,10 +54,14 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 
 function listtrades23( $startfrom, $results )
 {
-//echo "23";
+	//~ echo "23";
 	$result1 = myquery( "select
-			pvc1, pvp1, pvc2, pvp2, price1, price2
-			from pv5 limit $startfrom, $results" );
+			pvc1, pvp1, pvc2, pvp2, 
+			price1, price2
+			from pv5 
+			order by  pvp2, pvc2, pvp1, pvc1 
+			limit $startfrom, $results 
+			" );
 
 	$result5 = myquery( "select pvc1 from pv5" );
 
@@ -113,7 +117,7 @@ function listtrades46( $startfrom, $results, $cr1, $pr1 )
 			from pv5 where
 			pvc1 = \"$cr1\" and pvp1 = \"$pr1\" or
 			pvc2 = \"$cr1\" and pvp2 = \"$pr1\"
-			
+			order by  pvp2, pvc2, pvp1, pvc1
 			limit $startfrom, $results" );
 
 	$result5 = myquery( "select pvc1 from pv5 where
@@ -171,9 +175,8 @@ function listtrades64( $startfrom, $results, $cr2 )
 			pvc1, pvp1, pvc2, pvp2, price1, price2
 			from pv5 where
 			pvc1 = \"$cr2\" or
-			
 			pvc2 = \"$cr2\"
-			
+			order by  pvp2, pvc2, pvp1, pvc1
 			limit $startfrom, $results" );
 
 	$result5 = myquery( "select pvc1 from pv5
