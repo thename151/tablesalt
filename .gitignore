@@ -1,4 +1,5 @@
 *.notrack
+*~
 dbdets.inc
 dbdets.inc~
 sitename.inc
