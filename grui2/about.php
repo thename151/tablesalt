@@ -21,7 +21,7 @@ echo '<link href="' . $var . '" rel="stylesheet">';
 
 
 <title>
-aboutnew
+about
 </title>
 
 </head>
