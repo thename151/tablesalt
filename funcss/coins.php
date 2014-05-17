@@ -4,6 +4,15 @@ include_once( "funcs.php" );
 
 function coinwraw( $name, $amount, $destination )
 {
+	if ( checkAddress($destination) == false )
+	{
+		return "bad address";
+	}
+
+	echo "$amount<br>";
+	$amount = trimtoxdp( $amount, 8 );
+	echo "$amount<br>";
+
 	$available = getQuickBalance( $name );
 	$txfee = 0.0002;
 	$amount2 = $amount + $txfee;
@@ -49,8 +58,17 @@ function settask( $amount, $destination, $ux )
 
 function coinbuy( $name, $amount )
 {
+	echo "$amount<br>";
+	$amount = trimtoxdp( $amount, 3 );
+	echo "$amount<br>";
+	
+	if ( ( $amount ) < 0.001 )
+	{
+		return "number too small";
+	}
+
 	$available = getQuickBalance( $name );
-	if ( $amount > $available )
+	if ( ($amount/1000) > $available )
 	{
 		return "insufficient funds";
 	}
@@ -64,9 +82,9 @@ function coinbuy( $name, $amount )
 				VALUES 
 				( \"$name\", \"$amount2\", \"bought products\", \"$date1\" )" );
 
-	
+
 	include_once( "sendproduct.php" );
-	sendproductbalance( "bitcoin", "bitcoin", "mBTC", $amount, $name,"coinbuy" );
+	echo sendproductbalance( "bitcoin", "bitcoin", "mBTC", $amount, $name,"coinbuy" );
 //	sendproductbalance( "coins", "coins", "mBTC", $amount, $name,"coinbuy" );
 
 	return "okay";
@@ -75,6 +93,10 @@ function coinbuy( $name, $amount )
 
 function coinsell( $name, $amount )
 {
+	echo "$amount<br>";
+	$amount = trimtoxdp( $amount, 3 );
+	echo "$amount<br>";
+	
 	include_once( "../funcss/listtrades.php" );
 	$available = showHowMuch2( "bitcoin", "mBTC", $name );
 //	$available = showHowMuch2( "coins", "mBTC", $name );
@@ -372,5 +394,72 @@ function getNewAddress( $name )
 	    }
     }
 }
+
+
+
+
+
+
+function checkAddress($address)
+{
+	echo "ch";
+    $origbase58 = $address;
+    $dec = "0";
+
+    for ($i = 0; $i < strlen($address); $i++)
+    {
+        $dec = bcadd(bcmul($dec,"58",0),strpos("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",substr($address,$i,1)),0);
+    }
+
+    $address = "";
+
+    while (bccomp($dec,0) == 1)
+    {
+        $dv = bcdiv($dec,"16",0);
+        $rem = (integer)bcmod($dec,"16");
+        $dec = $dv;
+        $address = $address.substr("0123456789ABCDEF",$rem,1);
+    }
+
+    $address = strrev($address);
+
+    for ($i = 0; $i < strlen($origbase58) && substr($origbase58,$i,1) == "1"; $i++)
+    {
+        $address = "00".$address;
+    }
+
+    if (strlen($address)%2 != 0)
+    {
+        $address = "0".$address;
+    }
+
+    if (strlen($address) != 50)
+    {
+        return false;
+    }
+
+    if (hexdec(substr($address,0,2)) > 0)
+    {
+        return false;
+    }
+
+    return substr(strtoupper(hash("sha256",hash("sha256",pack("H*",substr($address,0,strlen($address)-8)),true))),0,8) == substr($address,strlen($address)-8);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?>

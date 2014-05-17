@@ -1,5 +1,6 @@
 *.notrack
 *~
+todos.txt
 dbdets.inc
 dbdets.inc~
 sitename.inc

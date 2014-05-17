@@ -2,36 +2,21 @@
 include_once( "funcs.php" );
 include_once( "hilovalues.php" );
 
-function sendproduct2( $name1, $pcrea, $pname, $amount, $name2 )# name1 sends to name2
-{
-	include( "hilovalues.php" );
-	
-	$check1 = check_name($name1,"name", $namelength);
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
-	$check2 = check_name($name2,"name", $namelength);
-	if( $check2 != "is valid" )
-	{
-		return $check2;
-	}
-	$check3 = check_name($pcrea,"name", $namelength);
-	if( $check3 != "is valid" )
-	{
-		return $check3;
-	}
-	$check4 = check_name($pname,"product name", $productlength);
-	if( $check4 != "is valid" )
-	{
-		return $check4;
-	}
-	
-	return check_number( $amount, $loscore, $hiscore );
-}
 
 function sendproductbalance( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
 {
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $pcrea );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pname );if ($check1 != "okay" ){ return $check1;}
+
+	$check1 = check_string( "username", $name2 );if ($check1 != "okay" ){ return $check1;}
+	
+	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
+	
+	$check1 = check_string( "sendsort", $sendsort );if ($check1 != "okay" ){ return $check1;}
+
+	$amount = trimtodp( $amount );
+
 	$mess = sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort );
 	include_once ("balance4.php");
 	

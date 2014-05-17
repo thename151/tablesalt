@@ -22,8 +22,6 @@ include_once( "incmain.php" );
 
 <?php
 echo '<link href="' . $_SESSION['cssfile'] . '" rel="stylesheet">';
-//<link href="style2.css" rel="stylesheet">
-//echo "qweewqqwe" . $_SESSION['name1'] . "qwe " . $_SESSION['cssfile'];
 ?>	
 
 
@@ -37,8 +35,10 @@ echo $title1;
 </title>
 </head>
 
-<body bgcolor="black">
+<body>
 <div id="container">
+
+
 
 <div id="wrapper">
 <div id="top2">
@@ -56,8 +56,6 @@ echo $sitename;
 <?php
 echo $name1; //<a href="page.php?qe=settins"></a>
 ?>
-
-
 
  logged in
 

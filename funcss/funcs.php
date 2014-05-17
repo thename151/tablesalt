@@ -3,6 +3,7 @@ include_once( "dbfuncs.php" );
 include_once( "hilovalues.php" );
 include_once( "lib/password.php" );
 
+
 function check_name($fname,$label,$flen)
 {
 	# username, password, productname.
@@ -70,6 +71,7 @@ function check_name2($fname,$label,$flen)
 
 function check_number( $numstr ,$min1, $max1 )
 {
+//	echo "1 : " . $numstr . "<br>";
 //  amount, tradenumber.
 	$n1 = trim($numstr);
 	
@@ -92,6 +94,37 @@ function check_number( $numstr ,$min1, $max1 )
 		return "number is too large, it should be less than or equal to $max1";
 	}
 	
+//	echo "2 : " . $numstr . "<br>";
+	return "is valid";
+}
+
+
+function check_whole_number( $numstr ,$min1, $max1 )
+{
+//	echo "1 : " . $numstr . "<br>";
+//  amount, tradenumber.
+	$n1 = trim($numstr);
+	
+// 	$var1 = preg_match("/\b[0-9]+\.[0-9]\b/",$n1);
+	$var1 = preg_match("/^[0-9]+$/",$n1);
+
+	if( $var1 == null )
+	{
+		return "number is bad";
+	}
+	
+	if( $n1 < $min1 )
+	{
+// 		echo "heresmall" . $n1;
+		return "number is too small, it should be more than or equal to $min1";
+	}
+	if( $n1 > $max1 )
+	{
+// 		echo "herebig";
+		return "number is too large, it should be less than or equal to $max1";
+	}
+	
+//	echo "2 : " . $numstr . "<br>";
 	return "is valid";
 }
 
@@ -155,21 +188,9 @@ function profile_exist($fname2)
 
 function checknamepass( $name1, $pass1 )
 {
-	include( "hilovalues.php" );
-
-	$check1 = check_name($name1, "name", $namelength);
-	$check2 = check_name($pass1, "pass", $passlength);
-
-	if ( $check1 != "is valid" )
-	{
-		return "incorrect username or password";
-	}
+	$check1 = check_string("username", $name1);	if ( $check1 != "okay" ){return  $check1;}
+	$check1 = check_string("password", $pass1);	if ( $check1 != "okay" ){return  $check1;}
 	
-	if ( $check2 != "is valid" )
-	{
-		return "incorrect username or password";
-	}
-
 	return checknamepass2b($name1, $pass1);
 }
 
@@ -198,15 +219,13 @@ function checknamepass2b( $name1, $pass1 )
 
 function checksstartresults( $startfrom, $results )
 {
-	include( "hilovalues.php" );
-
-	$check1 = check_number( $startfrom, 0, 5000 );
+	$check1 = check_whole_number( $startfrom, 0, 5000 );
 	if( $check1 != "is valid" )
 	{
 		return $check1;
 	}
 
-	$check1 = check_number( $results, 1, 50 );
+	$check1 = check_whole_number( $results, 1, 50 );
 	if( $check1 != "is valid" )
 	{
 		return $check1;
@@ -217,6 +236,8 @@ function checksstartresults( $startfrom, $results )
 
 function checkuser( $name1 )
 {
+	$check1 = check_string("username", $name1);	if ( $check1 != "okay" ){return  $check1;}
+	
 	$result = myquery( "select uniqueX, closeDate from users1 where loginName = \"$name1\" " );
 	$row = mysqli_fetch_row($result);
 	
@@ -230,6 +251,306 @@ function checkuser( $name1 )
 	}
 
 	return "user closed";
+}
+
+function trimtodp( $num )
+{
+	include( "hilovalues.php" );
+	// 500.000125
+	// 500.000
+
+//	echo "ato trim " . $loscore ."<br>";
+
+	$var1 = 1 / $loscore;
+
+	$var2 = $num * $var1;
+	$var3 = fmod( $var2, 1 );
+	$var4 = $var2 - $var3;
+	$var5 = $var4 / $var1;
+	
+	return $var5;// . " " . $num;
+}
+
+function trimtoxdp( $num, $varx )
+{
+	include( "hilovalues.php" );
+	//  5
+	// 500.98747123
+	// 500.98747
+	
+//	echo "xto trim " . $varx ."<br>";
+
+	$var1 = pow( 10, $varx);
+
+	$var2 = $num * $var1;
+	$var3 = fmod( $var2, 1 );
+	$var4 = $var2 - $var3;
+	$var5 = $var4 / $var1;
+	
+	return $var5;// . " " . $num;
+}
+
+
+
+//	characters and lengths
+
+function check_string( $type, $var )
+{
+	include( "hilovalues.php" );
+	
+	if( $type == "username" )
+	{
+		$minlen = $namelength_min;
+		$maxlen = $namelength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen ){return "username must be $minlen characters or more";	}
+		if( $len > $maxlen ){return "username must be $maxlen characters or less";	}
+		
+		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{	return "username must contain only characters A-Z a-z 0-9 _ and -";	}
+		
+		if ( strpos( $var, " ") != false )
+		{	return "username  must not have a space";	}
+
+		return "okay";
+	}
+	
+	if( $type == "password" )
+	{
+		$minlen = $passlength_min;
+		$maxlen = $passlength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen )
+		{
+			return "password must be $minlen characters or more";
+		}
+		if( $len > $maxlen )
+		{
+			return "password must be $maxlen characters or less";
+		}
+		
+		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{
+			return "password must contain only characters A-Z a-z 0-9 _ and -";
+		}
+
+		return "okay";
+	}
+
+	if( $type == "productname" )
+	{
+		$minlen = $productlength_min;
+		$maxlen = $productlength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen )
+		{
+			return "product name must be $minlen characters or more";
+		}
+		if( $len > $maxlen )
+		{
+			return "product name must be $maxlen characters or less";
+		}
+		
+		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{
+			return "product name must contain only characters A-Z a-z 0-9 _ and -";
+		}
+
+		if ( strpos( $var, " ") != false )
+		{
+			return "product name  must not have a space";
+		}
+
+		return "okay";
+	}
+
+	if( $type == "productdetail" )
+	{
+		$minlen = $detaillength_min;
+		$maxlen = $detaillength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen )
+		{
+			return "product detail must be $minlen characters or more";
+		}
+		if( $len > $maxlen )
+		{
+			return "product detail must be $maxlen characters or less";
+		}
+		
+		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{
+			return "product detail must contain only characters A-Z a-z 0-9 _ and -";
+		}
+
+		return "okay";
+	}
+	
+	if( $type == "message" )
+	{
+		$minlen = $messagelength_min;
+		$maxlen = $messagelength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen )
+		{
+			return "message must be $minlen characters or more";
+		}
+		if( $len > $maxlen )
+		{
+			return "message must be $maxlen characters or less";
+		}
+		
+		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{
+			return "message must contain only characters A-Z a-z 0-9 _ and -";
+		}
+
+		return "okay";
+	}
+	
+	if( $type == "amount" )
+	{
+		$len = strlen( $var );
+		$len2 = strlen( $hiscore );
+		
+		if( $len > $len2 )
+		{
+			return "amount must be $len2 characters or less";
+		}
+
+//		/^\d+(?:\.\d+)?$/
+//		^[\d.]+$
+//		/^[0-9]+([\,\.][0-9]+)?$/g;
+
+	//~ if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $number))
+
+		
+		//~ $var2 = preg_match( "/^[0-9][0-9 .]+$/", $var );
+		//~ if( $var2 == null )
+
+		$var2 = preg_match('/^[0-9]+(\.[0-9]+)?$/', $var);
+
+		if ( $var == 0 )
+		{
+			return "amount must contain only characters 0-9 and .  : $var";
+		}		
+		if( $var < $loscore )
+		{
+			return "amount must be $loscore or more";
+		}
+		if( $var > $hiscore )
+		{
+			return "amount must be $hiscore or less";
+		}
+
+		return "okay";
+	}
+
+	if( $type == "pageno" )
+	{
+		$len = strlen( $var );
+		$len2 = 4;
+
+		if( $len > $len2 )
+		{
+			return "page number must be $len2 characters or less";
+		}
+
+		$var2 = preg_match( "/^[0-9]{1,45}$/", $var );
+//		$var2 = preg_match( "^[0-9]$/", $var );
+		if( $var2 == null )
+		{
+			return "page number must contain only characters 0-9";
+		}
+
+		return "okay";
+	}
+
+	if( $type == "trueorfalse" )
+	{
+		$len = strlen( $var );
+		$len2 = 4;
+		
+		if( ( $var !="true" ) && ( $var !="false" ) )
+		{
+			return "true or false not true or false : $var";
+		}
+
+		return "okay";
+	}
+
+	if( $type == "messagetype" )
+	{
+		if( ( $var !="message" ) && ( $var !="comment" ) )
+		{
+			return "message type not message or comment";
+		}
+
+		return "okay";
+	}
+	if( $type == "buysell" )
+	{
+		if( ( $var !="sell" ) && ( $var !="buy" ) )
+		{
+			return "type not buy or sell";
+		}
+		return "okay";
+	}
+	if( $type == "txno" )
+	{
+		$len = strlen( $var );
+		$len2 = 6;
+
+		if( $len > $len2 )
+		{
+			return "page number must be $len2 characters or less";
+		}
+
+		$var2 = preg_match( "/^[0-9]{1,45}$/", $var );
+		if( $var2 == null )
+		{
+			return "txno must contain only characters 0-9 : $var";
+		}
+
+		return "okay";
+	}
+	if( $type == "keepon" )
+	{
+		if ( !(( $var == "" ) || ( $var == "dokeep" )) )
+		{
+			return "keepon values bad : " . $var;
+		}
+		return "okay";
+	}
+	if( $type == "sendsort" )
+	{
+		if ( !( 
+				( $var == "ordinary" ) || 
+				( $var == "trade" ) ||
+				( $var == "coinbuy" ) ||
+				( $var == "coinsell" ) ||
+				( $var == "recall" ) ||
+				( $var == "closed user" ) ||
+				( $var == "dividend" )
+				 ) )
+		{
+			return "sendsort values bad : " . $var;
+		}
+		return "okay";
+	}
+	
+	
+	return "okay2";
 }
 
 ?>

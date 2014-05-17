@@ -13,8 +13,6 @@ include( "incmain2.php" );
 ?>
 
 
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 
@@ -22,7 +20,7 @@ include( "incmain2.php" );
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link href="style2.css" rel="stylesheet">
+<link href="style-light.css" rel="stylesheet">
 <title>
 <?php
 
@@ -85,4 +83,4 @@ echo $messagez;
 	</div>
 </div>
 </div>
-</body></html></body></html>
+</body></html>

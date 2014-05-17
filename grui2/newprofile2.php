@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link href="style2.css" rel="stylesheet">
+<link href="style-light.css" rel="stylesheet">
 <title>
 new profile
 </title>
@@ -24,11 +24,17 @@ echo $sitename;
 <h2>Create a new Profile</h2>
 
 <?php
-$name3 = $_POST["namex"];
-$pass1 = $_POST["pass1"];
-$pass2 = $_POST["pass2"];
 
-include( "../funcss/createprofile.php" );
+$name3 = "";
+$pass1 = "";
+$pass2 = "";
+
+if (isset($_POST['namex'])){ $name3 = $_POST['namex'];}else{$name3 = "";}
+if (isset($_POST['pass1'])){ $pass1 = $_POST['pass1'];}else{$pass1 = "";}
+if (isset($_POST['pass2'])){ $pass2 = $_POST['pass2'];}else{$pass2 = "";}
+
+
+include( "../funcss/setuser.php" );
 echo createprofile($name3, $pass1, $pass2);
 ?>
 

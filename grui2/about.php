@@ -4,22 +4,84 @@
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link href="style2.css" rel="stylesheet">
+
+
+
+
+<?php
+//<link href="style-light.css" rel="stylesheet">
+
+session_start();
+//$var = "";
+if ( isset($_SESSION['cssfile'] )){ $var = $_SESSION['cssfile'];}else{$var = "style-light.css";}
+echo '<link href="' . $var . '" rel="stylesheet">';
+?>	
+
+
+
+
 <title>
-about
+aboutnew
 </title>
+
 </head>
-<body>
+
 <div id="container">
 
-<div id="top">
-<h1><a href="index.php">
+
 <?php
+session_start();
 include( '../sitename.inc' );
-echo $sitename;
-?>	
+
+
+if ( isset($_SESSION['name1'] )){ $name1 = $_SESSION['name1'];}else{$name1 = "";}
+
+if ( $name1 != "" )
+{
+	$var2 = '<div id="wrapper">
+	<div id="top2">
+	<h1><a href="index.php">' . 
+	$sitename . '</a></h1>
+	</div>
+	<div id="lname">' .
+	$name1 . ' logged in
+	</div>';
+	
+	echo $var2;
+}
+else
+{
+	
+
+$var2 = '
+<div id="top">
+<h1><a href="index.php">' .
+$sitename . '
 </a></h1>
+';
+
+	
+	
+	echo $var2;
+}
+?>
+
+
+
+
+
+
 </div>
+
+
+
+
+
+
+
+
+
+
 <div id="content2">source : <a class="b" href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt </a><br><br><i>links :</i><br>
 <br><a class="b" href="http://freedns.afraid.org" target="_blank">freedns.afraid.org</a>
 <br><a class="b" href="http://apache.org" target="_blank">apache.org</a>

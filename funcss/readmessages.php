@@ -3,23 +3,13 @@ include_once( "funcs.php" );
 
 function readmessages2( $name1, $startfrom, $results )
 {
-	include( "hilovalues.php" );
-	$check1 = check_name($name1,"name", $namelength);
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
-	return checksstartresults( $startfrom, $results );
 }
 
 function readmessages( $name1, $startfrom, $results  )
 {
-	$check1 = readmessages2( $name1, $startfrom, $results  );
-	if( $check1 != "is valid" )
-	{
-		$mess1[0] = $check1;
-		return $mess1;
-	}
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 	
 	$result1 = myquery( "select 
 						from1, to1, message1, datetime, type, product 
@@ -33,7 +23,15 @@ function readmessages( $name1, $startfrom, $results  )
 	$result2 = myquery( "select * from messages1 where from1 = \"$name1\" or 
     to1 = \"$name1\" " );
 	
-	$mess1[0] = mysqli_num_rows( $result2 ); // numrows
+	$numrows = mysqli_num_rows( $result2 ); // numrows
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
 	$i1 = 1;
 	
 	while ($result_row = mysqli_fetch_row(($result1)))
@@ -63,12 +61,9 @@ function readmessages( $name1, $startfrom, $results  )
 
 function readUserComments( $name1, $startfrom, $results  )
 {
-	$check1 = readmessages2( $name1, $startfrom, $results );
-	if( $check1 != "is valid" )
-	{
-		$mess1[0] = $check1;
-		return $mess1;
-	}
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 	
 	$result1 = myquery( "select from1, message1, datetime from messages1 where
 	to1 = \"$name1\" and
@@ -79,7 +74,18 @@ function readUserComments( $name1, $startfrom, $results  )
     to1 = \"$name1\" and
 	type = \"user\" " );
 	
-	$mess1[0] = mysqli_num_rows( $result2 ); // numrows
+	
+	
+	$numrows = mysqli_num_rows( $result2 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
+	
 	$i1 = 1;
 	
 	while ($result_row = mysqli_fetch_row(($result1)))
@@ -106,7 +112,12 @@ function readUserComments( $name1, $startfrom, $results  )
 
 function readProductComments( $name1, $pr1, $startfrom, $results  )
 {
-	$check1 = readmessages2( $name1, $startfrom, $results );
+//	echo "( $name1, $pr1, $startfrom, $results  )";
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+	
 	
 	$result1 = myquery( "select from1, message1, datetime from messages1 where
 	to1 = \"$name1\" and
@@ -119,7 +130,15 @@ function readProductComments( $name1, $pr1, $startfrom, $results  )
 	product = \"$pr1\" and
 	type = \"product\" " );
 	
-	$mess1[0] = mysqli_num_rows( $result2 ); // numrows
+	$numrows = mysqli_num_rows( $result2 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
 	$i1 = 1;
 	
 	while ($result_row = mysqli_fetch_row(($result1)))

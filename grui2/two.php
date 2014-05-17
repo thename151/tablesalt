@@ -25,21 +25,21 @@ if( $_SESSION['login'] != "yes" )
 	$pass1 = $_POST["passx"];
 
 	include( "../funcss/funcs.php" );
+	include( "../funcss/setuser.php" );
 
 	$mess2 = checknamepass( $name1, $pass1 );
 	if( $mess2 == "goodpass" )
 	{
-		echo "qwe here 333";
 		$_SESSION['name1'] = $name1;
 		$_SESSION['login'] = "yes";
-		$_SESSION['cssfile'] = "style-dark.css";
+		$_SESSION['cssfile'] = getstyle($name1);
 
 		$mess3 = "logged in";
 	}
 	else
 	{
-//		$mess3 = $mess2;
-		$mess3 = "incorrect username or password";
+		$mess3 = $mess2;
+		//$mess3 = "incorrect username or password";
 	}
 }
 else
@@ -62,7 +62,7 @@ if( $mess3 == "logged in")
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link href="style2.css" rel="stylesheet">
+<link href="style-light.css" rel="stylesheet">
 <title>
 login
 </title>
@@ -97,8 +97,11 @@ Password<br><input type="password" name="passx"" maxlength="25" size="10"><br>
 </center>
 </div>
 
-<div id="content">
-bad password
+<div id="contentpre">
+	
+<?php
+echo $mess3;//bad password
+?>	
 </div>
 
 <div id="footer">

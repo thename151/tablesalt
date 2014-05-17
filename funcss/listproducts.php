@@ -3,13 +3,9 @@ include( "funcs.php" );
 
 function listproducts( $startfrom, $results )
 {
-	$check1 = checksstartresults( $startfrom, $results );
-	if( $check1 != "is valid" )
-	{
-		$mess1[0] = $check1;
-		return $mess1;
-	}
-	
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+
 	$result1 = myquery( "select 
             productName, profileName, detail, status1, datetime
 			from products1 where status1 = \"okay\" order by datetime desc
@@ -19,7 +15,15 @@ function listproducts( $startfrom, $results )
 			productName, profileName, detail, status1, datetime
 			from products1 where status1 = \"okay\" order by datetime desc" );
 	
-	$mess1[0] = mysqli_num_rows( $result2 ); // numrows
+	$numrows = mysqli_num_rows( $result2 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
 	$i1 = 1;
 
 	while ($result_row = mysqli_fetch_row(($result1)))
@@ -46,13 +50,10 @@ function listproducts( $startfrom, $results )
 
 function listproducts2( $cr1, $startfrom, $results )
 {
-	$check1 = checksstartresults( $startfrom, $results );
-	if( $check1 != "is valid" )
-	{
-		$mess1[0] = $check1;
-		return $mess1;
-	}
-	
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+
 	$result1 = myquery( "select 
             productName, profileName, detail, status1, datetime
 			from products1 where status1 = \"okay\" and profileName = \"$cr1\" order by datetime desc
@@ -61,8 +62,16 @@ function listproducts2( $cr1, $startfrom, $results )
 	$result2 = myquery( "select
 			productName, profileName, detail, status1, datetime
 			from products1 where status1 = \"okay\" and profileName = \"$cr1\" order by datetime desc" );
+
+	$numrows = mysqli_num_rows( $result2 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
 	
-	$mess1[0] = mysqli_num_rows( $result2 ); // numrows
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
 	$i1 = 1;
 
 	while ($result_row = mysqli_fetch_row(($result1)))
@@ -90,20 +99,11 @@ function listproducts2( $cr1, $startfrom, $results )
 
 function listprofilesproducts( $name1, $startfrom, $results  )
 {
-	include( "hilovalues.php" );
-	$check1 = check_name($name1,"name", $namelength);
-	if( $check1 != "is valid" )
-	{
-		$mess1[0] = $check1;
-		return $mess1;
-	}	
-	$check1 = checksstartresults( $startfrom, $results );
-	if( $check1 != "is valid" )
-	{
-		$mess1[0] = $check1;
-		return $mess1;
-	}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
 	
+
 	$result1 = myquery( "select 
             productName, detail, datetime
 			from products1 where profileName = \"$name1\"
@@ -116,7 +116,16 @@ function listprofilesproducts( $name1, $startfrom, $results  )
 			and status1 != \"removed\"
 			order by datetime desc " );
 
-	$mess1[0] = mysqli_num_rows( $result2 ); // numrows
+	$numrows = mysqli_num_rows( $result2 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
+
 	$i1 = 1;
 
 	while ($result_row = mysqli_fetch_row(($result1)))
@@ -136,5 +145,37 @@ function listprofilesproducts( $name1, $startfrom, $results  )
 	}
 	return $mess1;
 }
+
+
+function productdetail( $cr1, $pr1 )
+{
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	
+	$result1 = myquery( "select
+			detail, dateTime, status1, divisible
+			from products1 where
+			profileName = \"$cr1\" and productName = \"$pr1\" ");
+	
+	$messa ="";
+	$messa[0] = "blank";
+	
+	while( $rowa = mysqli_fetch_array( $result1 ) )
+	{
+		if( $rowa[2] == "removed" )
+		{
+			$messa[0] = "removed";
+		}
+		else
+		{
+			$messa[0] = "full";
+			$messa[1] = $rowa[ 0 ];
+			$messa[2] = $rowa[ 1 ];
+			$messa[3] = $rowa[ 3 ];
+		}
+	}
+	return $messa;
+}
+
 
 ?>

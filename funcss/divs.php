@@ -6,6 +6,14 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 {
 	//  1            2                               3                  4
 	// 132 * 1.2 = 158.4, rounds up to a maximum of 159, cancontinue = true
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ return $check1;}
+	
+	$check1 = check_string( "amount", $am1 );if ($check1 != "okay" ){ return $check1;}
+	$am1 = trimtodp( $am1 );
+
 
 	$q0 = myquery( "select productName, divisible from products1 where profileName = \"$cr1\" and productName = \"$pr1\" and status1 = \"okay\"" );
 	$row1 = mysqli_fetch_row( $q0 );
@@ -87,6 +95,18 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 
 function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 {
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ return $check1;}
+	
+	$check1 = check_string( "amount", $am1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $prevmax );if ($check1 != "okay" ){ return $check1;}
+
+	$am1 = trimtodp( $am1 );
+	$prevmax = trimtodp( $prevmax );
+
+
 	$q0 = myquery( "select productName, divisible from products1 where profileName = \"$cr1\" and productName = \"$pr1\" and status1 = \"okay\"" );
 	$row1 = mysqli_fetch_row( $q0 );
 	if($row1 == null )
@@ -112,7 +132,7 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 	}
 	
 	include_once( "listtrades.php" );
-	$var1 = showHowLess( $cr1, $pr1, $cr1 );
+	$var1 = showHowLess( $cr1, $pr1);
 	$var2 = showHowMuch2( $cr2, $pr2, $cr1 );
 	$var3 = $am1 * $var1;
 	
@@ -155,11 +175,15 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 		$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>rounded up to a max of : $upamount<br>you only have $var2 $cr2 $pr2";
 		return $mess1;
 	}
+
 	
-	if ( $upamount > $prevmax )
+	$epsilon = 0.001;
+	$diff = abs( $upamount - $prevmax );
+	
+	if ( !($diff <= $epsilon) && ( $upamount > $prevmax ) )
 	{
 		$mess1[0] = 'true';
-		$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>rounded up to a max of : $upamount<br>are you sure";
+		$mess1[1] = 1 * $var1 . " * $am1 = $var3<br>rounded up to a max of : $upamount<br>are you sure!! : $upamount > $prevmax";
 		$mess1[2] = $upamount;
 		return $mess1;
 	}
@@ -255,7 +279,8 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 
 function listdivs( $startfrom, $results )
 {
-	
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 	 
 	$result4 = myquery( "select 
 	 cr1, 	pr1, 	cr2,	pr2,
@@ -264,11 +289,18 @@ function listdivs( $startfrom, $results )
 	 order by datetime desc limit $startfrom, $results " );
 	
 	$result5 = myquery( "select uniqueX from divtotal " );
+
 	$numrows = mysqli_num_rows( $result5 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
 	
-	$mess1 [0] = $numrows;
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
 	$i1 = 1;
-	
+
 	while ($result_row = mysqli_fetch_row(($result4)))
 	{
 		$date1 = date( "y-m-d",strtotime($result_row[6]));
@@ -292,6 +324,11 @@ function listdivs( $startfrom, $results )
 
 function listdivs2( $startfrom, $results, $cr1, $pr1 )
 {
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+
 	$result4 = myquery( "select 
 	 cr1, 	pr1, 	cr2,	pr2,
 	 rate, 	doessend, 	datetime
@@ -305,9 +342,16 @@ function listdivs2( $startfrom, $results, $cr1, $pr1 )
 	 where
 	 cr1 = \"$cr1\" and pr1 = \"$pr1\" or
 	 cr2 = \"$cr1\" and pr2 = \"$pr1\" " );
+
 	$numrows = mysqli_num_rows( $result5 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
 	
-	$mess1 [0] = $numrows;
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
 	$i1 = 1;
 	
 	while ($result_row = mysqli_fetch_row(($result4)))
@@ -335,6 +379,10 @@ function listdivs2( $startfrom, $results, $cr1, $pr1 )
 
 function listdivs3( $startfrom, $results, $cr2 )
 {
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+
 	$result4 = myquery( "select 
 	 cr1, 	pr1, 	cr2,	pr2,
 	 rate, 	doessend, 	datetime
@@ -348,9 +396,16 @@ function listdivs3( $startfrom, $results, $cr2 )
 	 where
 	 cr1 = \"$cr2\" or
 	 cr2 = \"$cr2\"" );
+
 	$numrows = mysqli_num_rows( $result5 );
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
 	
-	$mess1 [0] = $numrows;
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
 	$i1 = 1;
 	
 	while ($result_row = mysqli_fetch_row(($result4)))
@@ -379,6 +434,9 @@ function listdivs3( $startfrom, $results, $cr2 )
 
 function countdivs1( $cr1, $pr1 )
 {
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+
 	$result5 = myquery( "select uniqueX from divtotal
 	 where
 	 cr1 = \"$cr1\" and pr1 = \"$pr1\" or
@@ -390,6 +448,7 @@ function countdivs1( $cr1, $pr1 )
 
 function countdivs2( $cr2 )
 {
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
 	$result5 = myquery( "select uniqueX from divtotal
 	 where
 	 cr1 = \"$cr2\" or

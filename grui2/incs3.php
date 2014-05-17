@@ -1,26 +1,35 @@
 <?php
 
-$endfrom = $startfrom + $results;
-if( $endfrom > $mess1[0] )
+//echo "here2<br>";
+
+if($mess1[0][0] == "okay" )
 {
-	$endfrom = $mess1[0];
-}
+//	echo "here3<br>";
+	$displayResults = $mess1;
+	
+	$endfrom = $startfrom + $results;
 
-$startfrom1 = $startfrom + 1;
-$mess3 = "";
-
-$displayResults = "there are no results";
-
-if($mess1[0] != 0 )
-{
-	$displayResults = "displaying results $startfrom1 to $endfrom of " . $mess1[0] . "<br>";
-	$nextvar = "";
-	if( $endfrom < $mess1[0] )
+	if( $endfrom > $mess1[0][1] )
 	{
-		$nextvar = "next";
+		$endfrom = $mess1[0][1];
 	}
-	$mess3 = addcontrol( $startfrom, $results, $mess1[0], $mess4, $nextvar );
+
+	$startfrom1 = $startfrom + 1;
+	$mess3 = "";
+
+	if($mess1[0][1] != 0 )
+	{
+		$displayResults = "displaying results $startfrom1 to $endfrom of " . $mess1[0][1] . "<br>";
+		$nextvar = "";
+		if( $endfrom < $mess1[0][1] )
+		{
+			$nextvar = "next";
+		}
+		$mess3 = addcontrol( $startfrom, $results, $mess1[0][1], $mess4, $nextvar );
+	}
+
 }
+
 
 
 function addcontrol( $startfrom, $results, $numrows, $adrres, $nextvar )
@@ -46,7 +55,7 @@ function addcontrol( $startfrom, $results, $numrows, $adrres, $nextvar )
 	$mess1 = '<center><div id="prenex">';
 	$mess1 .= '<div id="pre">';
 
-	if( $startfrom > 1 )
+	if( $startfrom >= 1 )
 	{
 		$mess1 .= "<a href='";
 		$mess1 .= $adrres;
@@ -75,7 +84,6 @@ function addcontrol( $startfrom, $results, $numrows, $adrres, $nextvar )
 	$mess1 .= "</div></center>";
 
 	$rrr = $startfrom + $numrows;
-//	echo $rrr;
 	return $mess1;
 }
 ?>

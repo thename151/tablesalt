@@ -135,6 +135,7 @@ function showHowMuch2( $cr1, $pr1, $user )
 
 function showHowLess( $cr1, $pr1 )
 {
+//	echo "qwewq:( $cr1, $pr1 )<br>";
 	$q1 = myquery( "select amount from scores1 where who1 = \"$cr1\" and creator = \"$cr1\" and product =\"$pr1\"" );
 	$row = mysqli_fetch_row($q1);
 	
@@ -153,13 +154,16 @@ function showHowLess( $cr1, $pr1 )
 
 function listprofilestrades( $name1 )
 {
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+
 	$result7 = myquery( "select 
 			uniqueX, amount1, type1,
 			creator1,product1, creator2,product2,
 			price1,price2, keeptrade
 			from sales3 where user = \"$name1\"" );
-	$mess1 = null;
-	$i1 = 0;
+
+	$mess1[0][0] = "okay";
+	$i1 = 1;
 
 	while( $lst = mysqli_fetch_array( $result7 ) )
 	{

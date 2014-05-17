@@ -2,8 +2,14 @@
 include_once( "funcs.php" );
 
 function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
-{
-	$messa[0] = 1;
+{	
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ return $check1;}
+	
+	$messa[0][0] = "okay";
+	$messa[0][1] = 1;
 
 	$q3 = myquery( "select
 	divisible 
@@ -13,7 +19,7 @@ function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
 	$divisible = $row4[0];
 	if ( $divisible == 0 )
 	{
-		$messa[0] = 0;
+		$messa[0][1] = 0;
 	}
 	
 	$messa[1] = listdep( $cr1, $pr1, $cr2, $pr2, 1 );
@@ -54,7 +60,9 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 
 function listtrades23( $startfrom, $results )
 {
-	//~ echo "23";
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+
 	$result1 = myquery( "select
 			pvc1, pvp1, pvc2, pvp2, 
 			price1, price2
@@ -66,9 +74,15 @@ function listtrades23( $startfrom, $results )
 	$result5 = myquery( "select pvc1 from pv5" );
 
 	$numrows = mysqli_num_rows( $result5 );
-	 
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
 	$counter = 1;
-	$messa[0] = $numrows;
+	$messa[0][0] = "okay";
+	$messa[0][1] = $numrows;
 
 	while( $rowa = mysqli_fetch_array( $result1 ) )
 	{
@@ -112,6 +126,11 @@ function listtrades23( $startfrom, $results )
 
 function listtrades46( $startfrom, $results, $cr1, $pr1 )
 {
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+
 	$result1 = myquery( "select
 			pvc1, pvp1, pvc2, pvp2, price1, price2
 			from pv5 where
@@ -126,9 +145,15 @@ function listtrades46( $startfrom, $results, $cr1, $pr1 )
 					" );
 
 	$numrows = mysqli_num_rows( $result5 );
-	 
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
 	$counter = 1;
-	$messa[0] = $numrows;
+	$messa[0][0] = "okay";
+	$messa[0][1] = $numrows;
 
 	while( $rowa = mysqli_fetch_array( $result1 ) )
 	{
@@ -171,6 +196,10 @@ function listtrades46( $startfrom, $results, $cr1, $pr1 )
 
 function listtrades64( $startfrom, $results, $cr2 )
 {
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+
 	$result1 = myquery( "select
 			pvc1, pvp1, pvc2, pvp2, price1, price2
 			from pv5 where
@@ -183,9 +212,15 @@ function listtrades64( $startfrom, $results, $cr2 )
 						 where pvc1 = \"$cr2\" or pvc2 = \"$cr2\"" );
 
 	$numrows = mysqli_num_rows( $result5 );
-	 
+
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
 	$counter = 1;
-	$messa[0] = $numrows;
+	$messa[0][0] = "okay";
+	$messa[0][1] = $numrows;
 
 	while( $rowa = mysqli_fetch_array( $result1 ) )
 	{
@@ -226,7 +261,7 @@ function listtrades64( $startfrom, $results, $cr2 )
 	return $messa;
 }
 
-
+/*
 
 function listtrades22()
 {
@@ -361,6 +396,9 @@ function listtrades20()
 	}
 	return $messa;
 }
+
+
+*/
 
 function findhib( $cr1, $pr1, $cr2, $pr2 )
 {

@@ -3,11 +3,9 @@ include( "funcs.php" );
 
 function sendmessage( $name1, $name2, $message )
 {
-	$check1 = sendmessage2( $name1, $name2, $message );
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $name2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "message", $message );if ($check1 != "okay" ){ return $check1;}
 
 	$mess1 = profile_exist( $name1 );
 	if( $mess1 == "profile does exist" )
@@ -28,11 +26,9 @@ function sendmessage( $name1, $name2, $message )
 
 function sendComment( $name1, $name2, $message )
 {
-	$check1 = sendmessage2( $name1, $name2, $message );
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $name2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "message", $message );if ($check1 != "okay" ){ return $check1;}
 
 	$mess1 = profile_exist( $name1 );
 	if( $mess1 == "profile does exist" )
@@ -53,11 +49,10 @@ function sendComment( $name1, $name2, $message )
 
 function sendProductComment( $name1, $name2, $pr1, $message )
 {
-	$check1 = sendmessage3( $name1, $name2, $pr1, $message );
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $name2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "message", $message );if ($check1 != "okay" ){ return $check1;}
 
 	$mess1 = profile_exist( $name1 );
 	if( $mess1 == "profile does exist" )
@@ -74,52 +69,5 @@ function sendProductComment( $name1, $name2, $pr1, $message )
 	}
 	return $mess1;
 }
-
-
-function sendmessage2( $name1, $name2, $message )
-{
-	include( "hilovalues.php" );
-
-	$check1 = check_name($name1,"name", $namelength);
-	if( $check1 != "is valid")
-	{
-		return $check1;
-	}
-	$check2 = check_name($name2,"name", $namelength);
-	if( $check2 != "is valid")
-	{
-		return $check2;
-	}
-	return check_mess( $message, "message", $messagelength );
-}
-
-
-function sendmessage3( $name1, $name2, $pr1, $message )
-{
-	include( "hilovalues.php" );
-
-	$check1 = check_name($name1,"name", $namelength);
-	if( $check1 != "is valid")
-	{
-		return $check1;
-	}
-	$check2 = check_name($name2,"name", $namelength);
-	if( $check2 != "is valid")
-	{
-		return $check2;
-	}
-	
-	$check2 = check_name($pr1, "product name", $productlength );
-	if( $check2 != "is valid")
-	{
-		return $check2;
-	}
-
-	
-	return check_mess( $message, "message", $messagelength );
-}
-
-
-
 
 ?>

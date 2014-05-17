@@ -556,7 +556,7 @@ function updatesalesTotal( $Id, $var1 )
 
 function updateStock( $cr1, $pr1, $user )
 {
-	echo "updateStock( $cr1, $pr1, $user )<br>";
+//	echo "updateStock( $cr1, $pr1, $user )<br>";
 	$curcr = "";
 	$curpr = "";
 	

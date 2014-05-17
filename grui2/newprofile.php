@@ -5,7 +5,7 @@
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link href="style2.css" rel="stylesheet">
+<link href="style-light.css" rel="stylesheet">
 <title>
 new profile
 </title>
@@ -30,7 +30,7 @@ method="POST">
 <tr class="blank2"><td>user name</td><td><input type="text" name="namex" maxlength="25" value="
 
 <?php
-include( "../funcss/createprofile.php" );
+include_once( "../funcss/setuser.php" );
 echo hexavig();
 ?>
 
