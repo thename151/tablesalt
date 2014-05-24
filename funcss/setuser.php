@@ -189,27 +189,33 @@ function closeuser( $name )
 	
 	
 	// set status to closed, add close date
-/*
+
 	$date1 = date("y-m-d H:i:s",time());
 
 	my2query( "update users1 set
 				closeDate = \"$date1\"
 				where loginName = \"$name\" " );
-*/
+
 
 	// edit user info page
 }
 
 function stylenow( $name, $var )
 {
-	my2query( "update users1 set thestyle = \"$var\" where loginName = \"$name\"" );
-	$_SESSION['cssfile'] = $var;
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+
+	if( ( $var == "style-dark.css" ) || ( $var == "style-light.css" ) )
+	{
+		my2query( "update users1 set thestyle = \"$var\" where loginName = \"$name\"" );
+		$_SESSION['cssfile'] = $var;
+	}
 }
 
 
 function getstyle( $name )
 {
-	
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+
 	$var = "";
 	$result1 = myquery( "select thestyle from users1 where loginName = \"$name\"" );
 	

@@ -4,14 +4,14 @@ include_once( "funcs.php" );
 
 function coinwraw( $name, $amount, $destination )
 {
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "coinamount", $amount );if ($check1 != "okay" ){ return $check1;}
+	$amount = trimtoxdp( $amount, 8 );
+
 	if ( checkAddress($destination) == false )
 	{
 		return "bad address";
 	}
-
-	echo "$amount<br>";
-	$amount = trimtoxdp( $amount, 8 );
-	echo "$amount<br>";
 
 	$available = getQuickBalance( $name );
 	$txfee = 0.0002;
@@ -21,12 +21,19 @@ function coinwraw( $name, $amount, $destination )
 		return "insufficient funds";
 	}
 
+
+
+	//	getrunintotal
+	$olrunintotal = getrunintotal($name);
+
+	$runintotal = $olrunintotal - $amount2;
+
 	$date1 = date("y-m-d H:i:s");
 
 	$result4 = my2query( "INSERT INTO expenses
-				( user, amount, destination, datetime )
+				( user, amount, destination, runintotal, datetime )
 				VALUES 
-				( \"$name\", \"$amount2\", \"$destination\", \"$date1\" )" );
+				( \"$name\", \"$amount2\", \"$destination\", \"$runintotal\", \"$date1\" )" );
 
 	$q1 = myquery( "select
 			uniqueX
@@ -56,10 +63,33 @@ function settask( $amount, $destination, $ux )
 }
 
 
+function getrunintotal( $name )
+{
+	$olrunintotal = 0;
+	$q2 = myquery( "select
+		runintotal
+		from coinview
+		where user = \"$name\"
+		order by datetime desc limit 1 " );
+
+	$rowb = mysqli_fetch_row( $q2 );
+
+	if( $rowb != null )
+	{
+		$olrunintotal = $rowb[0];
+	}
+
+	return $olrunintotal;
+}
+
 function coinbuy( $name, $amount )
 {
-	echo "$amount<br>";
-	$amount = trimtoxdp( $amount, 3 );
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
+	$amount = trimtodp( $amount );
+	
+	
+	echo "$amounthhhhhh<br>";
 	echo "$amount<br>";
 	
 	if ( ( $amount ) < 0.001 )
@@ -73,15 +103,24 @@ function coinbuy( $name, $amount )
 		return "insufficient funds";
 	}
 	
+	
+	
+	//	getrunintotal
+	$olrunintotal = getrunintotal($name);
+		
+	$amount2 = $amount * 0.001;
+		
+	$runintotal = $olrunintotal - $amount2;
+	
 	$date1 = date("y-m-d H:i:s");
 	
-	$amount2 = $amount / 1000;
 
 	$result4 = my2query( "INSERT INTO expenses
-				( user, amount, destination, datetime )
+				( user, amount, destination, runintotal, datetime )
 				VALUES 
-				( \"$name\", \"$amount2\", \"bought products\", \"$date1\" )" );
-
+				( \"$name\", \"$amount2\", \"bought products\", \"$runintotal\", \"$date1\" )" );
+echo "qweewqqq";
+	
 
 	include_once( "sendproduct.php" );
 	echo sendproductbalance( "bitcoin", "bitcoin", "mBTC", $amount, $name,"coinbuy" );
@@ -93,6 +132,10 @@ function coinbuy( $name, $amount )
 
 function coinsell( $name, $amount )
 {
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
+	$amount = trimtodp( $amount );
+
 	echo "$amount<br>";
 	$amount = trimtoxdp( $amount, 3 );
 	echo "$amount<br>";
@@ -107,14 +150,19 @@ function coinsell( $name, $amount )
 		return "insufficient funds";
 	}
 
+
+	$olrunintotal = getrunintotal($name);
+		
+	$amount2 = $amount * -0.001;
+	
+	$runintotal = $olrunintotal - $amount2;
+	
 	$date1 = date("y-m-d H:i:s");
 
-	$negativeamount = $amount * -0.001;
-
 	$result4 = my2query( "INSERT INTO expenses
-				( user, amount, destination, datetime )
+				( user, amount, destination, runintotal, datetime )
 				VALUES 
-				( \"$name\", \"$negativeamount\", \"bought products\", \"$date1\" )" );
+				( \"$name\", \"$amount2\", \"sold products\", \"$runintotal\", \"$date1\" )" );
 	
 	$amount2 = $amount / 1000;
 	include_once( "sendproduct.php" );
@@ -127,6 +175,8 @@ function coinsell( $name, $amount )
 
 function getQuickBalance( $name )
 {
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+
 	/*
 	expenses        ux amount destination datetime
 
@@ -172,17 +222,34 @@ function getQuickBalance( $name )
 		$previous = $rowb[0];
 		$timehas = beforetimemins( $rowb[1], 1 );
 	}
-	
+
 	if( $timehas == "passed" )
 	{
 		$newtotal = queryAdd( $curradd );
 		$difference = $newtotal - $previous;
-	
+
+	//	getrunintotal
+		$olrunintotal = 0;
+		$q2 = myquery( "select
+			runintotal
+			from coinview
+			where user = \"$name\"
+			order by datetime desc limit 1 " );
+
+		$rowb = mysqli_fetch_row( $q2 );
+
+		if( $rowb != null )
+		{
+			$olrunintotal = $rowb[0];
+		}
+
+		$runintotal = $olrunintotal + $difference;
+		
 		$date1 = date("y-m-d H:i:s");
 		$result4 = my2query( "INSERT INTO addresschecks
-					( user, address, total, difference, datetime )
+					( user, address, total, difference, runintotal, datetime )
 					VALUES 
-					( \"$name\", \"$curradd\", \"$newtotal\", \"$difference\", \"$date1\" )" );
+					( \"$name\", \"$curradd\", \"$newtotal\", \"$difference\", \"$runintotal\", \"$date1\" )" );
 	}
 
 	$result = myquery("SELECT SUM( difference ) AS value_sum FROM addresschecks where user = \"$name\" "); 
@@ -304,6 +371,8 @@ function fillTable2()
 
 function getAddress( $name )
 {
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+
 	$q1 = myquery( "select
 			address, code
 			from addressesinuse
@@ -327,6 +396,8 @@ function getAddress( $name )
 
 function getNewAddress( $name )
 {
+	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
+
 	$qb = myquery( "select
 		date
 		from addressesinuse
@@ -395,7 +466,47 @@ function getNewAddress( $name )
     }
 }
 
+function listtransactions( $name1, $startfrom, $results )
+{
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 
+	$result7 = myquery( "select difference, address, datetime, runintotal, tablename
+							from coinview where user = \"$name1\" 
+							order by datetime desc limit $startfrom, $results" );
+
+
+	$result5 = myquery( "select difference
+							from coinview
+							where user = \"$name1\"" );
+
+	$numrows = mysqli_num_rows( $result5 );
+	
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
+	$i1 = 1;
+
+	while( $row2 = mysqli_fetch_array($result7) )
+	{
+		$messa[0] = $row2[0];
+		$messa[1] = $row2[1];
+		$messa[2] = $row2[2];
+		$messa[3] = $row2[3];
+		$messa[4] = $row2[4];
+
+		$mess1[$i1] = $messa;
+		$messa = null;
+		$i1++;
+	}
+	
+	return $mess1;
+}
 
 
 
@@ -445,21 +556,6 @@ function checkAddress($address)
 
     return substr(strtoupper(hash("sha256",hash("sha256",pack("H*",substr($address,0,strlen($address)-8)),true))),0,8) == substr($address,strlen($address)-8);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>

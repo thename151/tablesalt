@@ -1,11 +1,43 @@
 <?php
 
+function debug($something) {
+  echo $something."<br>\n";
+}
+
 /*
 every 3 minutes do tasks
 every 15 minutes check stp
 every hour check bp
 every hour check add
 */
+
+function quickGet( $var, $var2 )
+{
+	if (isset($_GET[$var]))
+	{
+		include_once '../funcss/dbfuncs.php';
+		$var3 = $_GET[$var];
+		$var3 = escapeStr( $var3 );
+	}
+	else{$var3 = $var2;}
+
+//	echo "$var $var3<br>";
+	return $var3;
+}
+
+function quickPost( $var, $var2 )
+{
+	if (isset($_POST[$var]))
+	{
+		include_once '../funcss/dbfuncs.php';
+		$var3 = $_POST[$var];
+		$var3 = escapeStr( $var3 );
+	}
+	else{$var3 = $var2;}
+
+	echo "$var $var3<br>";
+	return $var3;
+}
 
 
 $qe = '';
@@ -37,44 +69,52 @@ if( $qe == "scores" )
 	$mess1 = showscores($name1);
 	$mess2 = "";
 
-	for( $i2 = 0; $i2 < sizeof($mess1); $i2++ )
-	{
-		$mess3f = "";
-		$mess2f = "";
-		
-		if( $mess1[$i2][3] < 0 )
-		{
-			$mess3f = (float)$mess1[$i2][3];
-		} 
-		if( $mess1[$i2][2] != 0 )
-		{
-			$mess2f = (float)$mess1[$i2][2];
-		}
-		if( $mess1[$i2][3] == "zero" )
-		{
-			$mess3f = "0";
-		}
 
-		$mess2 .= '<tr><td><a href="page.php?qe=user&cr1=' . $mess1[$i2][0] . '">'.$mess1[$i2][0].' </a> </td>';
-		$mess2 .= '<td> <a href="page.php?qe=product
-				&cr1=' . $mess1[$i2][0] . '			
-				&pr1=' . $mess1[$i2][1] . '"">' . $mess1[$i2][1] . '</a> </td>';
-		$mess2 .= "<td>" . $mess2f . "</td>";
-		$mess2 .= "<td><center>" . $mess3f . "</center></td></tr>";
-		
-	}
-	$mess2 = "<center><table>" . $mess2 . "</table></center>";
+	if( $mess1[0][0] == "okay" )
+	{
 
-	if( sizeof($mess1)== 0 )
-	{
-		$mess2 = "no score";
-	}
-	else 
-	{
+		for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
+		{
+			$mess3f = "";
+			$mess2f = "";
+			
+			if( $mess1[$i2][3] < 0 )
+			{
+				$mess3f = (float)$mess1[$i2][3];
+			} 
+			if( $mess1[$i2][2] != 0 )
+			{
+				$mess2f = (float)$mess1[$i2][2];
+			}
+			if( $mess1[$i2][3] == "zero" )
+			{
+				$mess3f = "0";
+			}
+
+			$mess2 .= '<tr><td><a href="page.php?qe=user&cr1=' . $mess1[$i2][0] . '">'.$mess1[$i2][0].' </a> </td>';
+			$mess2 .= '<td> <a href="page.php?qe=product
+					&cr1=' . $mess1[$i2][0] . '			
+					&pr1=' . $mess1[$i2][1] . '"">' . $mess1[$i2][1] . '</a> </td>';
+			$mess2 .= "<td>" . $mess2f . "</td>";
+			$mess2 .= "<td><center>" . $mess3f . "</center></td></tr>";
+			
+		}
 		$mess2 = "<center><table>" . $mess2 . "</table></center>";
+
+		if( sizeof($mess1)== 0 )
+		{
+			$mess2 = "no score";
+		}
+		else 
+		{
+			$mess2 = "<center><table>" . $mess2 . "</table></center>";
+		}
+		$messagez = $mess2;	
 	}
-	
-	$messagez = $mess2;
+	else
+	{
+		$messagez = $mess1;
+	}
 }
 
 
@@ -96,11 +136,11 @@ if( $qe == "myproducts" )
 	$title1 = "list profile's products";
 	include '../funcss/listproducts.php';
 
-	$startfrom = '';
-	$results = '';
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
 
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
+	//~ if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
+	//~ if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
 
 
 	$mess1 = listprofilesproducts($name1, $startfrom, $results );
@@ -214,11 +254,8 @@ if( $qe == "users" )
 	$title1 = "users";
 	include '../funcss/setuser.php';
 
-	$startfrom = '';
-	$results = '';
-
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
 
 	$mess1 = listusers2( $startfrom, $results );
 	if( $mess1[0][0] == "okay" )
@@ -248,14 +285,10 @@ if( $qe == "products" )
 	$title1 = "products";
 	include '../funcss/listproducts.php';
 
-	$startfrom = '';
-	$results = '';
-	$cr1 = '';
-
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
-
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
+	$cr1 = quickGet( "cr1", "" );
+	
 	$mess1 = "";
 
 	if( $cr1 != "")
@@ -306,21 +339,13 @@ if( $qe == "dividends" )
 	$title1 = "dividends";
 	include '../funcss/divs.php';
 
-	$startfrom = '';
-	$results = '';
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
 
-	$cr1 = '';
-	$pr1 = '';
-	$cr2 = '';
-
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
-
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
-	if (isset($_GET['pr1'])){ $pr1 = $_GET['pr1'];}else{$pr1 = "";}
-	if (isset($_GET['cr2'])){ $cr2 = $_GET['cr2'];}else{$cr2 = "";}
-
-
+	$cr1 = quickGet( "cr1", "" );
+	$pr1 = quickGet( "pr1", "" );
+	$cr2 = quickGet( "cr2", "" );
+	
 	if(( $cr1 != "") && ($pr1 != "") )
 	{
 		$mess1 = listdivs2( $startfrom, $results, $cr1, $pr1 );
@@ -390,14 +415,10 @@ if( $qe == "sendproduct1" )
 {
 	$title1 = "send product";
 
-	$cr1 = '';
-	$cr2 = '';
-	$pr1 = '';
-
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
-	if (isset($_GET['cr2'])){ $cr2 = $_GET['cr2'];}else{$cr2 = "";}
-	if (isset($_GET['pr1'])){ $pr1 = $_GET['pr1'];}else{$pr1 = "";}
-
+	$cr1 = quickGet( "cr1", "" );
+	$pr1 = quickGet( "pr1", "" );
+	$cr2 = quickGet( "cr2", "" );
+	
 	$mess2 = '
 	<form action="page.php?qe=sendproduct2"
 	method="POST">
@@ -418,10 +439,10 @@ if( $qe == "sendproduct2" )
 {
 	$title1 = "send product";
 
-	$pcrea = $_POST["pcrea"];
-	$product = $_POST["product"];
-	$amount1 = $_POST["amount1"];
-	$nameto = $_POST["nameto"];
+	$pcrea = quickPost( "pcrea", "" );
+	$product = quickPost( "product", "" );
+	$amount1 = quickPost( "amount1", "" );
+	$nameto = quickPost( "nameto", "" );
 
 	include( "../funcss/sendproduct.php" );
 
@@ -435,11 +456,8 @@ if( $qe == "transactions" )
 	$title1 = "transactions";
 	include '../funcss/showscores.php';
 
-	$startfrom = '';
-	$results = '';
-
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
 
 	$mess1 = readlog( $name1, $startfrom, $results );
 
@@ -498,8 +516,8 @@ if( $qe == "transactions" )
 if( $qe == "sendmessage1" )
 {
 	$title1 = "send message";
-	$cr1 = '';
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
+
+	$cr1 = quickGet( "cr1", "" );
 
 	$mess2 = '
 	<form action="page.php?qe=sendmessage2"
@@ -519,8 +537,8 @@ if( $qe == "sendmessage2" )
 {
 	$title1 = "send message";
 
-	$nameto = $_POST["nameto"];
-	$messto = $_POST["messto"];
+	$nameto = quickPost( "nameto", "" );
+	$messto = quickPost( "messto", "" );
 
 	include( "../funcss/sendmessage.php" );
 
@@ -532,13 +550,10 @@ if( $qe == "readmessages" )
 	$title1 = "read messages";
 	include '../funcss/readmessages.php';
 
-	$startfrom = '';
-	$results = '';
-	$cr1 = '';
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
 
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
+	$cr1 = quickGet( "cr1", "" );
 
 	if( $cr1 != "" )
 	{
@@ -630,9 +645,9 @@ if( $qe == "changepassword2" )
 {
 	$title1 = "change password";
 
-	$pass1 = $_POST["pass1"];
-	$pass2a = $_POST["pass2a"];
-	$pass2b = $_POST["pass2b"];
+	$pass1 = quickPost( "pass1", "" );
+	$pass2a = quickPost( "pass2a", "" );
+	$pass2b = quickPost( "pass2b", "" );
 
 	include( "../funcss/setuser.php" );
 
@@ -675,9 +690,9 @@ if( $qe == "createproduct2" )
 	$pdetail = '';
 	$decimalplaces = '';
 
-	if (isset($_POST['pname'])){ $pname = $_POST['pname'];}else{$pname = "";}
-	if (isset($_POST['pdetail'])){ $pdetail = $_POST['pdetail'];}else{$pdetail = "";}
-	if (isset($_POST['decimalplaces'])){ $decimalplaces = $_POST['decimalplaces'];}else{$decimalplaces = "";}
+	$pname = quickPost( "pname", "" );
+	$pdetail = quickPost( "pdetail", "" );
+	$decimalplaces = quickPost( "decimalplaces", "" );
 
 //	echo "$name1, $pname, $pdetail, $decimalplaces";
 
@@ -714,8 +729,9 @@ if( $qe == "deleteproduct2" )
 {
 	$title1 = "delete product";
 
-	$pname = $_POST["pname"];
-	$pass1 = $_POST["pass1"];
+
+	$pname = quickPost( "pname", "" );
+	$pass1 = quickPost( "pass1", "" );
 
 	include( "../funcss/deleteproduct.php" );
 
@@ -726,7 +742,7 @@ if( $qe == "deletetrade1" )
 {
 	$title1 = "delete trade";
 
-	$trd1 = $_GET['trd1'];
+	$trd1 = quickGet( "trd1", "" );
 
 	$mess2 = 'delete trade ?<br>';
 
@@ -737,7 +753,7 @@ if( $qe == "deletetrade1" )
 	</form>
 	';
 
-	$no1 = '<a href="listptrades1.php?startfrom=0&results=5">don\'t delete</a>';
+	$no1 = '<a href="page.php?qe=mytrades">don\'t delete</a>';
 	$mess2 .= $yes1.'<br>'.$no1.'';
 
 	$messagez = $mess2;
@@ -745,7 +761,8 @@ if( $qe == "deletetrade1" )
 
 if( $qe == "deletetrade2" )
 {
-	$traden = $_POST["traden"];
+	$traden = quickPost( "traden", "" );
+	
 	include( "../funcss/settrade.php" );
 
 	$mess2 = removetrade( $name1, $traden );
@@ -758,9 +775,7 @@ if( $qe == "div1" )
 {
 	$title1 = "send dividend";
 
-	$pr1 = "";
-
-	if (isset($_GET['pr1'])) $pr1 = $_GET['pr1'];
+	$pr1 = quickGet( "pr1", "" );
 
 	$mess2 = '
 	<form action="page.php?qe=div2"
@@ -805,15 +820,12 @@ if( $qe == "div2" )
 {
 	$title1 = "send dividend";
 
-	$pr1 = '';
-	$cr2 = '';
-	$pr2 = '';
-	$am1 = '';
+	$pr1 = quickPost( "pr1", "" );
+	$cr2 = quickPost( "cr2", "" );
+	$pr2 = quickPost( "pr2", "" );
+	$am1 = quickPost( "am1", "" );
 
-	if (isset($_POST['pr1'])){ $pr1 = $_POST['pr1'];}else{$pr1 = "";}
-	if (isset($_POST['cr2'])){ $cr2 = $_POST['cr2'];}else{$cr2 = "";}
-	if (isset($_POST['pr2'])){ $pr2 = $_POST['pr2'];}else{$pr2 = "";}
-	if (isset($_POST['am1'])){ $am1 = $_POST['am1'];}else{$am1 = "";}
+
 
 	include( "../funcss/divs.php" );
 
@@ -858,6 +870,13 @@ if( $qe == "div3" )
 	if (isset($_POST['am1'])){ $am1 = $_POST['am1'];}else{$am1 = "";}
 	if (isset($_POST['prevmax'])){ $prevmax = $_POST['prevmax'];}else{$prevmax = "";}
 
+	$pr1 = quickPost( "pr1", "" );
+	$cr2 = quickPost( "cr2", "" );
+	$pr2 = quickPost( "pr2", "" );
+	$am1 = quickPost( "am1", "" );
+	$prevmax = quickPost( "prevmax", "" );
+
+
 	include( "../funcss/divs.php" );
 
 	$var1a = sendiv2( $name1, $pr1, $cr2, $pr2, $am1, $prevmax );
@@ -891,7 +910,7 @@ if( $qe == "edittrade1" )
 
 	include( "../funcss/settrade.php" );
 
-	$txno = $_GET['txno'];
+	$txno = quickGet( "txno", "" );
 
 	$mess2 = gettrade( $name1, $txno );
 
@@ -988,22 +1007,16 @@ if( $qe == "edittrade2" )
 {
 	$title1 = "set trade";
 
-	$txno = $_POST["txno"];
-	$buysell = $_POST["buysell"];
+	$txno = quickPost( "txno", "" );
+	$buysell = quickPost( "buysell", "" );
+	$amount1 = quickPost( "amount1", "" );
+	$pcrea1 = quickPost( "cr1", "" );
+	$product1 = quickPost( "pr1", "" );
+	$amount2 = quickPost( "amount2", "" );
+	$pcrea2 = quickPost( "cr2", "" );
+	$product2 = quickPost( "pr2", "" );
+	$vehicle = quickPost( "vehicle", "" );
 
-	$amount1 = $_POST["amount1"];
-	$pcrea1 = $_POST["cr1"];
-	$product1 = $_POST["pr1"];
-
-	$amount2 = $_POST["amount2"];
-	$pcrea2 = $_POST["cr2"];
-	$product2 = $_POST["pr2"];
-
-//	$vehicle = "no vehicle";
-	$vehicle = ""; // badvar name
-
-	if (isset($_POST['vehicle'])) $vehicle = $_POST['vehicle'];
-	
 	echo $vehicle . "wer<br>";
 
 	include( "../funcss/settrade.php" );
@@ -1017,25 +1030,11 @@ if( $qe == "edittrade3" )
 {
 	$title1 = "order";
 
-	$nm1 = "";
-	$passw = "";
-	$tdn = "";
-
-	$cr1 = "";
-	$pr1 = "";
-
-	$cr2 = "";
-	$pr2 = "";
-
-	$am1 = "";
-	$am2 = "";
-
-	if (isset($_GET['nm1'])) $nm1 = $_GET['nm1'];
-	if (isset($_GET['passw'])) $passw = $_GET['passw'];
-	if (isset($_GET['tdn'])) $tdn = $_GET['tdn'];
-
-	if (isset($_GET['amount'])) $am1 = $_GET['amount'];
-	if (isset($_GET['price'])) $am2 = $_GET['price'];
+	$nm1 = quickGet( "nm1", "" );
+	$passw = quickGet( "passw", "" );
+	$tdn = quickGet( "tdn", "" );
+	$am1 = quickGet( "amount", "" );
+	$am2 = quickGet( "price", "" );
 
 	if( $nm1 == "" && $passw == "" ) // && $tdn == ""
 	{
@@ -1075,16 +1074,10 @@ if( $qe == "product" )
 
 	include '../funcss/listproducts.php';
 
-	$startfrom = '';
-	$results = '';
-	$cr1 = '';
-	$pr1 = '';
-
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
-
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
-	if (isset($_GET['pr1'])){ $pr1 = $_GET['pr1'];}else{$pr1 = "";}
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
+	$cr1 = quickGet( "cr1", "" );
+	$pr1 = quickGet( "pr1", "" );
 
 	$mess2b = productdetail($cr1, $pr1);
 	$mess0 = "";
@@ -1155,7 +1148,6 @@ if( $qe == "product" )
 
 		$mess1 = readProductComments( $cr1, $pr1, $startfrom, $results );
 
-
 		$mess2g = "$mess2c<br>$mess2d<br>$mess2e<br>$mess2f<br>$mess2e2";
 		$mess2f = "<table><tr><td>$mess2c</td><td>$mess2d</td><td>$mess2e</td><td>$mess2e2</td><td>$mess2f</td></table>";
 			
@@ -1209,14 +1201,10 @@ if( $qe == "user" )
 
 	include '../funcss/listproducts.php';
 
-	$startfrom = '';
-	$results = '';
-	$cr1 = '';
-
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
-
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
+	$cr1 = quickGet( "cr1", "" );
+	
 	$mess0 = "";
 
 	$title1 = "user $cr1";
@@ -1304,24 +1292,13 @@ if( $qe == "settrade1" )
 {
 	$title1 = "set trade";
 
+	$cr1 = quickGet( "cr1", "" );
+	$pr1 = quickGet( "pr1", "" );
+	$cr2 = quickGet( "cr2", "" );
+	$pr2 = quickGet( "pr2", "" );
 	
-
-	$cr1 = "";
-	$pr1 = "";
-
-	$cr2 = "";
-	$pr2 = "";
-
-	$am1 = "1";
-	$type1 = "sell";
-
-	if (isset($_GET['cr1'])) $cr1 = $_GET['cr1'];
-	if (isset($_GET['pr1'])) $pr1 = $_GET['pr1'];
-	if (isset($_GET['cr2'])) $cr2 = $_GET['cr2'];
-	if (isset($_GET['pr2'])) $pr2 = $_GET['pr2'];
-
-	if (isset($_GET['am1'])) $am1 = $_GET['am1'];
-	if (isset($_GET['type1'])) $type1 = $_GET['type1'];
+	$am1 = quickGet( "am1", "1" );
+	$type1 = quickGet( "type1", "sell" );
 
 	$selected1 = "";
 	$selected2 = "";
@@ -1330,7 +1307,7 @@ if( $qe == "settrade1" )
 	{
 		$selected1 = "selected";
 	}
-	else
+	if( $type1 == "sell" )
 	{
 		$selected2 = "selected";
 	}
@@ -1384,15 +1361,14 @@ if( $qe == "settrade2" )
 {
 	$title1 = "set trade";
 
-	$amount1 = $_POST["amount1"];
-	$pcrea1 = $_POST["cr1"];
-	$product1 = $_POST["pr1"];
+	$buysell = quickPost( "buysell", "" );
 
-	$amount2 = $_POST["amount2"];
-	$pcrea2 = $_POST["cr2"];
-	$product2 = $_POST["pr2"];
-
-	$buysell = $_POST["buysell"];
+	$amount1 = quickPost( "amount1", "" );
+	$pcrea1 = quickPost( "cr1", "" );
+	$product1 = quickPost( "pr1", "" );
+	$amount2 = quickPost( "amount2", "" );
+	$pcrea2 = quickPost( "cr2", "" );
+	$product2 = quickPost( "pr2", "" );
 
 	include( "../funcss/settrade.php" );
 
@@ -1403,11 +1379,8 @@ if( $qe == "sendcomment1" )
 {
 	$title1 = "send comment";
 
-	$cr1 = '';
-	$pr1 = '';
-
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
-	if (isset($_GET['pr1'])){ $pr1 = $_GET['pr1'];}else{$pr1 = "";}
+	$cr1 = quickGet( "cr1", "" );
+	$pr1 = quickGet( "pr1", "" );
 
 	$mess3 = '<tr class="trq"><td></td><td><input type="text" name="pr1" maxlength="25" value="' . $pr1 . '"></td></tr>';
 	if ( $pr1 == '' )
@@ -1434,14 +1407,10 @@ if( $qe == "sendcomment2" )
 {
 	$title1 = "send comment";
 
-	$cr1 = '';
-	$pr1 = '';
-	$messto = '';
-
-	if (isset($_POST['nameto'])){ $cr1 = $_POST['nameto'];}else{$cr1 = "";}
-	if (isset($_POST['pr1'])){ $pr1 = $_POST['pr1'];}else{$pr1 = "";}
-	if (isset($_POST['messto'])){ $messto = $_POST['messto'];}else{$messto = "";}
-
+	$cr1 = quickPost( "cr1", "" );
+	$pr1 = quickPost( "pr1", "" );
+	$messto = quickPost( "messto", "" );
+	
 //	echo "$cr1 $pr1 qe";
 
 	$mess2 ="";
@@ -1497,9 +1466,7 @@ if( $qe == "closeuser2" )
 {
 	$title1 = "close user";
 
-	$pass1 = "";
-	
-	if (isset($_POST['pass1'])){ $pass1 = $_POST['pass1'];}else{$amount = "";}
+	$pass1 = quickPost( "pass1", "" );
 
 	include( "../funcss/funcs.php" );
 	$check1 = checknamepass( $name1, $pass1 );
@@ -1540,33 +1507,36 @@ if( $qe == "closeuser3" )
 if( $qe == "coins" )
 {
 	$title1 = "cns";
+	
 	include( "../funcss/coins.php" );
 //	fillTable();
 	$balance = 'bitcoin : ' . getQuickBalance( $name1 );
 
 	include_once( "../funcss/listtrades.php" );
+	
 	$balance2 = showHowMuch2( "bitcoin", "mBTC", $name1 ) * 1;
 
 	$messagez = $balance . '<br>
 	<a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
 	 products : ' . $balance2 . '<br><br>' . '
+	<a href="page.php?qe=coinst">coin transactions</a><br>
 	<a href="page.php?qe=de-po">deposit</a><br>
 	<a href="page.php?qe=tradecoin">trade</a><br>
 	<a href="page.php?qe=wraw">withdraw</a>';
 	
 	
 	
-	$address = "1comboyNsev2ubWRbPZpxxNhghLfonzuN";
-	$var = checkAddress($address);
-	if( $var == true )
-	{
-		echo "itstrue";
-	}
-	else
-	{
-		echo "itsnottrue";
-	}
-	$messagez = "qweewq " . checkAddress($address);
+	//~ $address = "1comboyNsev2ubWRbPZpxxNhghLfonzuN";
+	//~ $var = checkAddress($address);
+	//~ if( $var == true )
+	//~ {
+		//~ echo "itstrue";
+	//~ }
+	//~ else
+	//~ {
+		
+	//~ }
+	//$messagez = "qweewq " . checkAddress($address);
 }
 
 if( $qe == "okay" )
@@ -1618,15 +1588,11 @@ if( $qe == "wraw" )
 
 if( $qe == "wraw2" )
 {
-	$amount = '';
-	$destination = '';
-
-	if (isset($_POST['amount'])){ $amount = $_POST['amount'];}else{$amount = "";}
-	if (isset($_POST['destination'])){ $destination = $_POST['destination'];}else{$destination = "";}
-	
+	$amount = quickPost( "amount", "" );
+	$destination = quickPost( "destination", "" );
+		
 	include( "../funcss/coins.php" );
 
-	
 	$q1 = coinwraw( $name1, $amount, $destination );
 
 	echo $q1;
@@ -1678,7 +1644,7 @@ if( $qe == "tradecoin" )
 
 	$form = '
 	<TABLE id="tableft">
-	<form action="page.php?qe=coinbuy"method="POST">
+	<form action="page.php?qe=coinbuy" method="POST">
 	<tr class="trq">
 	<td>buy</td>
 	<td><input type="text" name="amount1" maxlength="25" value="1"></td>
@@ -1690,7 +1656,7 @@ if( $qe == "tradecoin" )
 
 	<tr class="trq">
 
-	<form action="page.php?qe=coinsell"method="POST">
+	<form action="page.php?qe=coinsell" method="POST">
 	<td>sell</td>
 	<td><input type="text" name="amount2" maxlength="25" value="1"></td>
 	<td><a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
@@ -1708,23 +1674,23 @@ if( $qe == "tradecoin" )
 
 if( $qe == "coinbuy" )
 {
-	$amount = '';
-
-	if (isset($_POST['amount1'])){ $amount = $_POST['amount1'];}else{$amount = "";}
+	$amount = quickPost( "amount1", "" );
 	
+	echo "qweewqqq";
+
 	include( "../funcss/coins.php" );
 
 	$q1 = coinbuy( $name1, $amount );
 
-	echo $q1;
+	echo "qa<br>".$q1;
 
-//	header("Location: page.php?qe=message&q2=$q1");
+	header("Location: page.php?qe=message&q2=$q1");
 }
 
 
 if( $qe == "message" )
 {
-	$title1 =  "insufficient funds";
+	$title1 =  "message";
 	
 	$q2 = "";
 	if (isset($_GET['q2'])){ $q2 = $_GET['q2'];}else{$q2 = "";}
@@ -1742,9 +1708,7 @@ if( $qe == "nofunds" )
 
 if( $qe == "coinsell" )
 {
-	$amount = '';
-
-	if (isset($_POST['amount2'])){ $amount = $_POST['amount2'];}else{$amount = "";}
+	$amount = quickPost( "amount2", "" );
 	
 	include( "../funcss/coins.php" );
 
@@ -1832,15 +1796,90 @@ if( $qe == "de-po-add" )
 }
 
 
+if( $qe == "coinst" )
+{
+	$title1 = "coin transactions";
+	
+	include( "../funcss/coins.php" );
+
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
+	
+	$mess1 = listtransactions( $name1, $startfrom, $results );
+	
+	$mess10 = '';
+	
+	if( $mess1[0][0] == "okay" )
+	{
+		$mess4 = "page.php?qe=coinst&";
+
+		include_once( "incs3.php" );
+
+		$mess2i = "";
+
+		$mess2i .= "<table>";
+
+		for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
+		{
+
+			$mess2i .= "<tr><td>";
+			$mess2i .= $mess1[$i2][2];
+			$mess2i .= "</td>";
+			$mess2i .= "<td>";
+
+
+			if( $mess1[$i2][4] == "income" )
+			{
+				$mess2i .= "deposit : " . $mess1[$i2][1];
+			}
+			else
+			{
+				if( ( $mess1[$i2][1] != "bought products" ) && ( $mess1[$i2][1] != "sold products" ) )
+				{
+					$mess2i .= "withdrawal : ". $mess1[$i2][1];
+				}
+				else
+				{
+					$mess2i .= $mess1[$i2][1];
+				}
+				
+			}
+
+
+
+			$mess2i .= "</td>";
+			$mess2i .= "<td>";
+			$mess2i .= $mess1[$i2][0] * 1;
+			$mess2i .= "</td>";
+			$mess2i .= "<td>";
+			$mess2i .= $mess1[$i2][3] * 1;
+			$mess2i .= "</td>";
+			//~ $mess2i .= "<td>";
+			//~ $mess2i .= $mess1[$i2][4];
+			//~ $mess2i .= "</td></	tr>";
+			
+		}
+			$mess2i .= "</table>";
+
+			$mess2i .= "<br><br>";
+
+		$mess10 .= "$displayResults<br>";
+
+		$mess10 .= $mess2i . $mess3;
+	}
+	else
+	{
+		$mess10 .= $mess1;
+	}
+	$messagez .= $mess10;
+}
+
 
 if( $qe == "colours" )
 {
 	$title1 = "settins";
 
-	$q2 = '';
-
-	if (isset($_GET['q2'])){ $q2 = $_GET['q2'];}else{$q2 = "";}
-
+	$q2 = quickGet( "q2", "" );
 	
 	$messagez = '';
 	
@@ -1850,7 +1889,6 @@ if( $qe == "colours" )
 	{
 		stylenow( $name1, "style-dark.css" );
 	}
-
 	if( $q2 == "light" )
 	{
 		stylenow( $name1, "style-light.css" );
@@ -1860,45 +1898,9 @@ if( $qe == "colours" )
 	<a href="page.php?qe=colours&q2=dark">dark</a>';
 }
 
-//include( "../funcss/funcs2.php" );
+#debug("qwe");
 
-//~ $messagez = check_string( "username", "qwedddergergergergerbher" ) . "<br>";
-//~ $messagez .= check_string( "password", "qweddder  erbherssssssss" ) . "<br>";
-//~ $messagez .= check_string( "productname", "qwe_dd-_-derweseeeeeeeeeerbherssssssss" ) . "<br>";
-//~ $messagez .= check_string( "productdetail", "qwe_dd-_-de rfwsefwefweseeeeeeeeeerbherssssssss" ) . "<br>";
-//~ $messagez .= check_string( "message", "wsdf" ) . "<br>";
-//~ $messagez .= check_string( "amount", "0.05123" ) . "<br>";
-//~ $messagez .= check_string( "pageno", "4555" ) . "<br>";
-//~ $messagez .= check_string( "trueorfalse", "false" ) . "<br>";
-//~ $messagez .= check_string( "messagetype", "message" ) . "<br>";
-//~ 
-//~ $messagez .= trimtoxdp( 500.112233445566, 8 ) . "<br>";
-
-
-	//~ $messagez .= '<br><br>';
-	//~ $messagez .= 'qq: ';
-	//~ $number = "-2";
-	//~ $var21 = preg_match('/^[0-9]+(\.[0-9]+)?$/', $number);
-	//~ if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $number))
-	//~ {
-		//~ echo 'Is a number! : '. $var21;
-	//~ }
-	//~ else
-	//~ {
-		//~ echo 'Not a number!'. $var21;
-	//}
-
-
-//~ $input = '-4499';
-//~ 
-//~ if (filter_var($input, FILTER_VALIDATE_FLOAT) === false)
-//~ {
-    //~ echo 'not allowed';
-//~ }
-//~ else
-//~ {
-    //~ echo 'allowed';
-//~ }
+$messagez .= '';
 
 ?>
 

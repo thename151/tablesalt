@@ -548,7 +548,33 @@ function check_string( $type, $var )
 		}
 		return "okay";
 	}
-	
+
+	if( $type == "coinamount" )
+	{
+		$len = strlen( $var );
+
+		if( $len > 17 )
+		{
+			return "amount must be $len2 characters or less";
+		}
+
+		$var2 = preg_match('/^[0-9]+(\.[0-9]+)?$/', $var);
+
+		if ( $var == 0 )
+		{
+			return "amount must contain only characters 0-9 and .  : $var";
+		}		
+		if( $var < 0.00000001 )
+		{
+			return "amount must be more than 0.00000001";
+		}
+		if( $var > 21000000 )
+		{
+			return "amount must be less than 21,000,000";
+		}
+
+		return "okay";
+	}
 	
 	return "okay2";
 }

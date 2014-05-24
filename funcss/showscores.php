@@ -10,7 +10,10 @@ function showscores( $name1 )
 						 profileName = \"$name1\" and 
 						 status1 = \"okay\"" );
 	$mess1a = null;
-	$i1 = 0;
+
+	$mess1a[0][0] = "okay";
+
+	$i1 = 1;
 
 	while( $row2 = mysqli_fetch_array($result7) )
 	{

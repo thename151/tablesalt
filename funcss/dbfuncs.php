@@ -1,17 +1,31 @@
 <?php
 
+function escapeStr( $var1 )
+{
+	include( "../dbdets.inc" );
+	$cxn = mysqli_connect( $host1, $usrname1,$passw1, $dbname1 )
+	or die ("could not connect 2 server");
+
+	$var1 = mysqli_real_escape_string($cxn, $var1);
+
+	mysqli_close($cxn);
+
+	return $var1;
+}
+
 function myquery( $fquery )
 {
 	include( "../dbdets.inc" );
 	$cxn = mysqli_connect( $host1, $usrname1,$passw1, $dbname1 )
-	or die ("couldn’t connect 2 server");
+	or die ("could not connect 2 server");
+//	or die ("couldn’t connect 2 server");
 
 	$query = $fquery;
 
 //	echo $fquery . '<br>';
 
 	$result = mysqli_query($cxn,$query)
-	or die ("Couldn’t executes query! : <br>$query");
+	or die ("Could not executes query! : <br>$query");
 
 	mysqli_close($cxn);
 
@@ -23,7 +37,7 @@ function my2query( $fquery )
 {
 	include( "../dbdets.inc" );
 	$cxn = mysqli_connect( $host1, $usrname1,$passw1, $dbname1 )
-	or die ("couldn’t connect 2 server");
+	or die ("could not connect 2 server");
 
 	$date1 = date("y-m-d H:i:s",time());
 	$query = $fquery;
@@ -31,7 +45,7 @@ function my2query( $fquery )
 //	echo $fquery . '<br>';
 	
 	$result = mysqli_query($cxn,$query)
-	or die ("Couldn’t executes query! 2 : <br>$query");
+	or die ("Could not executes query! 2 : <br>$query");
 	
 	$cleanq = mysqli_real_escape_string($cxn,$fquery);
 	
@@ -44,15 +58,11 @@ function my2query( $fquery )
 	            ";
 	
 	$result2 = mysqli_query( $cxn, $querylog )
-	or die ("Couldn’t executes query! 3 : <br>$querylog");
+	or die ("Could not executes query! 3 : <br>$querylog");
 	
 	mysqli_close($cxn);
 
 	return $result;
 }
-
-//( \"$date1\" , \"$cleanq\" )
- 
-
 
 ?>

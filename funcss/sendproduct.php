@@ -53,11 +53,11 @@ function sendprDiv2( $name, $cr1, $pr1, $amount )
 function sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
 {
 #	echo "sendproduct  :  $name1, $pcrea, $pname, $amount, $name2, $sendsort<br>";
-	$check1 = sendproduct2( $name1, $pcrea, $pname, $amount, $name2 );
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
+	//~ $check1 = sendproduct2( $name1, $pcrea, $pname, $amount, $name2 );
+	//~ if( $check1 != "is valid" )
+	//~ {
+		//~ return $check1;
+	//~ }
 
 	// 	does pcrea - pname exist
 	// 	does name2 exist

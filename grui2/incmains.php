@@ -4,19 +4,14 @@
 if( $qe == "prices" )
 {
 	$title1 = "prices";
-	include '../funcss/listtrades2.php';
+	include '../funcss/listtrades.php';
 	
-	$startfrom = '';
-	$results = '';
-	$cr1 = '';
-	$pr1 = '';
-	$cr2 = '';
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
+	$cr1 = quickGet( "cr1", "" );
+	$pr1 = quickGet( "pr1", "" );
+	$cr2 = quickGet( "cr2", "" );
 
-	if (isset($_GET['startfrom'])){ $startfrom = $_GET['startfrom'];}else{$startfrom = "0";}
-	if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
-	if (isset($_GET['cr1'])){ $cr1 = $_GET['cr1'];}else{$cr1 = "";}
-	if (isset($_GET['pr1'])){ $pr1 = $_GET['pr1'];}else{$pr1 = "";}
-	if (isset($_GET['cr2'])){ $cr2 = $_GET['cr2'];}else{$cr2 = "";}
 
 	$mess1 = "";
 
@@ -143,7 +138,14 @@ if( $qe == "market" )
 	if (isset($_GET['cr1'])) $cr2 = $_GET['cr2'];
 	if (isset($_GET['pr2'])) $pr2 = $_GET['pr2'];
 
-	include '../funcss/listtrades2.php';
+
+	$cr1 = quickGet( "cr1", "" );
+	$pr1 = quickGet( "pr1", "" );
+	$cr2 = quickGet( "cr2", "" );
+	$pr2 = quickGet( "pr2", "" );
+
+
+	include '../funcss/listtrades.php';
 
 	$mess7 = listdep2( $cr1, $pr1, $cr2, $pr2, 2 );
 
