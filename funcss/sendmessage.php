@@ -7,11 +7,11 @@ function sendmessage( $name1, $name2, $message )
 	$check1 = check_string( "username", $name2 );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "message", $message );if ($check1 != "okay" ){ return $check1;}
 
-	$mess1 = profile_exist( $name1 );
-	if( $mess1 == "profile does exist" )
+	$mess1 = checkuser( $name1 );
+	if( $mess1 == "good" )
 	{
-		$mess2 = profile_exist( $name2 );
-		if( $mess2 == "profile does exist" )
+		$mess2 = checkuser( $name2 );
+		if( $mess2 == "good" )
 		{
 			$date1 = date("y-m-d H:i:s");
 			$result4 = my2query( "INSERT INTO messages1 (message1,datetime,from1,to1) VALUES (\"$message\",\"$date1\",\"$name1\",\"$name2\")" );
@@ -30,11 +30,11 @@ function sendComment( $name1, $name2, $message )
 	$check1 = check_string( "username", $name2 );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "message", $message );if ($check1 != "okay" ){ return $check1;}
 
-	$mess1 = profile_exist( $name1 );
-	if( $mess1 == "profile does exist" )
+	$mess1 = checkuser( $name1 );
+	if( $mess1 == "good" )
 	{
-		$mess2 = profile_exist( $name2 );
-		if( $mess2 == "profile does exist" )
+		$mess2 = checkuser( $name2 );
+		if( $mess2 == "good" )
 		{
 			$date1 = date("y-m-d H:i:s");
 			$result4 = my2query( "INSERT INTO messages1 (message1,datetime,from1,to1, type)
@@ -54,11 +54,11 @@ function sendProductComment( $name1, $name2, $pr1, $message )
 	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "message", $message );if ($check1 != "okay" ){ return $check1;}
 
-	$mess1 = profile_exist( $name1 );
-	if( $mess1 == "profile does exist" )
+	$mess1 = checkuser( $name1 );
+	if( $mess1 == "good" )
 	{
-		$mess2 = profile_exist( $name2 );
-		if( $mess2 == "profile does exist" )
+		$mess2 = checkuser( $name2 );
+		if( $mess2 == "good" )
 		{
 			$date1 = date("y-m-d H:i:s");
 			$result4 = my2query( "INSERT INTO messages1 (message1,datetime,from1,to1, product, type)

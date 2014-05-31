@@ -2,25 +2,13 @@
 
 include_once( "funcs.php" );
 
-function deleteproduct2( $name1, $pass1, $pname )
+
+function deleteproduct( $name1, $pass1, $pname )
 {
-	include( "hilovalues.php" );
-	
 	$check4 = checknamepass( $name1, $pass1 );
 	if( $check4 != "goodpass" )
 	{
 		return $check4;
-	}
-	return check_mess($pname, "product name", $productlength );
-}
-
-
-function deleteproduct( $name1, $pass1, $pname )
-{
-	$check1 = deleteproduct2( $name1, $pass1, $pname );
-	if( $check1 != "is valid" )
-	{
-		return $check1;
 	}
 	
 	return deleteproductpassed( $name1, $pname );

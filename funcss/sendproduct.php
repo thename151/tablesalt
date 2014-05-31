@@ -94,8 +94,8 @@ function sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
 
 	//	product exists
 	//	does name2 exist
-	$check2 = profile_exist($name2);
-	if( $check2 != "profile does exist")
+	$check2 = checkuser($name2);
+	if( $check2 != "good")
 	{
 		return "$name2 : $check2";
 	}

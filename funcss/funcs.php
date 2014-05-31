@@ -3,187 +3,23 @@ include_once( "dbfuncs.php" );
 include_once( "hilovalues.php" );
 include_once( "lib/password.php" );
 
-
-function check_name($fname,$label,$flen)
+function checkuser( $name1 )
 {
-	# username, password, productname.
-
-	$len = strlen($fname);
-	if( $len < 2 )
-	{
-		return "$label must be 2 characters or more";
-	}
-	if( $len > $flen )
-	{
-		return "$label must be $flen characters or less";
-	}
-
-//	$var2 = ereg("^[A-Za-z0-9_-]+$",$fname);
-#	$var1 = preg_match("^[A-Za-z0-9_-]+$^",$fname);
-		
-	$var1 = preg_match("/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/",$fname);
-	if( $var1 == null )
-	{
-		return "$label must contain only characters A-Z a-z 0-9 _ and -";
-	}
-	return "is valid";
-}
-
-function check_name2($fname,$label,$flen)
-{
-	# username, password, productname.
-
-	$len = strlen($fname);
-	if( $len < 2 )
-	{
-		return "$label must be 2 character or more";
-	}
-	if( $len > $flen )
-	{
-		return "$label must be $flen characters or less";
-	}
-
-	//	$var2 = ereg("^[A-Za-z0-9_-]+$",$fname);
-	#	$var1 = preg_match("^[A-Za-z0-9_-]+$^",$fname);
-
-	$var1 = preg_match("/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/","qqq" . $fname);
-	if( $var1 == null )
-	{
-		return "$label must have only characters A-Z a-z 0-9 _ and -";
-	}
+	$check1 = check_string("username", $name1);	if ( $check1 != "okay" ){return  $check1;}
 	
-	if ( strpos($fname, " ") != false )
-	{
-		return "$label must not have a space";
-	}
-
-	$var1 = preg_match("/[a-z]/", "123" . $fname);
-	if( $var1 == null )
-	{
-		return "$label must have a letter";
-	}
+	$result = myquery( "select uniqueX, closeDate from users1 where loginName = \"$name1\" " );
+	$row = mysqli_fetch_row($result);
 	
-	return "is valid";
-}
-
-
-
-
-function check_number( $numstr ,$min1, $max1 )
-{
-//	echo "1 : " . $numstr . "<br>";
-//  amount, tradenumber.
-	$n1 = trim($numstr);
-	
-// 	$var1 = preg_match("/\b[0-9]+\.[0-9]\b/",$n1);
-	$var1 = preg_match("/^[0-9.]+$/",$n1);
-
-	if( $var1 == null )
+	if( $row[0] == null )
 	{
-		return "number is bad";
+		return "user does not exist";
 	}
-	
-	if( $n1 < $min1 )
+	if( $row[1] == null )
 	{
-// 		echo "heresmall" . $n1;
-		return "number is too small, it should be more than or equal to $min1";
+		return "good";
 	}
-	if( $n1 > $max1 )
-	{
-// 		echo "herebig";
-		return "number is too large, it should be less than or equal to $max1";
-	}
-	
-//	echo "2 : " . $numstr . "<br>";
-	return "is valid";
-}
 
-
-function check_whole_number( $numstr ,$min1, $max1 )
-{
-//	echo "1 : " . $numstr . "<br>";
-//  amount, tradenumber.
-	$n1 = trim($numstr);
-	
-// 	$var1 = preg_match("/\b[0-9]+\.[0-9]\b/",$n1);
-	$var1 = preg_match("/^[0-9]+$/",$n1);
-
-	if( $var1 == null )
-	{
-		return "number is bad";
-	}
-	
-	if( $n1 < $min1 )
-	{
-// 		echo "heresmall" . $n1;
-		return "number is too small, it should be more than or equal to $min1";
-	}
-	if( $n1 > $max1 )
-	{
-// 		echo "herebig";
-		return "number is too large, it should be less than or equal to $max1";
-	}
-	
-//	echo "2 : " . $numstr . "<br>";
-	return "is valid";
-}
-
-
-function check_mess($fname,$label,$flen)
-{
-	#message, details.
-	$len = strlen($fname);
-	if( $len < 2 )
-	{
-		$message = "$label must be 2 characters or more";
-	}
-	else
-	{
-		if( $len > $flen )
-		{
-			$message = "$label must be $flen characters or less";
-		}
-		else
-		{
-//			$var1 = ereg("^[A-Za-z0-9 _-]+$",$fname);
-//			$var1 = preg_match("^[A-Za-z0-9 _-]+$^",$fname);
-			$var1 = preg_match("/^[a-zA-Z0-9][a-zA-Z0-9 _.-]+$/",$fname);
-//			/^[A-Z][a-zA-Z -]+$/
-			if( $var1 == null )
-			{
-				$message = "$label must contain only characters A-Z a-z 0-9 _.- and space, and start with A-Z a-z 0-9";
-			}
-			else
-			{
-				$message = "is valid";
-			}
-		}
-	}
-	return $message;
-}
-
-
-function profile_exist($fname2)
-{
-	$check1 = check_name($fname2,"name",25);
-	if ( $check1 == "is valid" )
-	{
-		
-		$result = myquery( "select loginName from users1 where loginName = \"$fname2\" and closeDate is null" );
-		$row = mysqli_fetch_row( $result );
-		if($row != null )
-		{
-			return "profile does exist";
-		}
-		else
-		{
-			return "profile does not exist";
-		}
-	}
-	else
-	{
-		return "profile does not exist";
-	}
+	return "user closed";
 }
 
 function checknamepass( $name1, $pass1 )
@@ -223,43 +59,6 @@ function checknamepass2b( $name1, $pass1 )
 	return 'bad password';
 }
 
-
-
-function checksstartresults( $startfrom, $results )
-{
-	$check1 = check_whole_number( $startfrom, 0, 5000 );
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
-
-	$check1 = check_whole_number( $results, 1, 50 );
-	if( $check1 != "is valid" )
-	{
-		return $check1;
-	}
-	return "is valid";
-}
-
-
-function checkuser( $name1 )
-{
-	$check1 = check_string("username", $name1);	if ( $check1 != "okay" ){return  $check1;}
-	
-	$result = myquery( "select uniqueX, closeDate from users1 where loginName = \"$name1\" " );
-	$row = mysqli_fetch_row($result);
-	
-	if( $row[0] == null )
-	{
-		return "user does not exist";
-	}
-	if( $row[1] == null )
-	{
-		return "good";
-	}
-
-	return "user closed";
-}
 
 function trimtodp( $num )
 {

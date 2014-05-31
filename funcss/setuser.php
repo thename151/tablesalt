@@ -22,10 +22,10 @@ function createprofile( $fname1, $pass1, $pass2 )
 	}
 
 	#check name availability
-	$check3 = profile_exist($fname1);
+	$check3 = checkuser($fname1);
 
 //echo "qwe 3<br>";
-	if ($check3 == "profile does not exist" )
+	if ($check3 == "good" )
 	{
 		#add user
 
@@ -130,13 +130,7 @@ function changepass( $name1, $pass1, $pass2a, $pass2b )
 		return "new passwords do not match";
 	}
 
-	include( "hilovalues.php" );
-	$check2 = check_name( $pass2a, "password", $passlength );
-	#check pass is valid
-	if ($check2 != "is valid" )
-	{
-		return $check2;
-	}
+	$check1 = check_string("password", $pass1);	if ( $check1 != "okay" ){return  $check1;}
 
 	$hashAndSalt = password_hash($pass2a, PASSWORD_BCRYPT);
 
