@@ -18,10 +18,12 @@ function sendproductbalance( $name1, $pcrea, $pname, $amount, $name2, $sendsort 
 	$amount = trimtodp( $amount );
 
 	$mess = sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort );
-	include_once ("balance4.php");
-	
-	newSend( $pcrea, $pname, $name1, $name2 );
-	
+
+	if( $mess == "product sent" )
+	{
+		include_once ("balance4.php");
+		$mess = newSend( $pcrea, $pname, $name1, $name2 );
+	}
 	return $mess;
 }
 
@@ -124,7 +126,7 @@ function sendlog($name1, $pcrea, $pname, $amount, $name2, $sendsort )
 	$date1 = date("y-m-d H:i:s",time());
 
 	my2query( "INSERT INTO sendreclog1 (from1,to1,creator,product,amount,sendsort,dateLog) VALUES (\"$name1\",\"$name2\",\"$pcrea\",\"$pname\",\"$amount\",\"$sendsort\",\"$date1\" )" );
-	return "product sent ";
+	return "product sent";
 }
 
 

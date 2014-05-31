@@ -27,14 +27,14 @@ if ( $qe == "start" )
 if ( $qe == "prices" )
 {
 	$link1 = "page2.php";
-	include 'incmains.php';
+	include 'outprice.php';
 }
 
 
 if( $qe == "market" )
 {
 	$link1 = "page2.php";
-	include 'incmains.php';
+	include 'outprice.php';
 }
 
 

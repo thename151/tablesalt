@@ -11,34 +11,7 @@ every hour check bp
 every hour check add
 */
 
-function quickGet( $var, $var2 )
-{
-	if (isset($_GET[$var]))
-	{
-		include_once '../funcss/dbfuncs.php';
-		$var3 = $_GET[$var];
-		$var3 = escapeStr( $var3 );
-	}
-	else{$var3 = $var2;}
-
-//	echo "$var $var3<br>";
-	return $var3;
-}
-
-function quickPost( $var, $var2 )
-{
-	if (isset($_POST[$var]))
-	{
-		include_once '../funcss/dbfuncs.php';
-		$var3 = $_POST[$var];
-		$var3 = escapeStr( $var3 );
-	}
-	else{$var3 = $var2;}
-
-	echo "$var $var3<br>";
-	return $var3;
-}
-
+include_once 'quickget.php';
 
 $qe = '';
 $messagez = '';
@@ -121,13 +94,14 @@ if( $qe == "scores" )
 if( $qe == "prices" )
 {
 	$link1 = "page.php";
-	include 'incmains.php';
+	
+	include 'outprice.php';
 }
 
 if( $qe == "market" )
 {
 	$link1 = "page.php";
-	include 'incmains.php';
+	include 'outprice.php';
 }
 
 
@@ -1537,6 +1511,8 @@ if( $qe == "coins" )
 		
 	//~ }
 	//$messagez = "qweewq " . checkAddress($address);
+
+	checkrpc();
 }
 
 if( $qe == "okay" )
@@ -1556,12 +1532,12 @@ if( $qe == "wraw" )
 	<tr class="trq">
 
 	<td>amount</td>
-	<td><input type="text" name="amount" maxlength="25" value="1"></td>
+	<td><input type="text" name="amount" maxlength="25" value=" "size="14"></td>
 	</tr>
 			
 	<tr class="trq">
 	<td>destination</td>
-	<td><input type="text" name="destination" maxlength="40" value="1"></td>
+	<td><input type="text" name="destination" maxlength="40" value="" size="28"></td>
 	
 	</tr>
 	<tr class="trq">
@@ -1581,7 +1557,7 @@ if( $qe == "wraw" )
 	include( "../funcss/coins.php" );
 	$balance = 0;
 	$balance = getQuickBalance( $name1 );
-	$messagez = 'balance : ' . $balance . '<br><br>transaction fee is 0.0002 bitcoin';
+	$messagez = 'balance : ' . $balance . '<br><br>transaction fee is 0.0001 bitcoin';
 	
 	$messagez .=  $form;
 }

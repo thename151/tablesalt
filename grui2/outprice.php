@@ -1,5 +1,6 @@
 <?php
 
+include_once 'quickget.php';
 
 if( $qe == "prices" )
 {

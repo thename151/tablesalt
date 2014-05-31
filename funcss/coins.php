@@ -14,7 +14,7 @@ function coinwraw( $name, $amount, $destination )
 	}
 
 	$available = getQuickBalance( $name );
-	$txfee = 0.0002;
+	$txfee = 0.0001;
 	$amount2 = $amount + $txfee;
 	if ( $amount2 > $available )
 	{
@@ -82,7 +82,7 @@ function getrunintotal( $name )
 	return $olrunintotal;
 }
 
-function coinbuy( $name, $amount )
+function coinbuy( $name, $amount ) // buy mbtc products
 {
 	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
@@ -103,8 +103,6 @@ function coinbuy( $name, $amount )
 		return "insufficient funds";
 	}
 	
-	
-	
 	//	getrunintotal
 	$olrunintotal = getrunintotal($name);
 		
@@ -123,14 +121,14 @@ echo "qweewqqq";
 	
 
 	include_once( "sendproduct.php" );
-	echo sendproductbalance( "bitcoin", "bitcoin", "mBTC", $amount, $name,"coinbuy" );
+	echo sendproductbalance( "holder", "bitcoin", "mBTC", $amount, $name,"coinbuy" );
 //	sendproductbalance( "coins", "coins", "mBTC", $amount, $name,"coinbuy" );
 
 	return "okay";
 }
 
 
-function coinsell( $name, $amount )
+function coinsell( $name, $amount ) // sell mbtc products
 {
 	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
@@ -166,7 +164,7 @@ function coinsell( $name, $amount )
 	
 	$amount2 = $amount / 1000;
 	include_once( "sendproduct.php" );
-	sendproductbalance( $name, "bitcoin", "mBTC", $amount, "bitcoin","coinsell" );
+	sendproductbalance( $name, "bitcoin", "mBTC", $amount, "holder","coinsell" );
 //	sendproductbalance( $name, "coins", "mBTC", $amount, "coins","coinsell" );
 
 	return "okay";
@@ -202,60 +200,71 @@ function getQuickBalance( $name )
 			order by uniqueX desc limit 1 " );
 
 	$row = mysqli_fetch_row( $q1 );
+
+	$sum = 0;
+	
 	if( $row == null )
 	{
-		return 'zero';
+		$sum = 0;
+	//	return 'zero';
 	}
-	$curradd = $row[0];
-	$q2 = myquery( "select
-		total, datetime
-		from addresschecks
-		where address = \"$curradd\"
-		order by uniqueX desc limit 1 " );
-
-	$previous = 0;
-	$timehas = "passed";
-	$rowb = mysqli_fetch_row( $q2 );
-
-	if( $rowb != null )
+	else
 	{
-		$previous = $rowb[0];
-		$timehas = beforetimemins( $rowb[1], 1 );
-	}
-
-	if( $timehas == "passed" )
-	{
-		$newtotal = queryAdd( $curradd );
-		$difference = $newtotal - $previous;
-
-	//	getrunintotal
-		$olrunintotal = 0;
+		$curradd = $row[0];
 		$q2 = myquery( "select
-			runintotal
-			from coinview
-			where user = \"$name\"
-			order by datetime desc limit 1 " );
+			total, datetime
+			from addresschecks
+			where address = \"$curradd\"
+			order by uniqueX desc limit 1 " );
 
+		$previous = 0;
+		$timehas = "passed";
 		$rowb = mysqli_fetch_row( $q2 );
 
 		if( $rowb != null )
 		{
-			$olrunintotal = $rowb[0];
+			$previous = $rowb[0];
+			$timehas = beforetimemins( $rowb[1], 1 );
 		}
 
-		$runintotal = $olrunintotal + $difference;
-		
-		$date1 = date("y-m-d H:i:s");
-		$result4 = my2query( "INSERT INTO addresschecks
-					( user, address, total, difference, runintotal, datetime )
-					VALUES 
-					( \"$name\", \"$curradd\", \"$newtotal\", \"$difference\", \"$runintotal\", \"$date1\" )" );
+		if( $timehas == "passed" )
+		{
+			$newtotal = queryAdd( $curradd );
+			$difference = 0;
+			if( $newtotal > $previous )
+			{
+				$difference = $newtotal - $previous;
+			}
+			
+		//	getrunintotal
+			$olrunintotal = 0;
+			$q2 = myquery( "select
+				runintotal
+				from coinview
+				where user = \"$name\"
+				order by datetime desc limit 1 " );
+
+			$rowb = mysqli_fetch_row( $q2 );
+
+			if( $rowb != null )
+			{
+				$olrunintotal = $rowb[0];
+			}
+
+			$runintotal = $olrunintotal + $difference;
+			
+			$date1 = date("y-m-d H:i:s");
+			$result4 = my2query( "INSERT INTO addresschecks
+						( user, address, total, difference, runintotal, datetime )
+						VALUES 
+						( \"$name\", \"$curradd\", \"$newtotal\", \"$difference\", \"$runintotal\", \"$date1\" )" );
+		}
+
+		$result = myquery("SELECT SUM( difference ) AS value_sum FROM addresschecks where user = \"$name\" "); 
+
+		$row = mysqli_fetch_assoc( $result );
+		$sum = $row['value_sum'];
 	}
-
-	$result = myquery("SELECT SUM( difference ) AS value_sum FROM addresschecks where user = \"$name\" "); 
-
-	$row = mysqli_fetch_assoc( $result );
-	$sum = $row['value_sum'];
 	//~ echo '  ' . $sum;
 	
 	//~ echo "<br>hey ";
@@ -305,6 +314,36 @@ function testexpenses( $name )
 }
 
 function queryAdd( $curradd )
+{
+//	echo "queryAdd new<br>";
+//	$curradd = '1Q5gjJcoDyi3nY5mg3B4EAKEJCLP65CRjC';
+	//~ $curradd = 'sfsdfsdf';
+	
+    
+	include( "../dbdets.inc" );
+
+	require_once('easybitcoin.php');
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+ 
+	$var1 = $bitcoin->getreceivedbyaddress( $curradd );
+	
+	$var20 = $bitcoin->error;
+	
+	//~ echo "<br>error : " . $var20 . "<br>";
+	//~ echo $var1;
+	//~ return 0;
+	
+	if ( $var20 == "" )
+	{
+		return $var1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+function queryAdd2( $curradd )
 {
 	return 5;
 	$url2 = $curradd;
@@ -557,5 +596,19 @@ function checkAddress($address)
     return substr(strtoupper(hash("sha256",hash("sha256",pack("H*",substr($address,0,strlen($address)-8)),true))),0,8) == substr($address,strlen($address)-8);
 }
 
+
+function checkrpc()
+{
+	include( "../dbdets.inc" );
+
+	require_once('easybitcoin.php');
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+
+$var1 = $bitcoin->getinfo();
+
+	echo "1 " . $var1['version'];
+	echo " 2 " . $var1['balance'];
+	echo " 3 " . $var1['blocks'];
+}
 
 ?>

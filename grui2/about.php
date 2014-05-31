@@ -86,7 +86,6 @@ $sitename . '
 <br><a class="b" href="http://freedns.afraid.org" target="_blank">freedns.afraid.org</a>
 <br><a class="b" href="http://apache.org" target="_blank">apache.org</a>
 <br><a class="b" href="http://ubuntu.com" target="_blank">ubuntu.com</a>
-<br><a class="b" href="http://W3Schools.com" target="_blank">www.W3Schools.com</a>
 <br><a class="b" href="http://www.apachefriends.org/index.html" target="_blank">xampp</a>
 <br><a class="b" href="http://notepad-plus-plus.org/" target="_blank">notepad++</a>
 <br><a class="b" href="http://www.geany.org/" target="_blank">geany</a>
