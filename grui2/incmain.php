@@ -43,7 +43,7 @@ if( $qe == "scores" )
 	$mess2 = "";
 
 
-	if( $mess1[0][0] == "okay" )
+	if( $mess1[0][0] == "okay" &&  sizeof($mess1) > 1 )
 	{
 
 		for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
@@ -86,7 +86,7 @@ if( $qe == "scores" )
 	}
 	else
 	{
-		$messagez = $mess1;
+		$messagez = "no scores";
 	}
 }
 
@@ -1366,7 +1366,7 @@ if( $qe == "sendcomment1" )
 	<form action="page.php?qe=sendcomment2"
 	method="POST">
 	<TABLE >
-	<tr class="trq"><td>send to</td><td><input type="text" name="nameto" maxlength="25" value="' . $cr1 . '"></td></tr>'
+	<tr class="trq"><td>about</td><td><input type="text" name="nameto" maxlength="25" value="' . $cr1 . '"></td></tr>'
 	. $mess3 . 
 	'<tr class="trq"><td>comment</td><td><input type="text" name="messto" maxlength="500"></td></tr>
 	<tr class="trq"><td></td><td><input type="submit" value="send"></td></tr>
@@ -1381,7 +1381,7 @@ if( $qe == "sendcomment2" )
 {
 	$title1 = "send comment";
 
-	$cr1 = quickPost( "cr1", "" );
+	$cr1 = quickPost( "nameto", "" );
 	$pr1 = quickPost( "pr1", "" );
 	$messto = quickPost( "messto", "" );
 	

@@ -223,18 +223,16 @@ function getQuickBalance( $name )
 
 		if( $rowb != null )
 		{
-			$previous = $rowb[0];
-			$timehas = beforetimemins( $rowb[1], 1 );
+			"error";
 		}
 
-		if( $timehas == "passed" )
+		$previous = $rowb[0];
+
+		$newtotal = queryAdd( $curradd );
+
+		if( $newtotal > $previous )
 		{
-			$newtotal = queryAdd( $curradd );
-			$difference = 0;
-			if( $newtotal > $previous )
-			{
-				$difference = $newtotal - $previous;
-			}
+			$difference = $newtotal - $previous;
 			
 		//	getrunintotal
 			$olrunintotal = 0;
@@ -259,7 +257,7 @@ function getQuickBalance( $name )
 						VALUES 
 						( \"$name\", \"$curradd\", \"$newtotal\", \"$difference\", \"$runintotal\", \"$date1\" )" );
 		}
-
+		
 		$result = myquery("SELECT SUM( difference ) AS value_sum FROM addresschecks where user = \"$name\" "); 
 
 		$row = mysqli_fetch_assoc( $result );
@@ -315,6 +313,9 @@ function testexpenses( $name )
 
 function queryAdd( $curradd )
 {
+	
+	//~ return 0.07;
+	
 //	echo "queryAdd new<br>";
 //	$curradd = '1Q5gjJcoDyi3nY5mg3B4EAKEJCLP65CRjC';
 	//~ $curradd = 'sfsdfsdf';
@@ -325,6 +326,17 @@ function queryAdd( $curradd )
 	require_once('easybitcoin.php');
 	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
  
+	$var1a = $bitcoin->getinfo();
+	$var2a = $var1a['version'];
+	
+	if( $var2a == "" )
+	{
+		echo "nogetinfo server not running \n";
+		return 0;
+	}
+		echo "server  running \n";
+	
+	return 0.07;
 	$var1 = $bitcoin->getreceivedbyaddress( $curradd );
 	
 	$var20 = $bitcoin->error;

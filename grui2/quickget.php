@@ -24,6 +24,6 @@ function quickPost( $var, $var2 )
 	}
 	else{$var3 = $var2;}
 
-	echo "$var $var3<br>";
+//	echo "$var $var3<br>";
 	return $var3;
 }

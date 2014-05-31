@@ -31,6 +31,8 @@ function newSend( $cr1, $pr1, $user1, $user2 )
 	updateStock( $cr1, $pr1, $user2 );
 
 	updateActiveSales( $stopId );
+	
+	return "product sent";
 }
 
 

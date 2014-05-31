@@ -3,7 +3,6 @@
 include_once( "funcs.php" );
 include_once( "deleteproduct.php" );
 
-
 function createprofile( $fname1, $pass1, $pass2 )
 {
 	$check1 = createprofile2( $fname1, $pass1, $pass2 );
@@ -150,23 +149,25 @@ function changepass( $name1, $pass1, $pass2a, $pass2b )
 
 function closeuser( $name )
 {
-	echo "close user1 $name 14";
+	echo "close user1 $name 14"; 
 	include_once( "settrade.php" );
 	
-	echo "close user<br>";
+	echo "close user!!<br>";
 
 	// close trades
 	
 	$result3 = myquery( "select uniqueX
 						 from sales3 where
-						 user = \"ixqweqwe\"" );
+						 user = \"$name\"" );
+						 
+	echo "query3!!<br>";
 
 	while( $row3 = mysqli_fetch_array($result3) )
 	{
+		echo "while in query3!! $row3[0] <br>";
 		removetrade( $name, $row3[0] );
 	}
-
-
+	
 	// delete products
 
 	$result = myquery( "select productName from products1 where 
@@ -175,20 +176,29 @@ function closeuser( $name )
 
 	while( $row = mysqli_fetch_array($result) )
 	{
+		echo " dp ( $name, $row[0] )<br>";
 		deleteproductpassed( $name, $row[0] );
+//		include_once( "sendproduct.php" );
 	}
 
 	// return scores, closed user
-	include( "../funcss/sendproduct.php" );
+	echo "query2!!<br>";
+	include_once( "../funcss/sendproduct.php" );
 		
+	echo "query22!!<br>";
+
+
+
 	$result2 = myquery( "select creator, product, amount from scores1 where who1 = \"$name\"" );
 	while( $row3 = mysqli_fetch_array($result2) )
 	{
+		echo "here wh ( $name, $row3[0], $row3[1], $row3[2], $row3[0], ) <br>";
 		$mess2 = sendproductbalance( $name, $row3[0], $row3[1], $row3[2], $row3[0], "closed user" );
 	}
-	
+
 	
 	// set status to closed, add close date
+echo "// set status to closed, add close date<br";
 
 	$date1 = date("y-m-d H:i:s",time());
 
@@ -198,6 +208,7 @@ function closeuser( $name )
 
 
 	// edit user info page
+	
 }
 
 function stylenow( $name, $var )

@@ -169,7 +169,7 @@ function profile_exist($fname2)
 	if ( $check1 == "is valid" )
 	{
 		
-		$result = myquery( "select loginName from users1 where loginName = \"$fname2\"" );
+		$result = myquery( "select loginName from users1 where loginName = \"$fname2\" and closeDate is null" );
 		$row = mysqli_fetch_row( $result );
 		if($row != null )
 		{
@@ -199,11 +199,19 @@ function checknamepass( $name1, $pass1 )
 function checknamepass2b( $name1, $pass1 )
 {
 //	$result = myquery( "select hashword from users1 where loginName = \"$name1\" and closeDate is null" );
-	$result = myquery( "select hashword from users1 where loginName = \"$name1\" " );
+//	$result = myquery( "select hashword from users1 where loginName = \"$name1\" " );
+	$result = myquery( "select hashword, closeDate from users1 where loginName = \"$name1\" " );
 	$row = mysqli_fetch_row($result);
+	
+	//~ echo "qwe " . $row[0];
+	//~ echo "qwe " . $row[1];
 	if( $row[0] == null )
 	{
-		return "incorrect username or password";
+		return "incorrect username or password!";
+	}
+	if( $row[1] != null )
+	{
+		return "user closed : $row[1]";
 	}
 
 	if (password_verify($pass1, $row[0]))
