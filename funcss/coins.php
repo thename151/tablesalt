@@ -331,12 +331,11 @@ function queryAdd( $curradd )
 	
 	if( $var2a == "" )
 	{
-		echo "nogetinfo server not running \n";
+	//	echo "nogetinfo server not running \n";
 		return 0;
 	}
-		echo "server  running \n";
+	//	echo "server  running \n";
 	
-	return 0.07;
 	$var1 = $bitcoin->getreceivedbyaddress( $curradd );
 	
 	$var20 = $bitcoin->error;
@@ -355,14 +354,6 @@ function queryAdd( $curradd )
 	}
 }
 
-function queryAdd2( $curradd )
-{
-	return 5;
-	$url2 = $curradd;
-	$url1 = "https://blockchain.info/q/getreceivedbyaddress/";
-	$url3 = "?confirmations=1";
-	return file_get_contents( $url1. $url2 . $url3 ) / 100000000 ;
-}
 
 
 function drawCode2( $addr )
