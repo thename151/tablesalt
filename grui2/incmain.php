@@ -1633,10 +1633,10 @@ if( $qe == "tradecoin" )
 
 	$form2 = '<br>
 	<TABLE id="tableft">
-	<form action="page.php?qe=cointrade" method="POST">
+	<form action="page.php?qe=cointrade1" method="POST">
 	<tr class="trq">
 	<td>buy</td>
-	<td><input type="text" name="amount1" maxlength="25" value="1"></td>
+	<td><input type="text" name="amount3" maxlength="25" value="1"></td>
 	<td>
 	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
 	  at (price + 0.5%) 
@@ -1648,9 +1648,9 @@ if( $qe == "tradecoin" )
 
 	<tr class="trq">
 
-	<form action="page.php?qe=cointrade" method="POST">
+	<form action="page.php?qe=cointrade2" method="POST">
 	<td>sell</td>
-	<td><input type="text" name="amount2" maxlength="25" value="1"></td>
+	<td><input type="text" name="amount4" maxlength="25" value="1"></td>
 	<td>
 	<a href="page.php?qe=product&amp;cr1=' . $coinPageCreator . '&amp;pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
 	  at (price - 0.5%) 
@@ -1662,17 +1662,15 @@ if( $qe == "tradecoin" )
 			
 	</TABLE >';
 
-	//~ $varr = getrecentprice();
-	//~ $var1 = $varr[0];
-	//~ $var2 = $varr[1];
-//~ 
+	$varr = getrecentprice();
+	$var1 = $varr[0];
+	$var2 = $varr[1];
+
 	$theprice = "<br>price $var2 seconds ago : $var1" ;
 
-
-
 	$messagez .=  $balancetable . '<br>';
-//	$messagez .=  $form . $theprice . $form2;
-	$messagez .=  $form;
+	$messagez .=  $form . $theprice . $form2;
+//	$messagez .=  $form;
 }
 
 
@@ -1903,11 +1901,53 @@ if( $qe == "colours" )
 }
 
 
-if( $qe == "cointrade" )
+if( $qe == "cointrade1" )
 {
 	$title1 = "cointrade";
+	$amount = quickPost( "amount3", "" );
 
-	$messagez .= 'here<br>' ;
+	include( "../funcss/coins.php" );
+
+	$q1 = euro2coin( $amount, $name1, 0.5 );
+
+	if( $q1[0] == 'okay' )
+	{
+		$tmess = "price<br>".trimtoxdp($q1[1], 5)."<br><br>";
+		$tmess .= "price + $q1[2]%<br>".trimtoxdp($q1[3],5)."<br><br>";
+		include'../sitename.inc';
+		$tmess .= "you paid $q1[5] $coinPageCreator $coinPageEuro for $q1[4] $coinPageCreator $coinPageProduct<br>";
+	}
+	else
+	{
+		$tmess = $q1;
+	}
+	
+	$messagez .= "$tmess <br>" ;
+}
+
+
+if( $qe == "cointrade2" )
+{
+	$title1 = "cointrade";
+	$amount = quickPost( "amount4", "" );
+
+	include( "../funcss/coins.php" );
+
+	$q1 = coin2euro( $amount, $name1, 0.5 );
+
+	if( $q1[0] == 'okay' )
+	{
+		$tmess = "price<br>".trimtoxdp($q1[1], 5)."<br><br>";
+		$tmess .= "price - $q1[2]%<br>".trimtoxdp($q1[3],5)."<br><br>";
+		include'../sitename.inc';
+		$tmess .= "you recieved $q1[5] $coinPageCreator $coinPageEuro for $q1[4] $coinPageCreator $coinPageProduct<br>";
+	}
+	else
+	{
+		$tmess = $q1;
+	}
+	
+	$messagez .= "$tmess <br>" ;
 }
 
 #debug("qwe");

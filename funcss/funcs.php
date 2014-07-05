@@ -60,6 +60,58 @@ function checknamepass2b( $name1, $pass1 )
 }
 
 
+function rounditup( $num )
+{
+	$var1 = trimtodp( $num );
+	
+	if( $var1 == $num )
+	{
+		return $num;
+	}
+	
+	include( "hilovalues.php" );
+
+	$var5 = $var1 + $loscore;
+
+	echo "roundit-up : num $num, var1 $var1, var5 $var5, var3 $var3, var4 $var4, var5 $var5, var6 $var6, var7 $var7<br> ";
+	return $var5;
+}
+
+
+function rounditrand( $num1 )	// 21.234567
+{
+//	21.234567
+	$var1 = trimtodp( $num1 );
+	if( $var1 == $num1 )
+	{
+		return $num1;
+	}
+	
+	$var2 = ( 1000000 * $num1 ) - ( 1000000 * $var1 ); //567
+//	$var2 = ( 1 * $num1 ) - ( 1 * $var1 ); //567
+//	$var3 = $var2 / 1000000; //567
+
+//	$var3 = $num1 * 1000;	// 567
+
+	$var4 = 0;
+	
+	$xr = rand ( 1 , 1000 );
+	
+	// 001 echo "$xr vs. $var3<br>";
+//~ 
+	if( $xr <= $var2 )
+	{
+		$var4 = 0.001;
+	}
+	//~ return $var4;  //0.001 or 0
+	
+	$var5 = $var4 + $var1;
+	
+	echo "roundit-rand : num1 $num1, var1 $var1, var2 $var2, var3 $var3, var4 $var4, xr $xr, var5 $var5, var7 $var7<br> ";
+	return $var5;
+}
+
+
 function trimtodp( $num )
 {
 	include( "hilovalues.php" );
@@ -356,6 +408,7 @@ function check_string( $type, $var )
 				( $var == "coinsell" ) ||
 				( $var == "recall" ) ||
 				( $var == "closed user" ) ||
+				( $var == "cointrade" ) ||
 				( $var == "dividend" )
 				 ) )
 		{

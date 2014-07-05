@@ -780,64 +780,102 @@ function geteurusd()
 	return $var;
 }
 
+ 
+function euro2coin( $amount, $name1, $percent )
+{
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $percent );if ($check1 != "okay" ){ return $check1;}
+
+	$amount = trimtodp( $amount );
+
+	$var1 = 0.481234; //getnewprice()
+//	$var1 = getnewprice();
+	$var2 = $var1 * ( 1 + ($percent * 0.01 ) );  //~0.49
+	$var3 = $var2 * $amount;   //~eur4.9023764498
+
+	$var4 = rounditup( $var3 );// ~eur4.903
+
+	include_once '../sitename.inc';
+	include_once( "../funcss/listtrades.php" );
+	$available = showHowMuch2( $coinPageCreator, $coinPageEuro, $name1 );
+
+	if ( $var4 > $available )
+	{
+		return "insufficient funds";
+	}
+	
+	$var5 = rounditrand( $var3 );
+
+	include_once( "sendproduct.php" );
+	echo sendproductbalance( $name1, $coinPageCreator, $coinPageEuro, $var5, $coinPageHolder, "cointrade" );
+	echo "<br> "; 
+	echo sendproductbalance( $coinPageHolder, $coinPageCreator, $coinPageProduct, $amount, $name1, "cointrade");
+
+	echo "<br> "; 
+	echo "$name1, $coinPageCreator, $coinPageEuro, $var5, $coinPageHolder  <br> "; 
+	echo "var1 $var1, var2 $var2, var3 $var3, var4 $var4, var5 $var5<br> "; //, var4 $var4, var5 $var5, var6 $var6, var7 $var7
+
+//	return array price percent priceplus05 amount var6 
+
+	$varr[0] = 'okay';
+	$varr[1] = $var1;
+	$varr[2] = $percent;
+	$varr[3] = $var2;
+	$varr[4] = $amount;
+	$varr[5] = $var5;
+
+	return $varr;
+}
+
+function coin2euro( $amount, $name1, $percent )
+{
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $percent );if ($check1 != "okay" ){ return $check1;}
+
+	$amount = trimtodp( $amount );
+
+	$var1 = 0.481234; //getnewprice()
+//	$var1 = getnewprice();
+	$var2 = $var1 * ( 1 - ($percent * 0.01 ) );  //~0.49
+	$var3 = $var2 * $amount;   //~eur4.9023764498
+
+	$var4 = rounditup( $var3 );// ~eur4.903
+
+	include_once '../sitename.inc';
+	include_once( "../funcss/listtrades.php" );
+	$available = showHowMuch2( $coinPageCreator, $coinPageEuro, $name1 );
+
+	if ( $amount > $available )
+	{
+		return "insufficient funds";
+	}
+
+	$var5 = rounditrand( $var3 );
+
+	include_once( "sendproduct.php" );
+	echo sendproductbalance( $name1, $coinPageCreator, $coinPageProduct, $amount, $coinPageHolder, "cointrade" );
+	echo "<br> ";
+	echo sendproductbalance( $coinPageHolder, $coinPageCreator, $coinPageEuro, $var5, $name1, "cointrade");
+
+	echo "<br> "; 
+	echo "$name1, $coinPageCreator, $coinPageEuro, $var5, $coinPageHolder  <br> "; 
+	echo "var1 $var1, var2 $var2, var3 $var3, var4 $var4, var5 $var5<br> "; //, var4 $var4, var5 $var5, var6 $var6, var7 $var7
+
+//	return array price percent priceplus05 amount var6 
+
+	$varr[0] = 'okay';
+	$varr[1] = $var1;
+	$varr[2] = $percent;
+	$varr[3] = $var2;
+	$varr[4] = $amount;
+	$varr[5] = $var5;
+
+	return $varr;
+}
 
 /*
-getnewprice()
-var1 = poll website usd
-var2 = clean var1
-
-q1 = myquery( select value datetime from valuepairs were key = eurusd limit 1 order by date time )
-var3 = ''
-if var3 = null
-	var4 = poll website eur
-	var5 = clean var4
-	insert into valuepairs ( eurusd var5 datetime )
-	var3 = var5
-else
-	var6 = currtime - datetime
-	if( var6 > 6 hours )
-		var4 = poll website eur
-		var5 = clean var4
-		insert into valuepairs ( eurusd var5 datetime )
-		var3 = var5
-	else
-		var3 = value
-var7 = var2 * var3
-insert into valuepairs ( eurbtc var5 datetime )
-return var7
-
-
-getrecentprice()
-q1 = myquery( select value datetime from valuepairs were key = eurbtc limit 1 order by date time )
-var3 = ''
-
-if var3 = null
-	var3 = getnewprice
-	insert into valuepairs ( eurbtc var3 datetime )
-else
-	var6 = currtime - datetime
-	if( var6 > 100 seconds )
-		var3 = getnewprice
-		insert into valuepairs ( eurbtc var3 datetime )
-	else
-		var3 = value
-return array var3 var6
- 
-
-coin2euro( amount name percent )
-
-var5 = showhowmuch( name creator coin )
-if( var5 < amount )
-	return insufficient funds
-var1 = getnewprice     ~0.48
-var2 = var1 * percent  ~0.47
-var3 = var2 * amount   ~eur4.7023764498
-var4 = rounded(4.7023) ~eur4.702
-
-send(name holder coin var5)
-send(holder name euro var4)
-
-return array price percent priceminus05 amount var6 
 
 
 euro2coin( amount name percent )
@@ -857,6 +895,25 @@ send(name holder euro var6)
 send(holder name coin amount)
 
 return array price percent priceplus05 amount var6 
+
+
+
+coin2euro( amount name percent )
+
+var5 = showhowmuch( name creator coin )
+if( var5 < amount )
+return insufficient funds
+var1 = getnewprice ~0.48
+var2 = var1 * percent ~0.47
+var3 = var2 * amount ~eur4.7023764498
+var4 = rounded(4.7023) ~eur4.702
+
+send(name holder coin var5)
+send(holder name euro var4)
+
+return array price percent priceminus05 amount var6
+
+
 
 */
 
