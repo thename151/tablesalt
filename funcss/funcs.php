@@ -9,7 +9,7 @@ function checkuser( $name1 )
 	
 	$result = myquery( "select uniqueX, closeDate from users1 where loginName = \"$name1\" " );
 	$row = mysqli_fetch_row($result);
-	
+
 	if( $row[0] == null )
 	{
 		return "user does not exist";
@@ -71,11 +71,16 @@ function trimtodp( $num )
 	$var1 = 1 / $loscore;
 
 	$var2 = $num * $var1;
-	$var3 = fmod( $var2, 1 );
-	$var4 = $var2 - $var3;
-	$var5 = $var4 / $var1;
+//	echo "intval1" . intval( $var2 );
+//	echo "intval2" . intval( $var2. '' , 10  );
+	$var6 = intval( $var2. '' , 10 );
+	$var7 = $var6 / $var1;
 	
-	return $var5;// . " " . $num;
+//	var1 1000, var2 160, var3 0.99999999999997, var4 159, var5 0.159, var6 159, var7 0.159
+//	echo "var1 $var1, var2 $var2, var3 $var3, var4 $var4, var5 $var5, var6 $var6, var7 $var7<br> ";
+	
+//	echo "var5 " . $var5;// . " " . $num;
+	return $var7;//$num;// . " " . $num;
 }
 
 function trimtoxdp( $num, $varx )
@@ -94,7 +99,10 @@ function trimtoxdp( $num, $varx )
 	$var4 = $var2 - $var3;
 	$var5 = $var4 / $var1;
 	
-	return $var5;// . " " . $num;
+	$var6 = intval( $var2. '' , 10 );
+	$var7 = $var6 / $var1;
+	
+	return $var7;// . " " . $num;
 }
 
 

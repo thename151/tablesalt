@@ -47,6 +47,7 @@ function showHowMuch2( $cr1, $pr1, $user )
 
 
 	$q1 = myquery( "select amount from scores1 where who1 = \"$user\" and creator = \"$cr1\" and product =\"$pr1\"" );
+
 	$row = mysqli_fetch_row($q1);
 	
 	include( "hilovalues.php" );

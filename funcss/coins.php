@@ -21,9 +21,7 @@ function coinwraw( $name, $amount, $destination )
 		return "insufficient funds";
 	}
 
-
-
-	//	getrunintotal
+//	getrunintotal
 	$olrunintotal = getrunintotal($name);
 
 	$runintotal = $olrunintotal - $amount2;
@@ -86,6 +84,11 @@ function coinbuy( $name, $amount ) // buy mbtc products
 {
 	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
+	include_once '../sitename.inc';
+	$check1 = check_string( "username", $coinPageCreator );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $coinPageHolder );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $coinPageProduct );if ($check1 != "okay" ){ return $check1;}
+
 	$amount = trimtodp( $amount );
 	
 	
@@ -121,8 +124,10 @@ echo "qweewqqq";
 	
 
 	include_once( "sendproduct.php" );
-	echo sendproductbalance( "holder", "bitcoin", "mBTC", $amount, $name,"coinbuy" );
+	
+//	echo sendproductbalance( "holder", "bitcoin", "mBTC", $amount, $name,"coinbuy" );
 //	sendproductbalance( "coins", "coins", "mBTC", $amount, $name,"coinbuy" );
+	echo sendproductbalance( $coinPageHolder, $coinPageCreator, $coinPageProduct, $amount, $name,"coinbuy" );
 
 	return "okay";
 }
@@ -132,6 +137,11 @@ function coinsell( $name, $amount ) // sell mbtc products
 {
 	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
+	include_once '../sitename.inc';
+	$check1 = check_string( "username", $coinPageCreator );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $coinPageHolder );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $coinPageProduct );if ($check1 != "okay" ){ return $check1;}
+
 	$amount = trimtodp( $amount );
 
 	echo "$amount<br>";
@@ -139,9 +149,11 @@ function coinsell( $name, $amount ) // sell mbtc products
 	echo "$amount<br>";
 	
 	include_once( "../funcss/listtrades.php" );
-	$available = showHowMuch2( "bitcoin", "mBTC", $name );
+
+//	$available = showHowMuch2( "bitcoin", "mBTC", $name );
 //	$available = showHowMuch2( "coins", "mBTC", $name );
 //	$available = getQuickBalance( $name );
+	$available = showHowMuch2( $coinPageCreator, $coinPageProduct, $name );
 
 	if ( $amount > $available )
 	{
@@ -164,8 +176,9 @@ function coinsell( $name, $amount ) // sell mbtc products
 	
 	$amount2 = $amount / 1000;
 	include_once( "sendproduct.php" );
-	sendproductbalance( $name, "bitcoin", "mBTC", $amount, "holder","coinsell" );
+//	sendproductbalance( $name, "bitcoin", "mBTC", $amount, "holder","coinsell" );
 //	sendproductbalance( $name, "coins", "mBTC", $amount, "coins","coinsell" );
+	sendproductbalance( $name, $coinPageCreator, $coinPageProduct, $amount, $coinPageHolder, "coinsell" );
 
 	return "okay";
 }
@@ -613,5 +626,238 @@ $var1 = $bitcoin->getinfo();
 	echo " 2 " . $var1['balance'];
 	echo " 3 " . $var1['blocks'];
 }
+
+
+function getrecentprice()
+{
+//	echo "1<br>";
+	$q1 = myquery( "select
+			thevalue, datetime
+			from valuepairs
+			where thekey = \"usdbtc\" 
+			order by datetime desc limit 1 " );
+			
+	$row = mysqli_fetch_row( $q1 );
+
+	if($row != null )
+	{
+//		echo "2<br>";
+		$date1 = date("Y-m-d H:i:s");
+		$date2 = $row[1];
+		$diff = strtotime($date1) - strtotime($date2);
+//		echo "2b $diff<br>";
+		
+		if( $diff < 300 )
+		{
+//			echo "3<br>";
+			$q2 = myquery( "select
+					thevalue, datetime
+					from valuepairs
+					where thekey = \"eurusd\" 
+					order by datetime desc limit 1 " );
+
+			$row2 = mysqli_fetch_row( $q2 );
+			if( $row2 != null )
+			{
+//				echo "4<br>";
+				$date3 = $row2[1];
+//				echo "4a strtotime($date1) - strtotime($date3)<br>";
+				$diff2 = strtotime($date1) - strtotime($date3);
+//				echo "4b $diff2<br>";
+				if( $diff2 < 6000 )
+				{
+//					echo "5  $diff2 < 6000<br>";
+					$var1 = $row[0] / $row2[0];
+
+					$var1 = trimtodp( $var1 );
+
+					$varr[0] = $var1;
+					$varr[1] = $diff;
+
+					
+					return $varr;
+				}
+			}
+		}
+	}
+//	echo "6<br>";
+	
+	$varr[0] = trimtodp(getnewprice());//"0.45";
+	//$varr[0] = 51;
+	$varr[1] = "0";
+	return $varr;
+}
+
+function getnewprice()
+{
+//	echo "11<br>";
+	$date1 = date("Y-m-d H:i:s");
+	$q1 = myquery( "select
+					thevalue, datetime
+					from valuepairs
+					where thekey = \"eurusd\" 
+					order by datetime desc limit 1 " );
+
+	$eurusd = '';
+			
+	$row = mysqli_fetch_row( $q1 );
+
+	if($row == null )
+	{
+		$eurusd = geteurusd();
+		$q2 = my2query( "INSERT INTO valuepairs 
+					( thekey, thevalue, datetime ) 
+					VALUES 
+					( \"eurusd\", \"$eurusd\", \"$date1\")" );
+	}
+	else
+	{
+		$price1 = $row[0];
+		$var3 = $row[1];
+		$diff = strtotime($date1) - strtotime($var3);
+//		echo $diff;
+		if( $diff > 6000 )
+		{
+//			echo "newprice<br>";
+			$eurusd = geteurusd();
+			//insert into valuepairs ( eurusd var5 datetime )
+			$q2 = my2query( "INSERT INTO valuepairs 
+						( thekey, thevalue, datetime ) 
+						VALUES 
+						( \"eurusd\", \"$eurusd\", \"$date1\")" );
+			$price1 = $var2;
+		}
+		else
+		{
+//			echo "olprice<br>";
+			$eurusd = $row[0];
+		}
+	}
+	$usdbtc = 0.001 * getbitprice();
+	$q2 = my2query( "INSERT INTO valuepairs 
+				( thekey, thevalue, datetime ) 
+				VALUES 
+				( \"usdbtc\", \"$usdbtc\", \"$date1\")" );
+	$eurbtc = $usdbtc / $eurusd;
+	return $eurbtc;
+}
+
+function getbitprice()
+{
+//		return 620;
+//	echo "usdbtc<br>";
+	$url = "https://www.bitstamp.net/api/ticker/";
+	$data = file_get_contents( $url );
+//	echo $data;
+
+	$pieces = explode("\"", $data);
+
+	return $pieces[7];
+}
+
+function geteurusd()
+{
+//	echo "eurusd<br>";
+//	return 1.34;
+	$url = "https://www.bitstamp.net/api/eur_usd/";
+	$data = file_get_contents( $url );
+//	echo $data;
+
+	$pieces = explode("\"", $data);
+
+	//~ echo "\n";
+	//~ echo $pieces[3];
+	//~ echo "\n";
+	//~ echo $pieces[7];
+	//~ echo "\n";
+
+	$var = $pieces[7] - $pieces[3];
+//	echo "qw".$var. "wq\n";
+	$var = $pieces[7] - ($var/2);
+
+//	echo "qw".$var. "wq\n";
+
+	return $var;
+}
+
+
+/*
+getnewprice()
+var1 = poll website usd
+var2 = clean var1
+
+q1 = myquery( select value datetime from valuepairs were key = eurusd limit 1 order by date time )
+var3 = ''
+if var3 = null
+	var4 = poll website eur
+	var5 = clean var4
+	insert into valuepairs ( eurusd var5 datetime )
+	var3 = var5
+else
+	var6 = currtime - datetime
+	if( var6 > 6 hours )
+		var4 = poll website eur
+		var5 = clean var4
+		insert into valuepairs ( eurusd var5 datetime )
+		var3 = var5
+	else
+		var3 = value
+var7 = var2 * var3
+insert into valuepairs ( eurbtc var5 datetime )
+return var7
+
+
+getrecentprice()
+q1 = myquery( select value datetime from valuepairs were key = eurbtc limit 1 order by date time )
+var3 = ''
+
+if var3 = null
+	var3 = getnewprice
+	insert into valuepairs ( eurbtc var3 datetime )
+else
+	var6 = currtime - datetime
+	if( var6 > 100 seconds )
+		var3 = getnewprice
+		insert into valuepairs ( eurbtc var3 datetime )
+	else
+		var3 = value
+return array var3 var6
+ 
+
+coin2euro( amount name percent )
+
+var5 = showhowmuch( name creator coin )
+if( var5 < amount )
+	return insufficient funds
+var1 = getnewprice     ~0.48
+var2 = var1 * percent  ~0.47
+var3 = var2 * amount   ~eur4.7023764498
+var4 = rounded(4.7023) ~eur4.702
+
+send(name holder coin var5)
+send(holder name euro var4)
+
+return array price percent priceminus05 amount var6 
+
+
+euro2coin( amount name percent )
+
+var1 = getnewprice     ~0.48
+var2 = var1 * percent  ~0.49
+var3 = var2 * amount   ~eur4.9023764498
+var4 = roundup(4.9023) ~eur4.903
+
+var5 = showhowmuch( name creator coin )
+if( var4 < var5 )
+	return insufficient funds
+	
+var6 = rounded(4.9023) ~eur4.902
+
+send(name holder euro var6)
+send(holder name coin amount)
+
+return array price percent priceplus05 amount var6 
+
+*/
 
 ?>

@@ -1,6 +1,7 @@
 <?php
 
-function debug($something) {
+function debug($something)
+{
   echo $something."<br>\n";
 }
 
@@ -575,8 +576,6 @@ if( $qe == "readmessages" )
 			$mess2 .= 'to : <a href="page.php?qe=user&cr1=' . $mess1[$i2][3] . '">'.$mess1[$i2][3].' </a><br>';
 			$mess2 .= " $product";
 			$mess2 .= "</td><td>";
-
-
 
 			$mess2 .= $mess1[$i2][1] . "</td><td>";
 			$mess2 .= $mess1[$i2][0];
@@ -1481,6 +1480,7 @@ if( $qe == "closeuser3" )
 if( $qe == "coins" )
 {
 	$title1 = "cns";
+	include_once '../sitename.inc';
 	
 	include( "../funcss/coins.php" );
 //	fillTable();
@@ -1488,29 +1488,18 @@ if( $qe == "coins" )
 
 	include_once( "../funcss/listtrades.php" );
 	
-	$balance2 = showHowMuch2( "bitcoin", "mBTC", $name1 ) * 1;
+//	$balance2 = showHowMuch2( "bitcoin", "mBTC", $name1 ) * 1;
+
+	$balance2 = showHowMuch2( $coinPageCreator, $coinPageProduct, $name1 ) * 1;
 
 	$messagez = $balance . '<br>
-	<a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
+	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
 	 products : ' . $balance2 . '<br><br>' . '
 	<a href="page.php?qe=coinst">coin transactions</a><br>
 	<a href="page.php?qe=de-po">deposit</a><br>
 	<a href="page.php?qe=tradecoin">trade</a><br>
 	<a href="page.php?qe=wraw">withdraw</a>';
-	
-	
-	
-	//~ $address = "1comboyNsev2ubWRbPZpxxNhghLfonzuN";
-	//~ $var = checkAddress($address);
-	//~ if( $var == true )
-	//~ {
-		//~ echo "itstrue";
-	//~ }
-	//~ else
-	//~ {
-		
-	//~ }
-	//$messagez = "qweewq " . checkAddress($address);
+
 
 	checkrpc();
 }
@@ -1581,24 +1570,18 @@ if( $qe == "tradecoin" )
 {
 	$title1 =  "trade coins";
 
+	include_once '../sitename.inc';
+//	echo "qq" . $coinPageProduct . "ww";
 	include( "../funcss/coins.php" );
 
 	$balance = getQuickBalance( $name1 );
-	//~ $messagez = 'bitcoin : ' . $balance . '<br>';
+//  $messagez = 'bitcoin : ' . $balance . '<br>';
 	
 	include_once( "../funcss/listtrades.php" );
-	$balance2 = showHowMuch2( "bitcoin", "mBTC", $name1 ) * 1;
-	//~ $messagez .= 'mBTC products : ' . $balance2 * 1 . '<br><br>';
-	
-	//$messagez .=  "trade<br>";
-	//~ $messagez .=  "buy ??? mBTC products at 0.001 bitcoin each  send<br>";
-	//~ $messagez .=  "sell ??? mBTC products at 0.001 bitcoin each  send<br>";   
-//	$messagez .=  "<br><br><br><br>";  	
+//	$balance2 = showHowMuch2( "bitcoin", "mBTC", $name1 ) * 1;
+	$balance2 = showHowMuch2( $coinPageCreator, $coinPageProduct, $name1 ) * 1;
 
-//<a href="page.php?qe=user&cr1=bitcoin">bitcoin</a>
-	
 	$balancetable = '
-
 	<TABLE>
 
 	<tr class="trq">
@@ -1611,7 +1594,7 @@ if( $qe == "tradecoin" )
 	</tr>
 	<tr class="trq">
 	<td>
-	<a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
+	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
 	 products</td>
 	<td>'.$balance2.'</td>
 	</tr>
@@ -1624,8 +1607,9 @@ if( $qe == "tradecoin" )
 	<tr class="trq">
 	<td>buy</td>
 	<td><input type="text" name="amount1" maxlength="25" value="1"></td>
-	<td><a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
-     products at 0.001 bitcoin each</td>
+	<td>
+	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
+	 products at 0.001 bitcoin each</td>
 	<td><input type="submit" value="send"></td>
 	</tr>
 	</form>
@@ -1635,15 +1619,59 @@ if( $qe == "tradecoin" )
 	<form action="page.php?qe=coinsell" method="POST">
 	<td>sell</td>
 	<td><input type="text" name="amount2" maxlength="25" value="1"></td>
-	<td><a href="page.php?qe=product&cr1=bitcoin&pr1=mBTC">mBTC</a>
-     products at 0.001 bitcoin each</td>
+	<td>
+	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
+	 products at 0.001 bitcoin each</td>
 	<td><input type="submit" value="send"></td>
 	</tr>
 	</form>
 			
 	</TABLE >';
 
+
+
+
+	$form2 = '<br>
+	<TABLE id="tableft">
+	<form action="page.php?qe=cointrade" method="POST">
+	<tr class="trq">
+	<td>buy</td>
+	<td><input type="text" name="amount1" maxlength="25" value="1"></td>
+	<td>
+	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
+	  at (price + 0.5%) 
+	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageEuro .'">' . $coinPageCreator . ' ' . 'euro' .'</a>
+	each</td>
+	<td><input type="submit" value="send"></td>
+	</tr>
+	</form>
+
+	<tr class="trq">
+
+	<form action="page.php?qe=cointrade" method="POST">
+	<td>sell</td>
+	<td><input type="text" name="amount2" maxlength="25" value="1"></td>
+	<td>
+	<a href="page.php?qe=product&amp;cr1=' . $coinPageCreator . '&amp;pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
+	  at (price - 0.5%) 
+	<a href="page.php?qe=product&amp;cr1=' . $coinPageCreator . '&amp;pr1=' . $coinPageEuro .'">' . $coinPageCreator . ' ' . 'euro' .'</a>
+	each</td>
+	<td><input type="submit" value="send"></td>
+	</tr>
+	</form>
+			
+	</TABLE >';
+
+	//~ $varr = getrecentprice();
+	//~ $var1 = $varr[0];
+	//~ $var2 = $varr[1];
+//~ 
+	$theprice = "<br>price $var2 seconds ago : $var1" ;
+
+
+
 	$messagez .=  $balancetable . '<br>';
+//	$messagez .=  $form . $theprice . $form2;
 	$messagez .=  $form;
 }
 
@@ -1872,6 +1900,14 @@ if( $qe == "colours" )
 	$messagez .= '
 	<a href="page.php?qe=colours&q2=light">light</a><br>
 	<a href="page.php?qe=colours&q2=dark">dark</a>';
+}
+
+
+if( $qe == "cointrade" )
+{
+	$title1 = "cointrade";
+
+	$messagez .= 'here<br>' ;
 }
 
 #debug("qwe");
