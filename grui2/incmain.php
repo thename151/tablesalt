@@ -1500,7 +1500,7 @@ if( $qe == "coins" )
 	<a href="page.php?qe=tradecoin">trade</a><br>
 	<a href="page.php?qe=wraw">withdraw</a>';
 
-
+//	echo addaddress();
 	checkrpc();
 }
 

@@ -7,4 +7,8 @@ $usrname1 = "";
 $passw1 = "";
 $dbname1 = "";
 
+
+$rpcuser='';
+$pass1= '';
+
 ?>

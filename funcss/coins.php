@@ -291,7 +291,6 @@ function getQuickBalance( $name )
 }
 
 
-
 function beforetimemins( $datetime, $mins ) // have mins passed since date and now 
 {
 	//~ echo "bftm $datetime, $mins <br>";
@@ -479,6 +478,7 @@ function getNewAddress( $name )
     }
 	if( $timehas == "passed" )
     {    
+		addaddress();
 	    $q1 = myquery( "select
 			    address
 			    from addresslist
@@ -620,11 +620,18 @@ function checkrpc()
 	require_once('easybitcoin.php');
 	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
 
-$var1 = $bitcoin->getinfo();
+	$var1 = $bitcoin->getinfo();
+	$var2a = $var1['version'];
 
 	echo "1 " . $var1['version'];
 	echo " 2 " . $var1['balance'];
 	echo " 3 " . $var1['blocks'];
+	
+	if( $var2a == "" )
+	{
+		return "server not running";
+	}
+	return "okay";
 }
 
 
@@ -875,46 +882,170 @@ function coin2euro( $amount, $name1, $percent )
 	return $varr;
 }
 
-/*
 
-
-euro2coin( amount name percent )
-
-var1 = getnewprice     ~0.48
-var2 = var1 * percent  ~0.49
-var3 = var2 * amount   ~eur4.9023764498
-var4 = roundup(4.9023) ~eur4.903
-
-var5 = showhowmuch( name creator coin )
-if( var4 < var5 )
-	return insufficient funds
+function addaddress()
+{
+	echo "add address!";
+	$var1 = checkrpc();
+	if( $var1 != "okay" )
+	{
+		return $var1;
+	}
+	include( "../dbdets.inc" );
+	require_once('easybitcoin.php');
 	
-var6 = rounded(4.9023) ~eur4.902
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
 
-send(name holder euro var6)
-send(holder name coin amount)
-
-return array price percent priceplus05 amount var6 
-
-
-
-coin2euro( amount name percent )
-
-var5 = showhowmuch( name creator coin )
-if( var5 < amount )
-return insufficient funds
-var1 = getnewprice ~0.48
-var2 = var1 * percent ~0.47
-var3 = var2 * amount ~eur4.7023764498
-var4 = rounded(4.7023) ~eur4.702
-
-send(name holder coin var5)
-send(holder name euro var4)
-
-return array price percent priceminus05 amount var6
+	$var3 = $bitcoin->getnewaddress();
+	$var2a = $var3;
+	
+	if( $var2a == "" )
+	{
+		return "address is blank";
+	}
+	$date1 = date("Y-m-d H:i:s");
+	$q2 = my2query( "INSERT INTO addresslist 
+					( address, datetime ) 
+					VALUES 
+					( \"$var2a\", \"$date1\" )" );
+	return "new:" . $var2a . ":new";
+}
 
 
+/*
+qwertyhgfdsa
 
-*/
 
+send( $amount, $destination user )
+{
+	check users balance 
+	if(balance < $amount1)
+	{
+		return insufficient funds
+	}
+	insert into expenses
+	user amount destination time, runintotal?
+	
+	insert into transactions 
+	user amount destination "withdrawal" "pending"
+	
+	sendtransactions()
+}
+
+sendtransactions()
+{
+	$var = checkrpc();
+
+	if( $var == "" )
+	{
+		return "no service "
+	}
+	echo "getinfo server is running\n";
+
+	q2 = select $amount, $destination from transaction == "withdrawal", "pending" or "nofunds" or "noservice" or "fail"
+	if ( rows( q2 ) == null )
+	{
+		return "no pending transactions";
+	}
+	require_once('easybitcoin.php');
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+
+	while nextrow(q2)
+	{
+		$var1 = $bitcoin->sendtoaddress( $destination, $var60 );
+		
+		if( $var1 == null )
+		{
+			$state = "fail";
+			$message = $bitcoin->error;
+		}
+		else
+		{
+			$state = "okay";
+			$message = $var1;
+		}		
+		update transactions 
+		set state to state message to message
+	}
+	return "okay";	
+}
+
+
+notify( txid )
+{
+	require_once('easybitcoin.php');
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+	$var1 = $bitcoin->gettransaction( $txid );
+	amount = var1[amount]
+	if amount <= 0
+		return "nothing"
+	var3 = "confirmed"
+	if var[confirmations > 0]
+		var3 = "confirmed"
+	$user = "";
+	
+	select txid from transactions where txid = txid
+	if( null )
+		select user from addressesinuse where address = var[details][address]
+		insert into transactions
+		txid user amount address $var3 "received" time, runintotal?
+	else
+	{
+		update transactions
+		$var3  time, runintotal? where txid == txid 
+	}
+}
+
+wallettotable()
+{
+	wbal = get wallet balance minconf=0
+	tbal = get table  balance minconf=0
+	tbal2 = tbal
+	
+	if( wbal > tbal )
+	{
+		get transactions
+		while( next tx && wbal > tbal2 )
+			if( tx amount > 0 )
+				select from transactions where txid == txid
+				if null
+					txamount = txid.amount
+					insert to trasactions txid date confirmations
+					tbal2 = tbal2 + txamount	
+	}
+	select from trasactions where confirmations == 0 
+	while( next row )
+		get transaction where txid == txid
+			if ( transaction.confirmations > 0 )
+				update transaction where txid ==txid
+}
+
+
+addaddress()
+{
+	check rpc
+	if null return "service not running"
+	new bitcoin
+	var = bitcoin->getaddress
+	insert into addresslist var datetime?
+}
+
+add a address to adresses when one is used 
+
+deposits
+amount address confirmations datetime1 datetime2
+
+withdrawals
+amount address state datetime1 datetime2
+
+expenses
+amount user type runintotal datetime
+
+view
+amount user type state(pending,unconfirmed) runintotal datetime
+
+
+
+*/ 
 ?>
+

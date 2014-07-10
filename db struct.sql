@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 24, 2014 at 11:43 PM
+-- Generation Time: Jul 10, 2014 at 02:27 PM
 -- Server version: 5.5.37-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4
+-- PHP Version: 5.5.9-1ubuntu4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `addresslist` (
   `address` varchar(40) NOT NULL,
   `status` varchar(25) NOT NULL,
   `user` varchar(25) NOT NULL,
+  `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
@@ -79,6 +80,22 @@ CREATE TABLE IF NOT EXISTS `coinview` (
 ,`runintotal` decimal(16,8)
 ,`tablename` varchar(8)
 );
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `deposits`
+--
+
+CREATE TABLE IF NOT EXISTS `deposits` (
+  `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
+  `amount` decimal(16,8) NOT NULL,
+  `address` varchar(40) NOT NULL,
+  `confirmations` int(11) NOT NULL,
+  `datetime1` datetime NOT NULL,
+  `datetime2` datetime NOT NULL,
+  PRIMARY KEY (`uniqueX`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --
@@ -129,6 +146,21 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expenses2`
+--
+
+CREATE TABLE IF NOT EXISTS `expenses2` (
+  `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(25) NOT NULL,
+  `type` varchar(40) NOT NULL,
+  `runintotal` datetime NOT NULL,
+  `datetime` datetime NOT NULL,
+  PRIMARY KEY (`uniqueX`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -361,7 +393,7 @@ CREATE TABLE IF NOT EXISTS `scores1` (
   `who1` varchar(25) NOT NULL,
   `creator` varchar(25) NOT NULL,
   `product` varchar(40) NOT NULL,
-  `amount` decimal(6,3) NOT NULL,
+  `amount` decimal(12,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
@@ -425,6 +457,36 @@ CREATE TABLE IF NOT EXISTS `users1` (
   `closeDate` datetime DEFAULT NULL,
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `valuepairs`
+--
+
+CREATE TABLE IF NOT EXISTS `valuepairs` (
+  `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
+  `thekey` varchar(50) NOT NULL,
+  `thevalue` varchar(50) NOT NULL,
+  `datetime` datetime NOT NULL,
+  PRIMARY KEY (`uniqueX`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `withdrawals`
+--
+
+CREATE TABLE IF NOT EXISTS `withdrawals` (
+  `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
+  `amount` decimal(16,8) NOT NULL,
+  `address` varchar(40) NOT NULL,
+  `state` varchar(40) NOT NULL,
+  `datetime1` datetime NOT NULL,
+  `datetime2` datetime NOT NULL,
+  PRIMARY KEY (`uniqueX`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -519,3 +581,4 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

@@ -163,7 +163,7 @@ class Bitcoin {
         // Execute the request and decode to an array
         $this->raw_response = curl_exec($curl);
         $this->response     = json_decode($this->raw_response, TRUE);
-//echo "raw" . $this->raw_response;
+//echo "raw " . $this->raw_response;
         // If the status is not 200, something is wrong
         $this->status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
