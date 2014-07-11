@@ -142,7 +142,7 @@ function trimtoxdp( $num, $varx )
 	// 500.98747123
 	// 500.98747
 	
-//	echo "xto trim " . $varx ."<br>";
+	echo "xto trim $num to $varx<br>";
 
 	$var1 = pow( 10, $varx);
 
@@ -154,6 +154,7 @@ function trimtoxdp( $num, $varx )
 	$var6 = intval( $var2. '' , 10 );
 	$var7 = $var6 / $var1;
 	
+	echo "xto $var7<br>";
 	return $var7;// . " " . $num;
 }
 

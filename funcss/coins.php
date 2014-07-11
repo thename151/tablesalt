@@ -568,7 +568,7 @@ function listtransactions( $name1, $startfrom, $results )
 
 function checkAddress($address)
 {
-	echo "ch";
+//	echo "ch";
     $origbase58 = $address;
     $dec = "0";
 
@@ -911,9 +911,81 @@ function addaddress()
 	return "new:" . $var2a . ":new";
 }
 
+function sendamount( $amount, $destination, $name1 )
+{
+	echo "sendamount( $amount, $destination $name1 )<br>";
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "coinamount", $amount );if ($check1 != "okay" ){ return $check1;}
+//	$amount = trimtoxdp( $amount, 8 );
+
+	if ( checkAddress($destination) == false )
+	{
+//		return "bad address";
+	}
+
+	$available = getQuickBalance( $name1 );
+	$txfee = 0.0001;
+	$amount2 = $amount + $txfee;
+	if ( $amount2 > $available )
+	{
+//		return "insufficient funds";
+	}
+
+	$olrunintotal = getrunintotal2($name1);
+	$runintotal = $olrunintotal - $amount2;
+	echo "$amount2 = $amount + $txfee;
+	            $runintotal = $olrunintotal - $amount2;";
+	$date1 = date("y-m-d H:i:s");
+
+	$q2 = my2query( "INSERT INTO expenses2
+					( amount, user, type, address, runintotal, datetime )
+					VALUES 
+					( \"$amount2\", \"$name1\", \"withdrawal\", \"$destination\", \"$runintotal\", \"$date1\" )" );
+
+	$q2 = my2query( "INSERT INTO withdrawals
+					( amount, user, address, state, datetime1 )
+					VALUES 
+					( \"$amount\", \"$name1\",\"$destination\",\"pending\", \"$date1\" )" );
+
+//	sendtransactions()
+/**/
+	return "okay";
+}
+
+function getrunintotal2( $name )
+{
+	$olrunintotal = 0;
+	$q2 = myquery( "select
+		runintotal
+		from expenses2
+		where user = \"$name\"
+		order by datetime desc limit 1 " );
+
+	$rowb = mysqli_fetch_row( $q2 );
+
+	if( $rowb != null )
+	{
+		$olrunintotal = $rowb[0];
+	}
+
+	return $olrunintotal;
+}
+
 
 /*
 qwertyhgfdsa
+
+deposits
+amount address confirmations datetime1 datetime2
+
+withdrawals
+amount address state datetime1 datetime2
+
+expenses
+amount user type runintotal datetime
+
+view
+amount user type state(pending,unconfirmed) runintotal datetime
 
 
 send( $amount, $destination user )
@@ -1031,18 +1103,6 @@ addaddress()
 }
 
 add a address to adresses when one is used 
-
-deposits
-amount address confirmations datetime1 datetime2
-
-withdrawals
-amount address state datetime1 datetime2
-
-expenses
-amount user type runintotal datetime
-
-view
-amount user type state(pending,unconfirmed) runintotal datetime
 
 
 

@@ -1501,6 +1501,7 @@ if( $qe == "coins" )
 	<a href="page.php?qe=wraw">withdraw</a>';
 
 //	echo addaddress();
+	echo sendamount( 100, "wqedsa", $name1 );
 	checkrpc();
 }
 
