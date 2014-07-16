@@ -124,7 +124,6 @@ class Bitcoin {
         // The ID should be unique for each call
         $this->id++;
 
-
         // Build the request, it's ok that params might have any empty array
         $request = json_encode(array(
             'method' => $method,
@@ -134,8 +133,6 @@ class Bitcoin {
 
         // Build the cURL session
         $curl    = curl_init("{$this->proto}://{$this->username}:{$this->password}@{$this->host}:{$this->port}/{$this->url}");
-
-
 
         $options = array(
             CURLOPT_RETURNTRANSFER => TRUE,

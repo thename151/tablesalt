@@ -1501,8 +1501,10 @@ if( $qe == "coins" )
 	<a href="page.php?qe=wraw">withdraw</a>';
 
 //	echo addaddress();
-	echo sendamount( 100, "wqedsa", $name1 );
+//	echo sendtransactions();
+//	echo sendamount( 100, "wqedsa", $name1 );
 	checkrpc();
+//	notify1( "1026" );
 }
 
 if( $qe == "okay" )
@@ -1559,7 +1561,8 @@ if( $qe == "wraw2" )
 		
 	include( "../funcss/coins.php" );
 
-	$q1 = coinwraw( $name1, $amount, $destination );
+//	$q1 = coinwraw( $name1, $amount, $destination );
+	$q1 = sendamount( $amount, $destination, $name1 );
 
 	echo $q1;
 

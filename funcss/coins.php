@@ -947,8 +947,8 @@ function sendamount( $amount, $destination, $name1 )
 					VALUES 
 					( \"$amount\", \"$name1\",\"$destination\",\"pending\", \"$date1\" )" );
 
-//	sendtransactions()
-/**/
+	sendtransactions();
+
 	return "okay";
 }
 
@@ -970,6 +970,207 @@ function getrunintotal2( $name )
 
 	return $olrunintotal;
 }
+
+
+function sendtransactions()
+{
+	$var = checkrpc();
+
+	if( $var == "" )
+	{
+		return "no service<br>";
+	}
+	echo "getinfo server is running<br>";
+	
+	
+	$date1 = date("Y-m-d H:i:s");
+
+	$q1 = myquery( "select
+					amount, address, uniqueX
+					from withdrawals
+					where state = \"pending\" 
+					order by datetime1" );
+			
+	while( $row2 = mysqli_fetch_array( $q1 ) )
+	{
+		echo $row2[1] . "  " .  $row2[0] . "  ...<br>";
+		
+		include( "../dbdets.inc" );
+		require_once('easybitcoin.php');
+		$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+	  
+		$var1 = $bitcoin->sendtoaddress( $row2[1], $row2[0]*1 ); // destination, amount
+
+		$state2 = "";
+		$message2 = "";
+
+		if( $var1 == null )
+		{
+			//~ echo $bitcoin->error;
+			
+			$state2 = "pending";
+			$message2 = $bitcoin->error;
+		}
+		else
+		{
+			//~ echo $var1;
+			$state2 = "sent";
+			$message2 = $var1;
+		}
+		echo "$state2 $message2<br>";
+
+	    my2query( "update withdrawals set
+			    state = \"$state2\",
+			    message = \"$message2\",
+			    datetime2 = \"$date1\"
+			    where uniqueX = \"$row2[2]\"" );
+	}
+
+	return "okay";	
+}
+
+
+function notify1( $txid )
+{
+	$txid = "2e03";
+	echo "notify1( $txid )<br>";
+	
+	include( "../dbdets.inc" );
+	require_once('easybitcoin.php');
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+	$var1 = $bitcoin->gettransaction( $txid );
+
+	$date1 = date("Y-m-d H:i:s");
+	echo "error:<br>" . $bitcoin->error . "<br>";
+
+//	$amount = $var1[amount];
+	$amount = 6.2;
+
+//	$address = $var1[address];
+	$address = "19yDE6uk5K1Uo4DLWDmsB7QiQVtW9d8PiW";
+	
+//	$confirmations = $var1[confirmations];
+	$confirmations = 20;
+
+	if( $amount <= 0 )
+	{
+		return "nothing";
+	}
+
+	$user1 = "";
+
+	$q1 = myquery( "select
+				user
+				from addressesinuse
+				where address = \"$address\" 
+				limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+
+	if($row != null )
+	{
+		$user1 = $row[0];
+	}
+
+	if( $confirmations > 0 )
+	{
+		// search for record and update
+		// if not found insert record
+		
+		$q1 = myquery( "select
+					uniqueX
+					from deposits
+					where txid = \"$txid\" and confirmations < 1
+					limit 1" );
+
+		$row = mysqli_fetch_row( $q1 );
+
+		if($row != null )
+		{
+			echo "isnt null ";
+		}
+		if($row == null )
+		{
+			echo "is null ";
+		}
+		
+		$q1 = myquery( "select
+					uniqueX, confirmations
+					from deposits
+					where txid = \"$txid\" 
+					limit 1" );
+
+		$row = mysqli_fetch_row( $q1 );
+
+		if($row != null )
+		{
+			if( $row[1] == 0 )
+			{
+				my2query( "update deposits set
+						user = \"$user1\",
+						datetime2 = \"$date1\",
+						confirmations = \"$confirmations\"
+						where uniqueX = \"$row[0]\"" );
+			}
+			else
+			{
+				echo "already updated<br>";
+			}
+		}
+		else
+		{
+			$q2 = my2query( "INSERT INTO deposits
+							( amount, address, user, confirmations, txid, datetime1, datetime2 )
+							VALUES 
+							( \"$amount\", \"$address\", \"$user1\", \"$confirmations\", \"$txid\", \"$date1\", \"$date1\" )" );
+		}
+
+		$olrunintotal = getrunintotal2($user1);
+		$runintotal = $olrunintotal + $amount;
+
+		$q2 = my2query( "INSERT INTO expenses2
+					( amount, user, type, address, runintotal, datetime )
+					VALUES 
+					( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$runintotal\", \"$date1\" )" );
+	}
+	else
+	{
+		// search for record and update
+		// if not found insert record
+		
+		$q1 = myquery( "select
+					uniqueX
+					from deposits
+					where txid = \"$txid\" 
+					limit 1" );
+
+		$row = mysqli_fetch_row( $q1 );
+
+		if($row != null )
+		{
+			my2query( "update deposits set
+						amount = \"$amount\",
+						address = \"$address\",
+						user = \"$user1\",
+						confirmations = \"$confirmations\",
+						txid = \"$txid\",
+						datetime1 = \"$date1\"
+						where uniqueX = \"$row[0]\"" );
+					
+		}
+		else
+		{
+			$q2 = my2query( "INSERT INTO deposits
+							( amount, address, user, confirmations, txid, datetime1)
+							VALUES 
+							( \"$amount\", \"$address\",  \"$user1\", \"$confirmations\", \"$txid\", \"$date1\" )" );
+		}
+	}
+
+	echo "noitfy okay<br>";
+}
+
+
 
 
 /*
