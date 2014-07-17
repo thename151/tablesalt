@@ -1496,15 +1496,16 @@ if( $qe == "coins" )
 	<a href="page.php?qe=product&cr1=' . $coinPageCreator . '&pr1=' . $coinPageProduct .'">' . $coinPageCreator . ' ' . $coinPageProduct .'</a>
 	 products : ' . $balance2 . '<br><br>' . '
 	<a href="page.php?qe=coinst">coin transactions</a><br>
+	<a href="page.php?qe=coinst2">coin transactions-new</a><br>
 	<a href="page.php?qe=de-po">deposit</a><br>
 	<a href="page.php?qe=tradecoin">trade</a><br>
 	<a href="page.php?qe=wraw">withdraw</a>';
 
 //	echo addaddress();
 //	echo sendtransactions();
-//	echo sendamount( 100, "wqedsa", $name1 );
+//	echo sendamount( 10.5, "zxcvfdsa", $name1 );
 	checkrpc();
-//	notify1( "1026" );
+//	echo notify2( "1026" );
 }
 
 if( $qe == "okay" )
@@ -1513,6 +1514,80 @@ if( $qe == "okay" )
 	$messagez = "okay";
 }
 
+if( $qe == "coinst2" )
+{
+	$title1 = "coin transactions";
+	
+	include( "../funcss/coins.php" );
+
+	$startfrom = quickGet( "startfrom", "0" );
+	$results = quickGet( "results", "10" );
+	
+	$mess1 = listtransactions( $name1, $startfrom, $results );
+	
+	$mess10 = '';
+	
+	if( $mess1[0][0] == "okay" )
+	{
+		$mess4 = "page.php?qe=coinst&";
+
+		include_once( "incs3.php" );
+
+		$mess2i = "";
+
+		$mess2i .= "<table>";
+
+		for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
+		{
+
+			$mess2i .= "<tr><td>";
+			$mess2i .= $mess1[$i2][2];
+			$mess2i .= "</td>";
+			$mess2i .= "<td>";
+
+
+			if( $mess1[$i2][4] == "income" )
+			{
+				$mess2i .= "deposit : " . $mess1[$i2][1];
+			}
+			else
+			{
+				if( ( $mess1[$i2][1] != "bought products" ) && ( $mess1[$i2][1] != "sold products" ) )
+				{
+					$mess2i .= "withdrawal : ". $mess1[$i2][1];
+				}
+				else
+				{
+					$mess2i .= $mess1[$i2][1];
+				}
+			}
+
+			$mess2i .= "</td>";
+			$mess2i .= "<td>";
+			$mess2i .= $mess1[$i2][0] * 1;
+			$mess2i .= "</td>";
+			$mess2i .= "<td>";
+			$mess2i .= $mess1[$i2][3] * 1;
+			$mess2i .= "</td>";
+			//~ $mess2i .= "<td>";
+			//~ $mess2i .= $mess1[$i2][4];
+			//~ $mess2i .= "</td></	tr>";
+			
+		}
+			$mess2i .= "</table>";
+
+			$mess2i .= "<br><br>";
+
+		$mess10 .= "$displayResults<br>";
+
+		$mess10 .= $mess2i . $mess3;
+	}
+	else
+	{
+		$mess10 .= $mess1;
+	}
+	$messagez .= $mess10;
+}
 
 
 if( $qe == "wraw" )
@@ -1848,10 +1923,7 @@ if( $qe == "coinst" )
 				{
 					$mess2i .= $mess1[$i2][1];
 				}
-				
 			}
-
-
 
 			$mess2i .= "</td>";
 			$mess2i .= "<td>";
