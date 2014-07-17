@@ -1514,7 +1514,7 @@ if( $qe == "okay" )
 	$messagez = "okay";
 }
 
-if( $qe == "coinst2" )
+if( $qe == "coinst" )
 {
 	$title1 = "coin transactions";
 	
@@ -1523,7 +1523,7 @@ if( $qe == "coinst2" )
 	$startfrom = quickGet( "startfrom", "0" );
 	$results = quickGet( "results", "10" );
 	
-	$mess1 = listtransactions( $name1, $startfrom, $results );
+	$mess1 = listtransactions2( $name1, $startfrom, $results );
 	
 	$mess10 = '';
 	
@@ -1544,24 +1544,10 @@ if( $qe == "coinst2" )
 			$mess2i .= $mess1[$i2][2];
 			$mess2i .= "</td>";
 			$mess2i .= "<td>";
-
-
-			if( $mess1[$i2][4] == "income" )
-			{
-				$mess2i .= "deposit : " . $mess1[$i2][1];
-			}
-			else
-			{
-				if( ( $mess1[$i2][1] != "bought products" ) && ( $mess1[$i2][1] != "sold products" ) )
-				{
-					$mess2i .= "withdrawal : ". $mess1[$i2][1];
-				}
-				else
-				{
-					$mess2i .= $mess1[$i2][1];
-				}
-			}
-
+			$mess2i .= $mess1[$i2][4];
+			$mess2i .= "</td>";
+			$mess2i .= "<td>";
+			$mess2i .= $mess1[$i2][1];
 			$mess2i .= "</td>";
 			$mess2i .= "<td>";
 			$mess2i .= $mess1[$i2][0] * 1;
@@ -1876,7 +1862,7 @@ if( $qe == "de-po-add" )
 	}	
 }
 
-
+/*
 if( $qe == "coinst" )
 {
 	$title1 = "coin transactions";
@@ -1951,7 +1937,7 @@ if( $qe == "coinst" )
 	}
 	$messagez .= $mess10;
 }
-
+*/
 
 if( $qe == "colours" )
 {

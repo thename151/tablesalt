@@ -100,28 +100,27 @@ function coinbuy( $name, $amount ) // buy mbtc products
 		return "number too small";
 	}
 
-	$available = getQuickBalance( $name );
+	
+	//	getrunintotal
+	$olrunintotal = getrunintotal2($name);
+		
+	$amount2 = $amount * -0.001;
+		
+	$runintotal = $olrunintotal + $amount2;
+
+	
+	$available = $runintotal;
 	if ( ($amount/1000) > $available )
 	{
 		return "insufficient funds";
 	}
-	
-	//	getrunintotal
-	$olrunintotal = getrunintotal($name);
-		
-	$amount2 = $amount * 0.001;
-		
-	$runintotal = $olrunintotal - $amount2;
-	
 	$date1 = date("y-m-d H:i:s");
 	
 
-	$result4 = my2query( "INSERT INTO expenses
-				( user, amount, destination, runintotal, datetime )
+	$result4 = my2query( "INSERT INTO expenses2
+				( user, amount, address, runintotal, datetime )
 				VALUES 
 				( \"$name\", \"$amount2\", \"bought products\", \"$runintotal\", \"$date1\" )" );
-echo "qweewqqq";
-	
 
 	include_once( "sendproduct.php" );
 	
@@ -161,19 +160,20 @@ function coinsell( $name, $amount ) // sell mbtc products
 	}
 
 
-	$olrunintotal = getrunintotal($name);
+	$olrunintotal = getrunintotal2($name);
 		
-	$amount2 = $amount * -0.001;
+	$amount2 = $amount * 0.001;
 	
-	$runintotal = $olrunintotal - $amount2;
+	$runintotal = $olrunintotal + $amount2;
 	
 	$date1 = date("y-m-d H:i:s");
 
-	$result4 = my2query( "INSERT INTO expenses
-				( user, amount, destination, runintotal, datetime )
+	$result4 = my2query( "INSERT INTO expenses2
+				( user, amount, address, runintotal, datetime )
 				VALUES 
 				( \"$name\", \"$amount2\", \"sold products\", \"$runintotal\", \"$date1\" )" );
-	
+				
+				
 	$amount2 = $amount / 1000;
 	include_once( "sendproduct.php" );
 //	sendproductbalance( $name, "bitcoin", "mBTC", $amount, "holder","coinsell" );
@@ -188,106 +188,7 @@ function getQuickBalance( $name )
 {
 	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
 
-	/*
-	expenses        ux amount destination datetime
-
-	get current address
-	if blank return 0
-	else
-	 get most current address from adrschecks
-	 if blank previous = 0
-	 else
-	  previous = total
-	 newtotal = query current address
-	 difference = newtotal - previous
-	 add newtotal, difference to adrschecks 
-	 recd = sum name1 diferences in addrscks
-	 sent = sum name1 expenses
-	 return recd - sent
-
-	*/
-	$q1 = myquery( "select
-			address
-			from addressesinuse
-			where user = \"$name\" 
-			order by uniqueX desc limit 1 " );
-
-	$row = mysqli_fetch_row( $q1 );
-
-	$sum = 0;
-	
-	if( $row == null )
-	{
-		$sum = 0;
-	//	return 'zero';
-	}
-	else
-	{
-		$curradd = $row[0];
-		$q2 = myquery( "select
-			total, datetime
-			from addresschecks
-			where address = \"$curradd\"
-			order by uniqueX desc limit 1 " );
-
-		$previous = 0;
-		$timehas = "passed";
-		$rowb = mysqli_fetch_row( $q2 );
-
-		if( $rowb != null )
-		{
-			"error";
-		}
-
-		$previous = $rowb[0];
-
-		$newtotal = queryAdd( $curradd );
-
-		if( $newtotal > $previous )
-		{
-			$difference = $newtotal - $previous;
-			
-		//	getrunintotal
-			$olrunintotal = 0;
-			$q2 = myquery( "select
-				runintotal
-				from coinview
-				where user = \"$name\"
-				order by datetime desc limit 1 " );
-
-			$rowb = mysqli_fetch_row( $q2 );
-
-			if( $rowb != null )
-			{
-				$olrunintotal = $rowb[0];
-			}
-
-			$runintotal = $olrunintotal + $difference;
-			
-			$date1 = date("y-m-d H:i:s");
-			$result4 = my2query( "INSERT INTO addresschecks
-						( user, address, total, difference, runintotal, datetime )
-						VALUES 
-						( \"$name\", \"$curradd\", \"$newtotal\", \"$difference\", \"$runintotal\", \"$date1\" )" );
-		}
-		
-		$result = myquery("SELECT SUM( difference ) AS value_sum FROM addresschecks where user = \"$name\" "); 
-
-		$row = mysqli_fetch_assoc( $result );
-		$sum = $row['value_sum'];
-	}
-	//~ echo '  ' . $sum;
-	
-	//~ echo "<br>hey ";
-	$result2 = myquery("SELECT SUM( amount ) AS value_sum FROM expenses where user = \"$name\" "); 
-
-	$row = mysqli_fetch_assoc( $result2 );
-	$sum2 = $row['value_sum'];
-	//~ echo '  ' . $sum2;
-
-	$balance = $sum - $sum2;
-
-	return $balance;
+	return getrunintotal2($name) * 1;
 }
 
 
@@ -1037,154 +938,6 @@ function sendtransactions()
 }
 
 
-function notify1( $txid )
-{
-	$txid = "2e03";
-	echo "notify1( $txid )<br>";
-	
-	include( "../dbdets.inc" );
-	require_once('easybitcoin.php');
-	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
-	$var1 = $bitcoin->gettransaction( $txid );
-
-	$date1 = date("Y-m-d H:i:s");
-	echo "error:<br>" . $bitcoin->error . "<br>";
-
-//	$amount = $var1[amount];
-	$amount = 6.2;
-
-//	$address = $var1[address];
-	$address = "19yDE6uk5K1Uo4DLWDmsB7QiQVtW9d8PiW";
-	
-//	$confirmations = $var1[confirmations];
-	$confirmations = 20;
-
-	if( $amount <= 0 )
-	{
-		return "nothing";
-	}
-
-	$user1 = "";
-
-	$q1 = myquery( "select
-				user
-				from addressesinuse
-				where address = \"$address\" 
-				limit 1" );
-
-	$row = mysqli_fetch_row( $q1 );
-
-	if($row != null )
-	{
-		$user1 = $row[0];
-	}
-
-	if( $confirmations > 0 )
-	{
-		// search for record and update
-		// if not found insert record
-		//~ 
-		//~ $q1 = myquery( "select
-					//~ uniqueX
-					//~ from deposits
-					//~ where txid = \"$txid\" and confirmations < 1
-					//~ limit 1" );
-//~ 
-		//~ $row = mysqli_fetch_row( $q1 );
-//~ 
-		//~ if($row != null )
-		//~ {
-			//~ echo "isnt null ";
-		//~ }
-		//~ if($row == null )
-		//~ {
-			//~ echo "is null ";
-		//~ }
-		//~ 
-		
-		$q1 = myquery( "select
-					uniqueX, confirmations
-					from deposits
-					where txid = \"$txid\" 
-					limit 1" );
-
-		$row = mysqli_fetch_row( $q1 );
-
-		if($row != null )
-		{
-			if( $row[1] == 0 )
-			{
-				my2query( "update deposits set
-						user = \"$user1\",
-						datetime2 = \"$date1\",
-						confirmations = \"$confirmations\"
-						where uniqueX = \"$row[0]\"" );
-			}
-			else
-			{
-				echo "already updated<br>";
-			}
-		}
-		else
-		{
-			$q2 = my2query( "INSERT INTO deposits
-							( amount, address, user, confirmations, txid, datetime1, datetime2 )
-							VALUES 
-							( \"$amount\", \"$address\", \"$user1\", \"$confirmations\", \"$txid\", \"$date1\", \"$date1\" )" );
-		}
-
-		$olrunintotal = getrunintotal2($user1);
-		$runintotal = $olrunintotal + $amount;
-
-		// search for record and update
-		// if not found insert record
-		$q2 = my2query( "INSERT INTO expenses2
-					( amount, user, type, address, runintotal, datetime )
-					VALUES 
-					( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$runintotal\", \"$date1\" )" );
-	}
-	else
-	{
-		// search for record and update
-		// if not found insert record
-		
-		$q1 = myquery( "select
-					uniqueX
-					from deposits
-					where txid = \"$txid\" 
-					limit 1" );
-
-		$row = mysqli_fetch_row( $q1 );
-
-		if($row != null )
-		{
-			my2query( "update deposits set
-						amount = \"$amount\",
-						address = \"$address\",
-						user = \"$user1\",
-						confirmations = \"$confirmations\",
-						txid = \"$txid\",
-						datetime1 = \"$date1\"
-						where uniqueX = \"$row[0]\"" );
-					
-		}
-		else
-		{
-			$q2 = my2query( "INSERT INTO deposits
-							( amount, address, user, confirmations, txid, datetime1)
-							VALUES 
-							( \"$amount\", \"$address\",  \"$user1\", \"$confirmations\", \"$txid\", \"$date1\" )" );
-		}
-	}
-
-	echo "noitfy okay<br>";
-}
-
-
-
-
-
-
 function notify2( $txid )
 {
 	echo "<br>notify2( $txid )<br>";
@@ -1198,14 +951,14 @@ function notify2( $txid )
 	echo "error:<br>" . $bitcoin->error . "<br>";
 
 //	$amount = $var1[amount];
-	$amount = 5.3;
+	$amount = 250.3;
 
 //	$address = $var1[address];
 	$address = "19yDE6uk5K1Uo4DLWDmsB7QiQVtW9d8PiW";
 	
 //	$confirmations = $var1[confirmations];
-	$confirmations = 0;
-	$txid = "3e05";
+	$confirmations = 10;
+	$txid = "3e06";
 
 //	get user from address
 	$user1 = "";
@@ -1380,59 +1133,53 @@ function notify2( $txid )
 }
 
 
+function listtransactions2( $name1, $startfrom, $results )
+{
+	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 
+	$result7 = myquery( "select amount, address, datetime, runintotal, type
+							from expenses2 where user = \"$name1\" 
+							order by datetime desc limit $startfrom, $results" );
 
+	$result5 = myquery( "select amount
+							from expenses2
+							where user = \"$name1\"" );
 
-/*
+	$numrows = mysqli_num_rows( $result5 );
 	
-	if confs > 0
-		runintotal = runintotal + amount
-		select uniqueX from deposits where txid = txid
-		if null
-			depositrow = insert to deposit
-			insert to expenses: deposit-confirmed, depositrow
-		else
-			update deposits: confirmations
-			depositrow = row[0]
-			select from expenses2 where ttxid = depositrow
-			if null
-				insert to expenses: confirmed, depositrow
-			else
-				update expenses: confirmed, depositrow
-*/
+	if( $numrows == 0 )
+	{
+		return "there are no results here";
+	}
+	
+	$mess1[0][0] = "okay";
+	$mess1[0][1] = $numrows;
+	$i1 = 1;
+
+	while( $row2 = mysqli_fetch_array($result7) )
+	{
+		$messa[0] = $row2[0];
+		$messa[1] = $row2[1];
+		$messa[2] = $row2[2];
+		$messa[3] = $row2[3];
+		$messa[4] = $row2[4];
+
+		$mess1[$i1] = $messa;
+		$messa = null;
+		$i1++;
+	}
+	
+	return $mess1;
+}
+
 
 
 
 
 /*
 qwertyhgfdsa
-
-	if confs = 0
-		select uniqueX from deposits where txid = txid
-		if null
-			depositrow = insert to deposit
-			insert to expenses: unconfirmed, depositrow
-		else
-			update deposits
-			depositrow = row[0]
-			select from expenses2 where ttxid = depositrow
-			if null
-				insert to expenses: deposit-unconfirmed, depositrow
-			else
-				update to expenses: deposit-unconfirmed, depositrow
-	if confs > 0
-		select uniqueX from deposits where txid = txid
-		if null
-			depositrow = insert to deposit
-			insert to expenses: deposit-confirmed, depositrow
-		else
-			update deposits: confirmations
-			depositrow = row[0]
-			select from expenses2 where ttxid = depositrow
-			if null
-				insert to expenses: confirmed, depositrow
-			else
-				update expenses: confirmed, depositrow
 
 
 
