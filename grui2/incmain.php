@@ -1504,7 +1504,10 @@ if( $qe == "coins" )
 //	echo sendtransactions();
 //	echo sendamount( 10.5, "zxcvfdsa", $name1 );
 
-//	echo notify2( "1026" );
+//	echo getcwd();
+//	echo notify( "874053ae865c5e304ca6b3da416253afd1653bf12881c031673a3b4b845acd5c" );
+//	echo notify3( "562f1d5c08d84fd94112c1937e2aa2c706d26f6b3250ba62e1fef15a76df9a80" );
+//	echo notify4( "wqe" );
 }
 
 if( $qe == "check" )
@@ -1530,7 +1533,7 @@ if( $qe == "coinst" )
 	$startfrom = quickGet( "startfrom", "0" );
 	$results = quickGet( "results", "10" );
 	
-	$mess1 = listtransactions2( $name1, $startfrom, $results );
+	$mess1 = listtransactions( $name1, $startfrom, $results );
 	
 	$mess10 = '';
 	
@@ -1550,12 +1553,23 @@ if( $qe == "coinst" )
 			$mess2i .= "<tr><td>";
 			$mess2i .= $mess1[$i2][2];
 			$mess2i .= "</td>";
-			$mess2i .= "<td>";
-			$mess2i .= $mess1[$i2][4];
-			$mess2i .= "</td>";
-			$mess2i .= "<td>";
-			$mess2i .= $mess1[$i2][1];
-			$mess2i .= "</td>";
+			if ( $mess1[$i2][4] == "" )
+			{
+				
+			$mess2i .= '<td colspan = "2">';
+				//$mess2i .= "blank";
+				$mess2i .= $mess1[$i2][1];
+				$mess2i .= "</td>";
+			}
+			else
+			{
+				$mess2i .= "<td>";
+				$mess2i .= $mess1[$i2][4];
+				$mess2i .= "</td>";
+				$mess2i .= "<td>";
+				$mess2i .= $mess1[$i2][1];
+				$mess2i .= "</td>";
+			}
 			$mess2i .= "<td>";
 			$mess2i .= $mess1[$i2][0] * 1;
 			$mess2i .= "</td>";

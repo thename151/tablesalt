@@ -2,83 +2,6 @@
 
 include_once( "funcs.php" );
 
-function coinwraw( $name, $amount, $destination )
-{
-	$check1 = check_string( "username", $name );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "coinamount", $amount );if ($check1 != "okay" ){ return $check1;}
-	$amount = trimtoxdp( $amount, 8 );
-
-	if ( checkAddress($destination) == false )
-	{
-		return "bad address";
-	}
-
-	$available = getQuickBalance( $name );
-	$txfee = 0.0001;
-	$amount2 = $amount + $txfee;
-	if ( $amount2 > $available )
-	{
-		return "insufficient funds";
-	}
-
-//	getrunintotal
-	$olrunintotal = getrunintotal($name);
-
-	$runintotal = $olrunintotal - $amount2;
-
-	$date1 = date("y-m-d H:i:s");
-
-	$result4 = my2query( "INSERT INTO expenses
-				( user, amount, destination, runintotal, datetime )
-				VALUES 
-				( \"$name\", \"$amount2\", \"$destination\", \"$runintotal\", \"$date1\" )" );
-
-	$q1 = myquery( "select
-			uniqueX
-			from expenses
-			where user = \"$name\" 
-			order by uniqueX desc limit 1 " );
-
-	$row = mysqli_fetch_row( $q1 );
-	$ux = $row[0];
-
-	settask( $amount, $destination, $ux );
-
-	return "okay";
-}
-
-
-function settask( $amount, $destination, $ux )
-{
-	$date1 = date("y-m-d H:i:s");
-
-	$file_handle = fopen("../tasks/todo/$ux.txt", "w");
-	$file_contents = $amount . " ". $destination . " ". $date1;
-
-	fwrite($file_handle, $file_contents);
-	fclose($file_handle);
-//	echo "file created and written to";
-}
-
-
-function getrunintotal( $name )
-{
-	$olrunintotal = 0;
-	$q2 = myquery( "select
-		runintotal
-		from coinview
-		where user = \"$name\"
-		order by datetime desc limit 1 " );
-
-	$rowb = mysqli_fetch_row( $q2 );
-
-	if( $rowb != null )
-	{
-		$olrunintotal = $rowb[0];
-	}
-
-	return $olrunintotal;
-}
 
 function coinbuy( $name, $amount ) // buy mbtc products
 {
@@ -91,7 +14,6 @@ function coinbuy( $name, $amount ) // buy mbtc products
 
 	$amount = trimtodp( $amount );
 	
-	
 	echo "$amounthhhhhh<br>";
 	echo "$amount<br>";
 	
@@ -99,7 +21,6 @@ function coinbuy( $name, $amount ) // buy mbtc products
 	{
 		return "number too small";
 	}
-
 	
 	//	getrunintotal
 	$olrunintotal = getrunintotal2($name);
@@ -215,60 +136,6 @@ function beforetimemins( $datetime, $mins ) // have mins passed since date and n
 }
 
 
-function testexpenses( $name )
-{
-	$date1 = date("y-m-d H:i:s");
-	$result4 = my2query( "INSERT INTO expenses
-				( user, amount, destination, datetime )
-				VALUES 
-				( \"$name\", \"2.5\", \"bought products\", \"$date1\" )" );
-}
-
-function queryAdd( $curradd )
-{
-	
-	//~ return 0.07;
-	
-//	echo "queryAdd new<br>";
-//	$curradd = '1Q5gjJcoDyi3nY5mg3B4EAKEJCLP65CRjC';
-	//~ $curradd = 'sfsdfsdf';
-	
-    
-	include( "../dbdets.inc" );
-
-	require_once('easybitcoin.php');
-	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
- 
-	$var1a = $bitcoin->getinfo();
-	$var2a = $var1a['version'];
-	
-	if( $var2a == "" )
-	{
-	//	echo "nogetinfo server not running \n";
-		return 0;
-	}
-	//	echo "server  running \n";
-	
-	$var1 = $bitcoin->getreceivedbyaddress( $curradd );
-	
-	$var20 = $bitcoin->error;
-	
-	//~ echo "<br>error : " . $var20 . "<br>";
-	//~ echo $var1;
-	//~ return 0;
-	
-	if ( $var20 == "" )
-	{
-		return $var1;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-
-
 function drawCode2( $addr )
 {
 	include_once( '../phpqrcode/dex2.php' );
@@ -276,52 +143,6 @@ function drawCode2( $addr )
 
 	return $var1;
 }
-
-
-function fillTable()
-{
-	  	  $cars=explode(",",'
-	  
-	  1,"12PzvGbPk5eXBP9qyTXjgf1QF72qgrhpZu","5zzzzzzzzzz"
-2,"1EtkzHX1v9H9vC4xfTtZX7qg8WZ8GEq65j","5zzzzzzzzz"
-3,"15gEcsfCbaMKRpwSv6tyoD8XFwD5yNDVmh","5zzzzzzzz"
-
-'
-	  );
-
-	$i2 = 1; 
-	while ( $i2 < count( $cars ) )
-	{
-		echo $cars[$i2] . ",<br>";
-		$i2 = $i2 + 2;
-	}
-}
-
-
-function fillTable2()
-{
-
-	$cars=array(
-
-"12PzvGbPk5eXBP9qyTXjgf1QF72qgrhpZu",
-"19fwoqJPeP8FnC1SaVFt6VFJfZQVH8w8pt",
-"1EkQKa4PwwUfH7cNMkTE4PZxBoeZtQfdXx"
-
-	);	
-	
-	$i2 = 0; 
-	while ( $i2 < count( $cars ) )
-	{
-		echo $cars[$i2] . "<br>";
-		$result4 = my2query( "INSERT INTO addresslist 
-						( address ) 
-						VALUES 
-						( \"$cars[$i2]\" )" );
-
-		$i2 = $i2 + 1;
-	}
-}
-
 
 
 function getAddress( $name )
@@ -421,50 +242,6 @@ function getNewAddress( $name )
 	    }
     }
 }
-
-function listtransactions( $name1, $startfrom, $results )
-{
-	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
-
-	$result7 = myquery( "select difference, address, datetime, runintotal, tablename
-							from coinview where user = \"$name1\" 
-							order by datetime desc limit $startfrom, $results" );
-
-
-	$result5 = myquery( "select difference
-							from coinview
-							where user = \"$name1\"" );
-
-	$numrows = mysqli_num_rows( $result5 );
-	
-	if( $numrows == 0 )
-	{
-		return "there are no results here";
-	}
-	
-	$mess1[0][0] = "okay";
-	$mess1[0][1] = $numrows;
-	$i1 = 1;
-
-	while( $row2 = mysqli_fetch_array($result7) )
-	{
-		$messa[0] = $row2[0];
-		$messa[1] = $row2[1];
-		$messa[2] = $row2[2];
-		$messa[3] = $row2[3];
-		$messa[4] = $row2[4];
-
-		$mess1[$i1] = $messa;
-		$messa = null;
-		$i1++;
-	}
-	
-	return $mess1;
-}
-
-
 
 
 function checkAddress($address)
@@ -595,6 +372,7 @@ function getrecentprice()
 	$varr[1] = "0";
 	return $varr;
 }
+
 
 function getnewprice()
 {
@@ -938,27 +716,80 @@ function sendtransactions()
 }
 
 
-function notify2( $txid )
+
+function notify3( $txid )
 {
-	echo "<br>notify2( $txid )<br>";
+	echo "<br>notify3( $txid )<br>";
 
 	include( "../dbdets.inc" );
 	require_once('easybitcoin.php');
+	
+	//~ $txid = "6d57dc3474e90d348372de0c2033e52d2ee652a5be787dae872f6cc3daf4161b";
+	//~ $txid = "778665a483eb70f1336510bc5f158ece392cc1d9b1063c7f9723a366845e4cbd";
+	
 	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
 	$var1 = $bitcoin->gettransaction( $txid );
 
 	$date1 = date("Y-m-d H:i:s");
 	echo "error:<br>" . $bitcoin->error . "<br>";
 
-//	$amount = $var1[amount];
-	$amount = 250.3;
 
-//	$address = $var1[address];
-	$address = "19yDE6uk5K1Uo4DLWDmsB7QiQVtW9d8PiW";
+	$date1 = date("Y-m-d H:i:s", $var1[time]);
+	$date2 = date("Y-m-d H:i:s", $var1[blocktime]);
+
+	echo "var   : " . $var1[amount] . "<br>";
+	echo "var   : " . $var1[confirmations] . "<br>";
+	echo "time  : " . $var1[time] . "<br>";
+	echo "time2 : " . $date1 . "<br>";
+	echo "time3 : " . $date2 . "<br>";
+	echo "var   : " . $var1[details][0][address] . "<br>";
 	
-//	$confirmations = $var1[confirmations];
-	$confirmations = 10;
-	$txid = "3e06";
+	$varr[0] = 'okay';
+	$varr[1] = $bitcoin->error;
+	$varr[2] = $var1[amount];
+	$varr[3] = $var1[confirmations];
+	$varr[4] = $var1[details][0][address];
+
+	return $varr;
+	echo "notify3 : end<br>";
+}
+
+
+function notify( $txid )
+{
+	echo "<br>notify( $txid )<br>";
+	$varr = notify3( $txid );
+	
+	echo "0 " . $varr[0] . " <br>";
+	echo "1 " . $varr[1] . " <br>";
+	echo "2 : amount  : " . $varr[2] . " <br>";
+	echo "3 : confs   : " . $varr[3] . " <br>";
+	echo "4 : address : " . $varr[4] . " <br>";
+	echo "5 " . $varr[5] . " <br>";
+	
+	if ( ($varr[2] * 1 ) <= 0 )
+	{
+		echo "negative or zero amount<br>";
+		return "okay1";
+	}
+	else
+	{
+		echo "positive <br>";
+	}
+
+
+	$date1 = date("Y-m-d H:i:s");
+
+//	$amount = 250.3;
+	$amount = $varr[2];
+
+//	$address = "19yDE6uk5K1Uo4DLWDmsB7QiQVtW9d8PiW";
+	$address = $varr[4];
+	
+//	$confirmations = 10;
+	$confirmations = $varr[3];
+
+//	$txid = "3e06";
 
 //	get user from address
 	$user1 = "";
@@ -970,6 +801,7 @@ function notify2( $txid )
 
 	$row = mysqli_fetch_row( $q1 );
 
+	//return "okay2";
 	if($row != null )
 	{
 		$user1 = $row[0];
@@ -989,8 +821,11 @@ function notify2( $txid )
 					from deposits
 					where txid = \"$txid\" 
 					limit 1" );
+//select startdate^
 
 		$row = mysqli_fetch_row( $q1 );
+ 
+ //amount, address, user, confirmations, txid     startdate enddate update
 
 		if($row == null )
 		{
@@ -999,12 +834,14 @@ function notify2( $txid )
 							( amount, address, user, confirmations, txid, datetime1 )
 							VALUES 
 							( \"$amount\", \"$address\", \"$user1\", \"$confirmations\", \"$txid\", \"$date1\" )" );
+//set start date
 
 //			insert to expenses: unconfirmed, depositrow
 			$q2 = my2query( "INSERT INTO expenses2
 						( amount, user, type, address, ttxid, runintotal, datetime )
 						VALUES 
 						( \"$amount\", \"$user1\", \"deposit-unconfirmed\", \"$address\", \"$depositrow\", \"$runintotal\", \"$date1\" )" );
+//set start date						
 		}
 		else
 		{
@@ -1017,13 +854,14 @@ function notify2( $txid )
 						txid = \"$txid\",
 						datetime1 = \"$date1\"
 						where uniqueX = \"$row[0]\"" );
+//set update date
 
 			$depositrow = $row[0];
 //			select from expenses2 where ttxid = depositrow
 			$q2 = myquery( "select
 						uniqueX
 						from expenses2
-						where ttxid = \"$depositrow\" and type = \"deposit-unconfirmed\"
+						where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
 						limit 1" );
 
 			$row2 = mysqli_fetch_row( $q2 );
@@ -1098,7 +936,7 @@ function notify2( $txid )
 			$q2 = myquery( "select
 						uniqueX
 						from expenses2
-						where ttxid = \"$depositrow\" and type = \"deposit-unconfirmed\"
+						where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
 						limit 1" );
 
 			$row2 = mysqli_fetch_row( $q2 );
@@ -1129,11 +967,239 @@ function notify2( $txid )
 	}
 
 	echo "okay<br>";
-	return "notify2 end<br>";
+	return "notify end<br>";
 }
 
 
-function listtransactions2( $name1, $startfrom, $results )
+
+
+
+function notify4( $txid )
+{
+	echo "<br>notify4( $txid )<br>";
+	$varr = notify3( $txid );
+	
+	echo "0 " . $varr[0] . " <br>";
+	echo "1 " . $varr[1] . " <br>";
+	echo "2 : amount  : " . $varr[2] . " <br>";
+	echo "3 : confs   : " . $varr[3] . " <br>";
+	echo "4 : address : " . $varr[4] . " <br>";
+	echo "5 " . $varr[5] . " <br>";
+	
+	if ( ($varr[2] * 1 ) <= 0 )
+	{
+		echo "negative or zero amount<br>";
+		return "okay1";
+	}
+	else
+	{
+		echo "positive <br>";
+	}
+
+
+	$date1 = date("Y-m-d H:i:s");
+
+//	$amount = 0.7;
+	$amount = $varr[2];
+
+//	$address = "1AaQmAtwdF6Lz5RVdT62eX5KcAd3BxJsrh";
+	$address = $varr[4];
+	
+//	$confirmations = 3;
+	$confirmations = $varr[3];
+
+//	$txid = "3e09";
+
+//	get user from address
+	$user1 = "";
+	$q1 = myquery( "select
+				user
+				from addressesinuse
+				where address = \"$address\" 
+				limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+
+//	return "okay2";
+	if($row != null )
+	{
+		$user1 = $row[0];
+	}
+
+	$depositrow = "";
+//	if confs = 0
+
+	$olrunintotal = getrunintotal2($user1);
+	$runintotal = $olrunintotal;
+
+	if ( $confirmations == 0 )
+	{
+//		select uniqueX from deposits where txid = txid
+		$q1 = myquery( "select
+					uniqueX, starttime
+					from deposits
+					where txid = \"$txid\" 
+					limit 1" );
+
+		$row = mysqli_fetch_row( $q1 );
+ 
+ //amount, address, user, confirmations, txid     startdate enddate update
+
+		if($row == null )
+		{
+//			depositrow = insert to deposit
+			$depositrow = my3query( "INSERT INTO deposits
+							( amount, address, user, confirmations, txid, starttime, updatetime )
+							VALUES 
+							( \"$amount\", \"$address\", \"$user1\", \"$confirmations\", \"$txid\", \"$date1\", \"$date1\" )" );
+
+//			insert to expenses: unconfirmed, depositrow
+			$q2 = my2query( "INSERT INTO expenses2
+						( amount, user, type, address, ttxid, runintotal, datetime )
+						VALUES 
+						( \"$amount\", \"$user1\", \"deposit-unconfirmed\", \"$address\", \"$depositrow\", \"$runintotal\", \"$date1\" )" );
+//set start date						
+		}
+		else
+		{
+//			update deposits
+			my2query( "update deposits set
+						amount = \"$amount\",
+						address = \"$address\",
+						user = \"$user1\",
+						confirmations = \"$confirmations\",
+						txid = \"$txid\",
+						updatetime = \"$date1\"
+						where uniqueX = \"$row[0]\"" );
+//set update date
+
+			$depositrow = $row[0];
+			$starttime = $row[1];
+//			select from expenses2 where ttxid = depositrow
+			$q2 = myquery( "select
+						uniqueX
+						from expenses2
+						where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
+						limit 1" );
+
+			$row2 = mysqli_fetch_row( $q2 );
+
+			if($row2 == null )
+			{
+//				insert to expenses: deposit-unconfirmed, depositrow
+				$q2 = my2query( "INSERT INTO expenses2
+					( amount, user, type, address, ttxid, runintotal, datetime )
+					VALUES 
+					( \"$amount\", \"$user1\", \"deposit-unconfirmed\", \"$address\", \"$depositrow\", \"$runintotal\", \"$starttime\" )" );
+			}
+			else
+			{
+//				update expenses: deposit-unconfirmed, depositrow
+
+				my2query( "update expenses2 set
+						amount = \"$amount\",
+						user = \"$user1\",
+						address = \"$address\",
+						type = \"deposit-unconfirmed\",
+						ttxid = \"$depositrow\",
+						runintotal = \"$runintotal\",
+						datetime = \"$starttime\"
+						where uniqueX = \"$row2[0]\"" );
+			}
+		}
+	}
+
+
+	if ( $confirmations > 0 )
+	{
+		$runintotal = $olrunintotal + $amount;
+
+//		select uniqueX from deposits where txid = txid
+		$q1 = myquery( "select
+					uniqueX, endtime
+					from deposits
+					where txid = \"$txid\" 
+					limit 1" );
+
+		$row = mysqli_fetch_row( $q1 );
+
+		if( $row == null )
+		{
+//			depositrow = insert to deposit
+			$depositrow = my3query( "INSERT INTO deposits
+							( amount, address, user, confirmations, txid, starttime, endtime, updatetime )
+							VALUES 
+							( \"$amount\", \"$address\", \"$user1\", \"$confirmations\", \"$txid\", \"$date1\", \"$date1\", \"$date1\" )" );
+
+//			insert to expenses: confirmed, depositrow
+			$q2 = my2query( "INSERT INTO expenses2
+						( amount, user, type, address, ttxid, runintotal, datetime )
+						VALUES 
+						( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$depositrow\", \"$runintotal\", \"$date1\" )" );
+		}
+		else
+		{
+			$endtime = $row[1];
+			if( $endtime == null )
+			{
+				$endtime = $date1;
+			}
+//			update deposits
+			my2query( "update deposits set
+						amount = \"$amount\",
+						address = \"$address\",
+						user = \"$user1\",
+						confirmations = \"$confirmations\",
+						txid = \"$txid\",
+						updatetime = \"$date1\",
+						endtime = \"$endtime\"
+						where uniqueX = \"$row[0]\"" );
+
+			$depositrow = $row[0];
+//			select from expenses2 where ttxid = depositrow
+			$q2 = myquery( "select
+						uniqueX
+						from expenses2
+						where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
+						limit 1" );
+
+			$row2 = mysqli_fetch_row( $q2 );
+
+			if($row2 == null )
+			{
+//				insert to expenses: deposit, depositrow
+				$q2 = my2query( "INSERT INTO expenses2
+					( amount, user, type, address, ttxid, runintotal, datetime )
+					VALUES 
+					( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$depositrow\", \"$runintotal\", \"$endtime\" )" );
+			}
+			else
+			{
+//				update expenses: deposit, depositrow
+				echo "here<br>";
+				my2query( "update expenses2 set
+						amount = \"$amount\",
+						user = \"$user1\",
+						address = \"$address\",
+						type = \"deposit\",
+						ttxid = \"$depositrow\",
+						runintotal = \"$runintotal\",
+						datetime = \"$endtime\"
+						where uniqueX = \"$row2[0]\" " );
+			}
+		}
+	}
+
+	echo "okay<br>";
+	return "notify end<br>";
+}
+
+
+
+
+
+
+function listtransactions( $name1, $startfrom, $results )
 {
 	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
