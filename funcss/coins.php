@@ -755,225 +755,6 @@ function notify3( $txid )
 }
 
 
-function notify( $txid )
-{
-	echo "<br>notify( $txid )<br>";
-	$varr = notify3( $txid );
-	
-	echo "0 " . $varr[0] . " <br>";
-	echo "1 " . $varr[1] . " <br>";
-	echo "2 : amount  : " . $varr[2] . " <br>";
-	echo "3 : confs   : " . $varr[3] . " <br>";
-	echo "4 : address : " . $varr[4] . " <br>";
-	echo "5 " . $varr[5] . " <br>";
-	
-	if ( ($varr[2] * 1 ) <= 0 )
-	{
-		echo "negative or zero amount<br>";
-		return "okay1";
-	}
-	else
-	{
-		echo "positive <br>";
-	}
-
-
-	$date1 = date("Y-m-d H:i:s");
-
-//	$amount = 250.3;
-	$amount = $varr[2];
-
-//	$address = "19yDE6uk5K1Uo4DLWDmsB7QiQVtW9d8PiW";
-	$address = $varr[4];
-	
-//	$confirmations = 10;
-	$confirmations = $varr[3];
-
-//	$txid = "3e06";
-
-//	get user from address
-	$user1 = "";
-	$q1 = myquery( "select
-				user
-				from addressesinuse
-				where address = \"$address\" 
-				limit 1" );
-
-	$row = mysqli_fetch_row( $q1 );
-
-	//return "okay2";
-	if($row != null )
-	{
-		$user1 = $row[0];
-	}
-
-	$depositrow = "";
-//	if confs = 0
-
-	$olrunintotal = getrunintotal2($user1);
-	$runintotal = $olrunintotal;
-
-	if ( $confirmations == 0 )
-	{
-//		select uniqueX from deposits where txid = txid
-		$q1 = myquery( "select
-					uniqueX
-					from deposits
-					where txid = \"$txid\" 
-					limit 1" );
-//select startdate^
-
-		$row = mysqli_fetch_row( $q1 );
- 
- //amount, address, user, confirmations, txid     startdate enddate update
-
-		if($row == null )
-		{
-//			depositrow = insert to deposit
-			$depositrow = my3query( "INSERT INTO deposits
-							( amount, address, user, confirmations, txid, datetime1 )
-							VALUES 
-							( \"$amount\", \"$address\", \"$user1\", \"$confirmations\", \"$txid\", \"$date1\" )" );
-//set start date
-
-//			insert to expenses: unconfirmed, depositrow
-			$q2 = my2query( "INSERT INTO expenses2
-						( amount, user, type, address, ttxid, runintotal, datetime )
-						VALUES 
-						( \"$amount\", \"$user1\", \"deposit-unconfirmed\", \"$address\", \"$depositrow\", \"$runintotal\", \"$date1\" )" );
-//set start date						
-		}
-		else
-		{
-//			update deposits
-			my2query( "update deposits set
-						amount = \"$amount\",
-						address = \"$address\",
-						user = \"$user1\",
-						confirmations = \"$confirmations\",
-						txid = \"$txid\",
-						datetime1 = \"$date1\"
-						where uniqueX = \"$row[0]\"" );
-//set update date
-
-			$depositrow = $row[0];
-//			select from expenses2 where ttxid = depositrow
-			$q2 = myquery( "select
-						uniqueX
-						from expenses2
-						where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
-						limit 1" );
-
-			$row2 = mysqli_fetch_row( $q2 );
-
-			if($row2 == null )
-			{
-//				insert to expenses: deposit-unconfirmed, depositrow
-				$q2 = my2query( "INSERT INTO expenses2
-					( amount, user, type, address, ttxid, runintotal, datetime )
-					VALUES 
-					( \"$amount\", \"$user1\", \"deposit-unconfirmed\", \"$address\", \"$depositrow\", \"$runintotal\", \"$date1\" )" );
-			}
-			else
-			{
-//				update expenses: deposit-unconfirmed, depositrow
-
-				my2query( "update expenses2 set
-						amount = \"$amount\",
-						user = \"$user1\",
-						address = \"$address\",
-						type = \"deposit-unconfirmed\",
-						ttxid = \"$depositrow\",
-						runintotal = \"$runintotal\",
-						datetime = \"$date1\"
-						where uniqueX = \"$row2[0]\"" );
-			}
-		}
-	}
-
-
-	if ( $confirmations > 0 )
-	{
-		$runintotal = $olrunintotal + $amount;
-
-//		select uniqueX from deposits where txid = txid
-		$q1 = myquery( "select
-					uniqueX
-					from deposits
-					where txid = \"$txid\" 
-					limit 1" );
-
-		$row = mysqli_fetch_row( $q1 );
-
-		if( $row == null )
-		{
-//			depositrow = insert to deposit
-			$depositrow = my3query( "INSERT INTO deposits
-							( amount, address, user, confirmations, txid, datetime1, datetime2 )
-							VALUES 
-							( \"$amount\", \"$address\", \"$user1\", \"$confirmations\", \"$txid\", \"$date1\", \"$date1\" )" );
-
-//			insert to expenses: confirmed, depositrow
-			$q2 = my2query( "INSERT INTO expenses2
-						( amount, user, type, address, ttxid, runintotal, datetime )
-						VALUES 
-						( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$depositrow\", \"$runintotal\", \"$date1\" )" );
-		}
-		else
-		{
-//			update deposits
-			my2query( "update deposits set
-						amount = \"$amount\",
-						address = \"$address\",
-						user = \"$user1\",
-						confirmations = \"$confirmations\",
-						txid = \"$txid\",
-						datetime2 = \"$date1\"
-						where uniqueX = \"$row[0]\"" );
-
-			$depositrow = $row[0];
-//			select from expenses2 where ttxid = depositrow
-			$q2 = myquery( "select
-						uniqueX
-						from expenses2
-						where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
-						limit 1" );
-
-			$row2 = mysqli_fetch_row( $q2 );
-
-			if($row2 == null )
-			{
-//				insert to expenses: deposit, depositrow
-				$q2 = my2query( "INSERT INTO expenses2
-					( amount, user, type, address, ttxid, runintotal, datetime )
-					VALUES 
-					( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$depositrow\", \"$runintotal\", \"$date1\" )" );
-			}
-			else
-			{
-//				update expenses: deposit, depositrow
-				echo "here<br>";
-				my2query( "update expenses2 set
-						amount = \"$amount\",
-						user = \"$user1\",
-						address = \"$address\",
-						type = \"deposit\",
-						ttxid = \"$depositrow\",
-						runintotal = \"$runintotal\",
-						datetime = \"$date1\"
-						where uniqueX = \"$row2[0]\" " );
-			}
-		}
-	}
-
-	echo "okay<br>";
-	return "notify end<br>";
-}
-
-
-
-
-
 function notify4( $txid )
 {
 	echo "<br>notify4( $txid )<br>";
@@ -1241,7 +1022,38 @@ function listtransactions( $name1, $startfrom, $results )
 }
 
 
+function walletvtable( $prevdif )
+{
+	echo "<br>wallet v table : start<br>";
 
+	include( "../dbdets.inc" );
+	require_once('easybitcoin.php');
+	
+	
+	$result = myquery("SELECT SUM( amount ) AS value_sum FROM deposits "); 
+	$row = mysqli_fetch_assoc( $result );
+	$tableamount = $row['value_sum'];
+
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+	$walletamount = $bitcoin->getreceivedbyaccount ("", 1);
+
+	echo "table : $tableamount  <br>wallet  : $walletamount<br>";
+
+
+	$var1 = $bitcoin->listtransactions();
+
+	echo "error:<br>" . $bitcoin->error . "<br>";
+
+	$i = 0;
+	while ( $var1[$i] != null )
+	{
+		echo ": " . $var1[$i][category] . " " . $var1[$i][amount] . "<br>";
+		$i++;
+	}
+
+	echo "wallet v table : end<br>";
+	return "okay<br>";
+}
 
 
 /*
