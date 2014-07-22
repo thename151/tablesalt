@@ -976,10 +976,6 @@ function notify4( $txid )
 }
 
 
-
-
-
-
 function listtransactions( $name1, $startfrom, $results )
 {
 	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}

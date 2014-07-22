@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 10, 2014 at 02:27 PM
--- Server version: 5.5.37-0ubuntu0.14.04.1
+-- Generation Time: Jul 22, 2014 at 12:52 PM
+-- Server version: 5.5.38-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `addresschecks` (
   `runintotal` decimal(16,8) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=519 ;
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `addressesinuse` (
   `code` varchar(20) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=104 ;
 
 -- --------------------------------------------------------
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `addresslist` (
   `user` varchar(25) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=603 ;
 
 -- --------------------------------------------------------
 
@@ -90,11 +90,14 @@ CREATE TABLE IF NOT EXISTS `deposits` (
   `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
   `amount` decimal(16,8) NOT NULL,
   `address` varchar(40) NOT NULL,
+  `user` varchar(25) NOT NULL,
   `confirmations` int(11) NOT NULL,
-  `datetime1` datetime NOT NULL,
-  `datetime2` datetime NOT NULL,
+  `txid` varchar(100) NOT NULL,
+  `starttime` datetime DEFAULT NULL,
+  `endtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
@@ -110,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `divs` (
   `wouldsend` decimal(7,6) NOT NULL,
   `doessend` decimal(4,3) NOT NULL,
   PRIMARY KEY (`UniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
 
 -- --------------------------------------------------------
 
@@ -129,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `divtotal` (
   `doessend` decimal(6,3) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
 
 -- --------------------------------------------------------
 
@@ -145,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `destination` varchar(40) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=192 ;
 
 -- --------------------------------------------------------
 
@@ -155,12 +158,15 @@ CREATE TABLE IF NOT EXISTS `expenses` (
 
 CREATE TABLE IF NOT EXISTS `expenses2` (
   `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
+  `amount` decimal(16,8) NOT NULL,
   `user` varchar(25) NOT NULL,
   `type` varchar(40) NOT NULL,
-  `runintotal` datetime NOT NULL,
+  `address` varchar(40) NOT NULL,
+  `ttxid` int(11) NOT NULL,
+  `runintotal` decimal(16,8) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=86 ;
 
 -- --------------------------------------------------------
 
@@ -173,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `login1` (
   `loginName` varchar(25) NOT NULL,
   `loginTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1045 ;
 
 -- --------------------------------------------------------
 
@@ -190,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `messages1` (
   `message1` varchar(500) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 -- --------------------------------------------------------
 
@@ -207,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `products1` (
   `status1` varchar(25) NOT NULL DEFAULT 'okay',
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
 
 -- --------------------------------------------------------
 
@@ -306,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `querylog` (
   `theQuery` varchar(250) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=12240 ;
 
 -- --------------------------------------------------------
 
@@ -328,7 +334,7 @@ CREATE TABLE IF NOT EXISTS `sales3` (
   `user` varchar(25) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1140 ;
 
 -- --------------------------------------------------------
 
@@ -341,7 +347,7 @@ CREATE TABLE IF NOT EXISTS `salesactive` (
   `saleId` int(11) NOT NULL,
   `stock` decimal(6,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=354 ;
 
 -- --------------------------------------------------------
 
@@ -395,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `scores1` (
   `product` varchar(40) NOT NULL,
   `amount` decimal(12,3) NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=210 ;
 
 -- --------------------------------------------------------
 
@@ -413,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `sendreclog1` (
   `sendsort` varchar(25) NOT NULL,
   `dateLog` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3765 ;
 
 -- --------------------------------------------------------
 
@@ -440,7 +446,7 @@ CREATE TABLE IF NOT EXISTS `tradelog` (
   `price1` decimal(9,6) NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=419 ;
 
 -- --------------------------------------------------------
 
@@ -456,7 +462,7 @@ CREATE TABLE IF NOT EXISTS `users1` (
   `thestyle` varchar(25) NOT NULL,
   `closeDate` datetime DEFAULT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=88 ;
 
 -- --------------------------------------------------------
 
@@ -470,7 +476,7 @@ CREATE TABLE IF NOT EXISTS `valuepairs` (
   `thevalue` varchar(50) NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
 
 -- --------------------------------------------------------
 
@@ -481,12 +487,14 @@ CREATE TABLE IF NOT EXISTS `valuepairs` (
 CREATE TABLE IF NOT EXISTS `withdrawals` (
   `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
   `amount` decimal(16,8) NOT NULL,
+  `user` varchar(25) NOT NULL,
   `address` varchar(40) NOT NULL,
   `state` varchar(40) NOT NULL,
+  `message` varchar(100) NOT NULL,
   `datetime1` datetime NOT NULL,
-  `datetime2` datetime NOT NULL,
+  `datetime2` datetime DEFAULT NULL,
   PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
 
 -- --------------------------------------------------------
 
@@ -581,4 +589,3 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
