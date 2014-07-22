@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 22, 2014 at 12:52 PM
+-- Generation Time: Jul 22, 2014 at 12:57 PM
 -- Server version: 5.5.38-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.3
 
@@ -19,23 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `web7`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `addresschecks`
---
-
-CREATE TABLE IF NOT EXISTS `addresschecks` (
-  `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
-  `user` varchar(25) NOT NULL,
-  `address` varchar(40) NOT NULL,
-  `total` decimal(16,8) NOT NULL,
-  `difference` decimal(16,8) NOT NULL,
-  `runintotal` decimal(16,8) NOT NULL,
-  `datetime` datetime NOT NULL,
-  PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=519 ;
 
 -- --------------------------------------------------------
 
@@ -67,19 +50,6 @@ CREATE TABLE IF NOT EXISTS `addresslist` (
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=603 ;
 
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `coinview`
---
-CREATE TABLE IF NOT EXISTS `coinview` (
-`difference` decimal(17,8)
-,`address` varchar(40)
-,`datetime` datetime
-,`user` varchar(25)
-,`runintotal` decimal(16,8)
-,`tablename` varchar(8)
-);
 -- --------------------------------------------------------
 
 --
@@ -133,22 +103,6 @@ CREATE TABLE IF NOT EXISTS `divtotal` (
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `expenses`
---
-
-CREATE TABLE IF NOT EXISTS `expenses` (
-  `uniqueX` int(11) NOT NULL AUTO_INCREMENT,
-  `user` varchar(25) NOT NULL,
-  `amount` decimal(16,8) NOT NULL,
-  `runintotal` decimal(16,8) NOT NULL,
-  `destination` varchar(40) NOT NULL,
-  `datetime` datetime NOT NULL,
-  PRIMARY KEY (`uniqueX`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=192 ;
 
 -- --------------------------------------------------------
 
@@ -495,15 +449,6 @@ CREATE TABLE IF NOT EXISTS `withdrawals` (
   `datetime2` datetime DEFAULT NULL,
   PRIMARY KEY (`uniqueX`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `coinview`
---
-DROP TABLE IF EXISTS `coinview`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `coinview` AS select `addresschecks`.`difference` AS `difference`,`addresschecks`.`address` AS `address`,`addresschecks`.`datetime` AS `datetime`,`addresschecks`.`user` AS `user`,`addresschecks`.`runintotal` AS `runintotal`,'income' AS `tablename` from `addresschecks` where (`addresschecks`.`difference` > 0) union select (`expenses`.`amount` * -(1)) AS `amount * -1`,`expenses`.`destination` AS `destination`,`expenses`.`datetime` AS `datetime`,`expenses`.`user` AS `user`,`expenses`.`runintotal` AS `runintotal`,'expenses' AS `tablename` from `expenses` order by `datetime` desc;
 
 -- --------------------------------------------------------
 
