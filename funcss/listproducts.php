@@ -7,12 +7,12 @@ function listproducts( $startfrom, $results )
 	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 
 	$result1 = myquery( "select 
-            productName, profileName, detail, status1, datetime
+            productName, user1, detail, status1, datetime
 			from products1 where status1 = \"okay\" order by datetime desc
 			limit $startfrom, $results " );
 	
 	$result2 = myquery( "select
-			productName, profileName, detail, status1, datetime
+			productName, user1, detail, status1, datetime
 			from products1 where status1 = \"okay\" order by datetime desc" );
 	
 	$numrows = mysqli_num_rows( $result2 );
@@ -55,13 +55,13 @@ function listproducts2( $cr1, $startfrom, $results )
 	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 
 	$result1 = myquery( "select 
-            productName, profileName, detail, status1, datetime
-			from products1 where status1 = \"okay\" and profileName = \"$cr1\" order by datetime desc
+            productName, user1, detail, status1, datetime
+			from products1 where status1 = \"okay\" and user1 = \"$cr1\" order by datetime desc
 			limit $startfrom, $results " );
 	
 	$result2 = myquery( "select
-			productName, profileName, detail, status1, datetime
-			from products1 where status1 = \"okay\" and profileName = \"$cr1\" order by datetime desc" );
+			productName, user1, detail, status1, datetime
+			from products1 where status1 = \"okay\" and user1 = \"$cr1\" order by datetime desc" );
 
 	$numrows = mysqli_num_rows( $result2 );
 
@@ -106,13 +106,13 @@ function listprofilesproducts( $name1, $startfrom, $results  )
 
 	$result1 = myquery( "select 
             productName, detail, datetime
-			from products1 where profileName = \"$name1\"
+			from products1 where user1 = \"$name1\"
 			and status1 != \"removed\"
 			order by datetime desc limit $startfrom, $results " );
 
 	$result2 = myquery( "select 
             productName, detail, datetime
-			from products1 where profileName = \"$name1\"
+			from products1 where user1 = \"$name1\"
 			and status1 != \"removed\"
 			order by datetime desc " );
 
@@ -155,7 +155,7 @@ function productdetail( $cr1, $pr1 )
 	$result1 = myquery( "select
 			detail, dateTime, status1, divisible
 			from products1 where
-			profileName = \"$cr1\" and productName = \"$pr1\" ");
+			user1 = \"$cr1\" and productName = \"$pr1\" ");
 	
 	$messa ="";
 	$messa[0] = "blank";

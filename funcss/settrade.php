@@ -65,7 +65,7 @@ function edittrade20( $amount,  $crea1, $pname1,
 					  $buysell, $name1, $txno, $keepon )
 {
 	$result4 = myquery( "select productName from products1 where 
-						 profileName = \"$crea1\" and 
+						 user1 = \"$crea1\" and 
 						 productName = \"$pname1\" and 
 						 status1 = \"okay\"" );
 	$row = mysqli_fetch_row( $result4 );
@@ -78,7 +78,7 @@ function edittrade20( $amount,  $crea1, $pname1,
 	# does crea2-pname2 exist
 
 	$result5 = myquery( "select productName from products1 where 
-						 profileName = \"$crea2\" and 
+						 user1 = \"$crea2\" and 
 						 productName = \"$pname2\" and 
 						 status1 = \"okay\"" );
 	$row2 = mysqli_fetch_row( $result5 );
@@ -171,7 +171,7 @@ function settradeb( $name1, $amount, $crea1,  $pname1,
 function settradeb2( $name1, $amount, $crea1, $pname1,
 		$price, $crea2, $pname2, $buysell )
 {
-	$result4 = myquery( "select productName, divisible from products1 where profileName = \"$crea1\" and productName = \"$pname1\" and status1 = \"okay\"" );
+	$result4 = myquery( "select productName, divisible from products1 where user1 = \"$crea1\" and productName = \"$pname1\" and status1 = \"okay\"" );
 	$row = mysqli_fetch_row( $result4 );
 	if($row == null )
 	{
@@ -191,7 +191,7 @@ function settradeb2( $name1, $amount, $crea1, $pname1,
 	# product exists
 	# does crea2-pname2 exist
 
-	$result5 = myquery( "select productName, divisible from products1 where profileName = \"$crea2\" and productName = \"$pname2\" and status1 = \"okay\"" );
+	$result5 = myquery( "select productName, divisible from products1 where user1 = \"$crea2\" and productName = \"$pname2\" and status1 = \"okay\"" );
 	$row2 = mysqli_fetch_row( $result5 );
 	if($row2 == null )
 	{

@@ -564,7 +564,7 @@ function coin2euro( $amount, $name1, $percent )
 
 function addaddress()
 {
-	echo "add address!";
+//	echo "add address!";
 	$var1 = checkrpc();
 	if( $var1 != "okay" )
 	{

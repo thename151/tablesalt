@@ -74,7 +74,7 @@ function sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
 
 	// 	does pcrea - pname exist
 
-	$result4 = myquery( "select productName, divisible from products1 where profileName = \"$pcrea\" and productName = \"$pname\" and status1 = \"okay\"" );
+	$result4 = myquery( "select productName, divisible from products1 where user1 = \"$pcrea\" and productName = \"$pname\" and status1 = \"okay\"" );
 	$row = mysqli_fetch_row( $result4 );
 
 	if($row == null )

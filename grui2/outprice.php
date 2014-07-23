@@ -14,25 +14,36 @@ if( $qe == "prices" )
 	$cr2 = quickGet( "cr2", "" );
 
 
+
 	$mess1 = "";
 
-	if(( $cr1 != "") && ($pr1 != "") )
+	if( $_SESSION['login'] == "yes" )
 	{
-		$mess1 = listtrades46($startfrom, $results, $cr1, $pr1 );
-		$title1 = "list $cr1 $pr1 prices";
-	}
-	else
-	{
-		if( $cr2 != "" )
-		{	
-			$mess1 = listtrades64($startfrom, $results, $cr2 );
-			$title1 = "list $cr2 prices";
+		echo "yes<br>";
+		if(( $cr1 != "") && ($pr1 != "") )
+		{
+			$mess1 = listtrades46($startfrom, $results, $cr1, $pr1 );
+			$title1 = "list $cr1 $pr1 prices";
 		}
 		else
 		{
-			$mess1 = listtrades23($startfrom, $results);
+			if( $cr2 != "" )
+			{	
+				$mess1 = listtrades64($startfrom, $results, $cr2 );
+				$title1 = "list $cr2 prices";
+			}
+			else
+			{
+				$mess1 = listtrades23($startfrom, $results, "dont-hide" );
+			}
 		}
 	}
+	else
+	{
+		echo "no<br>";
+		$mess1 = listtrades23($startfrom, $results, "hide" );
+	}
+
 
 
 
@@ -67,6 +78,7 @@ if( $qe == "prices" )
 	//	$x1 = $startfrom;
 	//	$x1 = $startfrom;
 	//	$mess2 .= $mess1[0][0];
+
 
 		for( $i2 = 1; $i2 < $sz; $i2++ )
 		{
@@ -285,7 +297,6 @@ if( $qe == "market" )
 	{
 		$messagez = $mess7;
 	}
-	
 }
 
 ?>

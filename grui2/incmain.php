@@ -1508,7 +1508,7 @@ if( $qe == "coins" )
 //	echo notify( "874053ae865c5e304ca6b3da416253afd1653bf12881c031673a3b4b845acd5c" );
 //	echo notify3( "562f1d5c08d84fd94112c1937e2aa2c706d26f6b3250ba62e1fef15a76df9a80" );
 //	echo notify4( "wqe" );
-	echo walletvtable();
+//	echo walletvtable();
 }
 
 if( $qe == "check" )
@@ -1516,6 +1516,7 @@ if( $qe == "check" )
 	$title1 = "check";
 	include( "../funcss/coins.php" );
 	checkrpc();
+	echo walletvtable();
 	$messagez = "okay";
 }
 

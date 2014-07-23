@@ -253,7 +253,7 @@ function check_string( $type, $var )
 			return "product detail must be $maxlen characters or less";
 		}
 		
-		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _.-]+$/", $var );
 		if( $var2 == null )
 		{
 			return "product detail must contain only characters A-Z a-z 0-9 _ and -";

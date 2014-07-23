@@ -10,7 +10,7 @@ function createproduct( $name1, $pname, $pdetail, $divisible )
 	$check1 = check_string( "trueorfalse", $divisible );if ($check1 != "okay" ){ return $check1;}
 	
 	$result = myquery(
-	"select productName from products1 where profileName = \"$name1\" and 
+	"select productName from products1 where user1 = \"$name1\" and 
 	productName = \"$pname\"" );
 
 	$row = mysqli_fetch_row( $result );
@@ -29,7 +29,7 @@ function createproduct( $name1, $pname, $pdetail, $divisible )
 	$date1 = date("y-m-d H:i:s");
 	
 	$result4 = my2query( "INSERT INTO products1 
-						(productName, profileName, detail, divisible, dateTime) 
+						(productName, user1, detail, divisible, dateTime) 
 						VALUES 
 						(\"$pname\",\"$name1\",\"$pdetail\",\"$var1\",\"$date1\")" );
 	

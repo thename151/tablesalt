@@ -28,7 +28,7 @@ function createprofile( $fname1, $pass1, $pass2 )
 //	echo "enabled! $check3<br>";
 
 //echo "qwe 3<br>";
-	if ($check3 == "user does not exist	" )
+	if ($check3 == "user does not exist" )
 	{
 		#add user
 
@@ -169,7 +169,7 @@ function closeuser( $name )
 	// delete products
 
 	$result = myquery( "select productName from products1 where 
-						 profileName = \"$name\" and 
+						 user1 = \"$name\" and 
 						 status1 = \"okay\" " );
 
 	while( $row = mysqli_fetch_array($result) )

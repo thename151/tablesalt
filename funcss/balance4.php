@@ -86,7 +86,7 @@ function updatePair( $cr1, $pr1, $cr2, $pr2, $user )
 			$q3 = myquery( "select
 			divisible 
 			from products1
-			where profileName = \"$cr2\" and productName = \"$pr2\" " );
+			where user1 = \"$cr2\" and productName = \"$pr2\" " );
 			$row4 = mysqli_fetch_row( $q3 );
 			$divisible = $row4[0];
 			if ( $divisible == 0 )

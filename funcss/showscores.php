@@ -7,7 +7,7 @@ function showscores( $name1 )
 	include( "hilovalues.php" );
 	
 	$result7 = myquery( "select productName from products1 where 
-						 profileName = \"$name1\" and 
+						 user1 = \"$name1\" and 
 						 status1 = \"okay\"" );
 	$mess1a = null;
 

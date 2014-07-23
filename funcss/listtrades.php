@@ -166,7 +166,7 @@ function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
 	$q3 = myquery( "select
 	divisible 
 	from products1
-	where profileName = \"$cr2\" and productName = \"$pr2\" " );
+	where user1 = \"$cr2\" and productName = \"$pr2\" " );
 	$row4 = mysqli_fetch_row( $q3 );
 	$divisible = $row4[0];
 	if ( $divisible == 0 )
@@ -210,8 +210,9 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 }
 
 
-function listtrades23( $startfrom, $results )
+function listtrades23( $startfrom, $results, $hide )
 {
+	echo "list 23<br>";
 	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 
@@ -238,6 +239,13 @@ function listtrades23( $startfrom, $results )
 
 	while( $rowa = mysqli_fetch_array( $result1 ) )
 	{
+		if( $hide == "hide" )
+		{
+			$rowa[ 0 ] = maskcr( $rowa[ 0 ] );
+			$rowa[ 1 ] = maskpr( $rowa[ 1 ] );
+			$rowa[ 2 ] = maskcr( $rowa[ 2 ] );
+			$rowa[ 3 ] = maskpr( $rowa[ 3 ] );
+		}
 		$messa[$counter][0] = $rowa[ 0 ];
 		$messa[$counter][1] = $rowa[ 1 ];
 		$messa[$counter][2] = $rowa[ 2 ];
@@ -261,7 +269,7 @@ function listtrades23( $startfrom, $results )
 		$q3 = myquery( "select
 		divisible 
 		from products1
-		where profileName = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
+		where user1 = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
 		$row4 = mysqli_fetch_row( $q3 );
 		$divisible = $row4[0];
 		if ( $divisible == 0 )
@@ -275,6 +283,40 @@ function listtrades23( $startfrom, $results )
 	return $messa;
 }
 
+function maskcr( $cr1 )
+{
+//	return "ewq";
+	$numbera = "user-0";
+	$q1 = myquery( "select
+			uniqueX
+			from users1
+			where loginName = \"$cr1\"
+			limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+	if($row != null )
+	{
+		$numbera = "user-" . $row[0];
+	}
+	return $numbera;
+}
+
+function maskpr( $pr1 )
+{
+	$numbera = "product-0";
+	$q1 = myquery( "select
+			uniqueX
+			from products1
+			where productName = \"$pr1\"
+			limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+	if($row != null )
+	{
+		$numbera = "product-" . $row[0];
+	}
+	return $numbera;
+}
 
 function listtrades46( $startfrom, $results, $cr1, $pr1 )
 {
@@ -331,7 +373,7 @@ function listtrades46( $startfrom, $results, $cr1, $pr1 )
 		$q3 = myquery( "select
 		divisible 
 		from products1
-		where profileName = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
+		where user1 = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
 		$row4 = mysqli_fetch_row( $q3 );
 		$divisible = $row4[0];
 		if ( $divisible == 0 )
@@ -398,7 +440,7 @@ function listtrades64( $startfrom, $results, $cr2 )
 		$q3 = myquery( "select
 		divisible 
 		from products1
-		where profileName = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
+		where user1 = \"$rowa[2]\" and productName = \"$rowa[3]\" " );
 		$row4 = mysqli_fetch_row( $q3 );
 		$divisible = $row4[0];
 		if ( $divisible == 0 )

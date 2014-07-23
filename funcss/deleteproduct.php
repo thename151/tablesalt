@@ -17,7 +17,7 @@ function deleteproduct( $name1, $pass1, $pname )
 
 function deleteproductpassed( $name1, $pname )
 {	
-	$result1 = myquery( "select * from products1 where productName = \"$pname\" and profileName = \"$name1\"" );
+	$result1 = myquery( "select * from products1 where productName = \"$pname\" and user1 = \"$name1\"" );
 	$row1 = mysqli_fetch_row( $result1 );
 	
 	if($row1 != null )
@@ -46,7 +46,7 @@ function deleteproductpassed( $name1, $pname )
 		}
 		my2query( "delete from sales3 where uniqueX = \"$var1\" " );
 
-		my2query( "update products1 set status1 = \"removed\" where productName = \"$pname\" and profileName = \"$name1\"" );
+		my2query( "update products1 set status1 = \"removed\" where productName = \"$pname\" and user1 = \"$name1\"" );
 		return "product removed";
 	}
 	return "product not found";

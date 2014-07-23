@@ -15,7 +15,7 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 	$am1 = trimtodp( $am1 );
 
 
-	$q0 = myquery( "select productName, divisible from products1 where profileName = \"$cr1\" and productName = \"$pr1\" and status1 = \"okay\"" );
+	$q0 = myquery( "select productName, divisible from products1 where user1 = \"$cr1\" and productName = \"$pr1\" and status1 = \"okay\"" );
 	$row1 = mysqli_fetch_row( $q0 );
 	if($row1 == null )
 	{
@@ -24,7 +24,7 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 		return $mess1;
 	}
 	
-	$q0 = myquery( "select productName, divisible from products1 where profileName = \"$cr2\" and productName = \"$pr2\" and status1 = \"okay\"" );
+	$q0 = myquery( "select productName, divisible from products1 where user1 = \"$cr2\" and productName = \"$pr2\" and status1 = \"okay\"" );
 	$row2 = mysqli_fetch_row( $q0 );
 	if($row2 == null )
 	{
@@ -107,7 +107,7 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 	$prevmax = trimtodp( $prevmax );
 
 
-	$q0 = myquery( "select productName, divisible from products1 where profileName = \"$cr1\" and productName = \"$pr1\" and status1 = \"okay\"" );
+	$q0 = myquery( "select productName, divisible from products1 where user1 = \"$cr1\" and productName = \"$pr1\" and status1 = \"okay\"" );
 	$row1 = mysqli_fetch_row( $q0 );
 	if($row1 == null )
 	{
@@ -116,7 +116,7 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 		return $mess1;
 	}
 
-	$q0 = myquery( "select productName, divisible from products1 where profileName = \"$cr2\" and productName = \"$pr2\" and status1 = \"okay\"" );
+	$q0 = myquery( "select productName, divisible from products1 where user1 = \"$cr2\" and productName = \"$pr2\" and status1 = \"okay\"" );
 	$row2 = mysqli_fetch_row( $q0 );
 	if($row2 == null )
 	{
