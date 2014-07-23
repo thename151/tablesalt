@@ -5,6 +5,7 @@ include_once( "deleteproduct.php" );
 
 function createprofile( $fname1, $pass1, $pass2 )
 {
+//	echo "enabled!<br>";
 	$check1 = createprofile2( $fname1, $pass1, $pass2 );
 	if( $check1 != "okay" )
 	{
@@ -24,8 +25,10 @@ function createprofile( $fname1, $pass1, $pass2 )
 	#check name availability
 	$check3 = checkuser($fname1);
 
+//	echo "enabled! $check3<br>";
+
 //echo "qwe 3<br>";
-	if ($check3 == "good" )
+	if ($check3 == "user does not exist	" )
 	{
 		#add user
 
@@ -46,6 +49,7 @@ function createprofile( $fname1, $pass1, $pass2 )
 
 		return "$fname1 <br>user added <br><br><a href=\"index.php\">back</a>";
 	}
+
 	return "that name is not available";
 }
 
