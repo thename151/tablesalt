@@ -152,6 +152,22 @@ function listprofilestrades( $name1 )
 	return $mess1;
 }
 
+function listdep2mask( $cr1, $pr1, $cr2, $pr2, $type )
+{	
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ return $check1;}
+	
+//	echo "$cr1, $pr1, $cr2, $pr2, $type<br>";
+	
+	$cr1 = unmaskcr( $cr1 );
+	$cr2 = unmaskcr( $cr2 );
+	$pr1 = unmaskpr( $pr1 );
+	$pr2 = unmaskpr( $pr2 );
+
+	return listdep2( $cr1, $pr1, $cr2, $pr2, $type );
+}
 
 function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
 {	
@@ -162,6 +178,7 @@ function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
 	
 	$messa[0][0] = "okay";
 	$messa[0][1] = 1;
+
 
 	$q3 = myquery( "select
 	divisible 
@@ -212,7 +229,7 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 
 function listtrades23( $startfrom, $results, $hide )
 {
-	echo "list 23<br>";
+//	echo "list 23<br>";
 	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
 
@@ -243,8 +260,8 @@ function listtrades23( $startfrom, $results, $hide )
 		{
 			$rowa[ 0 ] = maskcr( $rowa[ 0 ] );
 			$rowa[ 1 ] = maskpr( $rowa[ 1 ] );
-			$rowa[ 2 ] = maskcr( $rowa[ 2 ] );
-			$rowa[ 3 ] = maskpr( $rowa[ 3 ] );
+			$rowa[ 2 ] = maskcr( $rowa[ 2 ] );//"user-" . 
+			$rowa[ 3 ] = maskpr( $rowa[ 3 ] );//"product-" . 
 		}
 		$messa[$counter][0] = $rowa[ 0 ];
 		$messa[$counter][1] = $rowa[ 1 ];
@@ -281,41 +298,6 @@ function listtrades23( $startfrom, $results, $hide )
 	}
 
 	return $messa;
-}
-
-function maskcr( $cr1 )
-{
-//	return "ewq";
-	$numbera = "user-0";
-	$q1 = myquery( "select
-			uniqueX
-			from users1
-			where loginName = \"$cr1\"
-			limit 1" );
-
-	$row = mysqli_fetch_row( $q1 );
-	if($row != null )
-	{
-		$numbera = "user-" . $row[0];
-	}
-	return $numbera;
-}
-
-function maskpr( $pr1 )
-{
-	$numbera = "product-0";
-	$q1 = myquery( "select
-			uniqueX
-			from products1
-			where productName = \"$pr1\"
-			limit 1" );
-
-	$row = mysqli_fetch_row( $q1 );
-	if($row != null )
-	{
-		$numbera = "product-" . $row[0];
-	}
-	return $numbera;
 }
 
 function listtrades46( $startfrom, $results, $cr1, $pr1 )

@@ -1517,6 +1517,34 @@ if( $qe == "check" )
 	include( "../funcss/coins.php" );
 	checkrpc();
 	echo walletvtable();
+	
+	echo "<br>reg<br>";
+	
+	$var = "2hype";
+	echo "var $var<br>";
+	
+	$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+	echo "var2 $var2<br>";
+	
+	if( $var2 == null )
+	{	
+		echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
+	}
+	
+	echo "<br>";
+	
+	$var3 = "1hype";
+	echo "var3 $var3<br>";
+	
+	$var2 = preg_match( "/^[a-zA-Z][a-zA-Z0-9 _-]+$/", $var3 );
+	echo "var4 $var4<br>";
+	
+	if( $var4 == null )
+	{	
+		echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
+	}
+	
+	echo "<br>";
 	$messagez = "okay";
 }
 

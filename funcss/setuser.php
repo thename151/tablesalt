@@ -57,7 +57,7 @@ function createprofile( $fname1, $pass1, $pass2 )
 function createprofile2( $fname1, $pass1, $pass2 )
 {
 	#check name is valid
-	$check1 = check_string( "username", $fname1 );
+	$check1 = check_string( "new-username", $fname1 );
 	if ($check1 != "okay" )
 	{
 		return $check1;

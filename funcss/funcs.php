@@ -31,6 +31,76 @@ function checknamepass( $name1, $pass1 )
 }
 
 
+function maskcr( $cr1 )
+{
+//	return "ewq";
+	$numbera = "0";
+	$q1 = myquery( "select
+			uniqueX
+			from users1
+			where loginName = \"$cr1\"
+			limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+	if($row != null )
+	{
+		$numbera = "" . $row[0];
+	}
+	return $numbera;
+}
+
+function unmaskcr( $cr1 )
+{
+	$numbera = "0";
+	$q1 = myquery( "select
+			loginName
+			from users1
+			where uniqueX = \"$cr1\"
+			limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+	if($row != null )
+	{
+		$numbera = "" . $row[0];
+	}
+	return $numbera;
+}
+
+function unmaskpr( $pr1 )
+{
+	$numbera = "0";
+	$q1 = myquery( "select
+			productName
+			from products1
+			where uniqueX = \"$pr1\"
+			limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+	if($row != null )
+	{
+		$numbera = "" . $row[0];
+	}
+	return $numbera;
+}
+
+
+function maskpr( $pr1 )
+{
+	$numbera = "0";
+	$q1 = myquery( "select
+			uniqueX
+			from products1
+			where productName = \"$pr1\"
+			limit 1" );
+
+	$row = mysqli_fetch_row( $q1 );
+	if($row != null )
+	{
+		$numbera = "" . $row[0];
+	}
+	return $numbera;
+}
+
 
 function checknamepass2b( $name1, $pass1 )
 {
@@ -185,6 +255,25 @@ function check_string( $type, $var )
 		return "okay";
 	}
 	
+	if( $type == "new-username" )
+	{
+		$minlen = $namelength_min;
+		$maxlen = $namelength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen ){return "username must be $minlen characters or more";	}
+		if( $len > $maxlen ){return "username must be $maxlen characters or less";	}
+		
+		$var2 = preg_match( "/^[a-zA-Z][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{	return "username must begin with a letter and contain only characters A-Z a-z 0-9 _ and -";	}
+		
+		if ( strpos( $var, " ") != false )
+		{	return "username  must not have a space";	}
+
+		return "okay";
+	}
+	
 	if( $type == "password" )
 	{
 		$minlen = $passlength_min;
@@ -228,6 +317,35 @@ function check_string( $type, $var )
 		if( $var2 == null )
 		{
 			return "product name must contain only characters A-Z a-z 0-9 _ and -";
+		}
+
+		if ( strpos( $var, " ") != false )
+		{
+			return "product name  must not have a space";
+		}
+
+		return "okay";
+	}
+
+	if( $type == "new-productname" )
+	{
+		$minlen = $productlength_min;
+		$maxlen = $productlength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen )
+		{
+			return "product name must be $minlen characters or more";
+		}
+		if( $len > $maxlen )
+		{
+			return "product name must be $maxlen characters or less";
+		}
+		
+		$var2 = preg_match( "/^[a-zA-Z][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{
+			return "product name must begin with a letter and contain only characters A-Z a-z 0-9 _ and -";
 		}
 
 		if ( strpos( $var, " ") != false )

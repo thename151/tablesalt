@@ -5,7 +5,7 @@ include( "funcs.php" );
 function createproduct( $name1, $pname, $pdetail, $divisible )
 {
 	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "productname", $pname );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "new-productname", $pname );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "productdetail", $pdetail );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "trueorfalse", $divisible );if ($check1 != "okay" ){ return $check1;}
 	

@@ -12,14 +12,12 @@ if( $qe == "prices" )
 	$cr1 = quickGet( "cr1", "" );
 	$pr1 = quickGet( "pr1", "" );
 	$cr2 = quickGet( "cr2", "" );
-
-
-
+	
 	$mess1 = "";
 
 	if( $_SESSION['login'] == "yes" )
 	{
-		echo "yes<br>";
+//		echo "yes<br>";
 		if(( $cr1 != "") && ($pr1 != "") )
 		{
 			$mess1 = listtrades46($startfrom, $results, $cr1, $pr1 );
@@ -40,12 +38,11 @@ if( $qe == "prices" )
 	}
 	else
 	{
-		echo "no<br>";
+//		echo "no<br>";
 		$mess1 = listtrades23($startfrom, $results, "hide" );
+		$ncr1 = "user-";
+		$npr1 = "product-";
 	}
-
-
-
 
 	$mess2a = "";
 	$mess4 = "$link1?qe=prices&";
@@ -82,20 +79,20 @@ if( $qe == "prices" )
 
 		for( $i2 = 1; $i2 < $sz; $i2++ )
 		{
-			$mess2a .= '<tr><td><a href="'.$link1.'?qe=user&cr1=' . $mess1[$i2][0] . '">'.$mess1[$i2][0].' </a> </td>';
+			$mess2a .= '<tr><td><a href="'.$link1.'?qe=user&cr1=' . $mess1[$i2][0] . '">'.$ncr1 . $mess1[$i2][0].' </a> </td>';
 			$mess2a .= '<td> <a href="'.$link1.'?qe=product
 					&cr1=' . $mess1[$i2][0] . '			
-					&pr1=' . $mess1[$i2][1] . '">' . $mess1[$i2][1] . '</a> </td>';
+					&pr1=' . $mess1[$i2][1] . '">' . $npr1 . $mess1[$i2][1] . '</a> </td>';
 			$mess2a .= '<td> <a href="'.$link1.'?qe=market
 					&cr1=' . $mess1[$i2][0] . '			
 					&pr1=' . $mess1[$i2][1] . '			
 					&cr2=' . $mess1[$i2][2] . '			
 					&pr2=' . $mess1[$i2][3] . '">_/&#175</a> </td>';
 
-			$mess2a .= '<td><a href="'.$link1.'?qe=user&cr1=' . $mess1[$i2][2] . '">'.$mess1[$i2][2].' </a> </td>';		
+			$mess2a .= '<td><a href="'.$link1.'?qe=user&cr1=' . $mess1[$i2][2] . '">'.$ncr1 . $mess1[$i2][2].' </a> </td>';		
 			$mess2a .= '<td> <a href="'.$link1.'?qe=product
 					&cr1=' . $mess1[$i2][2] . '			
-					&pr1=' . $mess1[$i2][3] . '">' . $mess1[$i2][3] . '</a> </td>';
+					&pr1=' . $mess1[$i2][3] . '">' . $npr1 . $mess1[$i2][3] . '</a> </td>';
 
 			if( $mess1[$i2][6] == 0 )
 			{
@@ -132,7 +129,6 @@ if( $qe == "prices" )
 	{
 		$messagez = $mess1;
 	}
-
 }
 
 
@@ -140,32 +136,28 @@ if( $qe == "market" )
 {
 	$title1 = "market";
 
-	$cr1 = "";
-	$pr1 = "";
-
-	$cr2 = "";
-	$pr2 = "";
-
-	if (isset($_GET['cr1'])) $cr1 = $_GET['cr1'];
-	if (isset($_GET['pr1'])) $pr1 = $_GET['pr1'];
-	if (isset($_GET['cr1'])) $cr2 = $_GET['cr2'];
-	if (isset($_GET['pr2'])) $pr2 = $_GET['pr2'];
-
-
 	$cr1 = quickGet( "cr1", "" );
 	$pr1 = quickGet( "pr1", "" );
 	$cr2 = quickGet( "cr2", "" );
 	$pr2 = quickGet( "pr2", "" );
 
-
 	include '../funcss/listtrades.php';
 
-	$mess7 = listdep2( $cr1, $pr1, $cr2, $pr2, 2 );
-
+	if( $_SESSION['login'] == "yes" )
+	{
+//		echo "yes<br>";
+		$mess7 = listdep2( $cr1, $pr1, $cr2, $pr2, 2 );
+	}
+	else
+	{
+//		echo "no<br>";
+		$mess7 = listdep2mask( $cr1, $pr1, $cr2, $pr2, 2 );
+		$ncr1 = "user-";
+		$npr1 = "product-";
+	}
 
 	if( $mess7[0][0] == "okay" )
 	{
-
 		$mess4 = "";
 		$highbid = 0;
 
@@ -241,10 +233,10 @@ if( $qe == "market" )
 				<center> <table  id="t3">
 					  <tr>
 						 <td>
-						 <a href="'.$link1.'?qe=user&cr1=' . $cr1 . '">'.$cr1 .' </a>
+						 <a href="'.$link1.'?qe=user&cr1=' . $cr1 . '">' . $ncr1 . $cr1 .' </a>
 						 </td>
 						 <td>
-						 <a href="'.$link1.'?qe=product&cr1=' . $cr1 . '&pr1=' . $pr1 . '">' . $pr1 . '</a>
+						 <a href="'.$link1.'?qe=product&cr1=' . $cr1 . '&pr1=' . $pr1 . '">' . $npr1 . $pr1 . '</a>
 						 </td>
 						 
 						 <td nowrap>
@@ -253,12 +245,12 @@ if( $qe == "market" )
 						 
 						  <td>
 						  <div id="myText">
-						  <a href="'.$link1.'?qe=user&cr1=' . $cr2 . '">'.$cr2 .' </a>
+						  <a href="'.$link1.'?qe=user&cr1=' . $cr2 . '">' . $ncr1 . $cr2 .' </a>
 						  </div>
 						  </td>
 						  <td>
 						  <div id="myText">
-						  <a href="'.$link1.'?qe=product&cr1=' . $cr2 . '&pr1=' . $pr2 . '">' . $pr2 . '</a>
+						  <a href="'.$link1.'?qe=product&cr1=' . $cr2 . '&pr1=' . $pr2 . '">' . $npr1 . $pr2 . '</a>
 						  </div>
 						  </td>
 					  </tr>
