@@ -15,7 +15,10 @@ if( $qe == "prices" )
 	
 	$mess1 = "";
 
-	if( $_SESSION['login'] == "yes" )
+	$ncr1 = "";
+	$npr1 = "";
+	
+	if( isset( $_SESSION['login'] ) &&  $_SESSION['login'] == "yes" )
 	{
 //		echo "yes<br>";
 		if(( $cr1 != "") && ($pr1 != "") )
@@ -143,7 +146,10 @@ if( $qe == "market" )
 
 	include '../funcss/listtrades.php';
 
-	if( $_SESSION['login'] == "yes" )
+	$ncr1 = "";
+	$npr1 = "";
+		
+	if( isset( $_SESSION['login'] ) &&  $_SESSION['login'] == "yes" )
 	{
 //		echo "yes<br>";
 		$mess7 = listdep2( $cr1, $pr1, $cr2, $pr2, 2 );

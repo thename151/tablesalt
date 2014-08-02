@@ -1054,6 +1054,7 @@ if( $qe == "product" )
 
 	$mess2b = productdetail($cr1, $pr1);
 	$mess0 = "";
+	$mess10 = '';
 
 	if( $mess2b[0] =="blank" )
 	{
@@ -1124,7 +1125,7 @@ if( $qe == "product" )
 		$mess2g = "$mess2c<br>$mess2d<br>$mess2e<br>$mess2f<br>$mess2e2";
 		$mess2f = "<table><tr><td>$mess2c</td><td>$mess2d</td><td>$mess2e</td><td>$mess2e2</td><td>$mess2f</td></table>";
 			
-		$mess10 .= '<br>' . $mess2g;
+		$mess10 = '<br>' . $mess2g;
 		$mess10 .= '<br>' . $mess2j;
 
 		$mess10 .= "<br><br><br><b>comments : </b>";

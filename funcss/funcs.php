@@ -1,7 +1,6 @@
 <?php
 include_once( "dbfuncs.php" );
 include_once( "hilovalues.php" );
-include_once( "lib/password.php" );
 
 function checkuser( $name1 )
 {
@@ -212,7 +211,7 @@ function trimtoxdp( $num, $varx )
 	// 500.98747123
 	// 500.98747
 	
-	echo "xto trim $num to $varx<br>";
+//	echo "xto trim $num to $varx<br>";
 
 	$var1 = pow( 10, $varx);
 
@@ -224,7 +223,7 @@ function trimtoxdp( $num, $varx )
 	$var6 = intval( $var2. '' , 10 );
 	$var7 = $var6 / $var1;
 	
-	echo "xto $var7<br>";
+//	echo "xto $num, $varx, $var7<br>";
 	return $var7;// . " " . $num;
 }
 

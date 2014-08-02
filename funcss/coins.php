@@ -398,7 +398,6 @@ function getnewprice()
 	}
 	else
 	{
-		$price1 = $row[0];
 		$var3 = $row[1];
 		$diff = strtotime($date1) - strtotime($var3);
 //		echo $diff;
@@ -411,7 +410,6 @@ function getnewprice()
 						( thekey, thevalue, datetime ) 
 						VALUES 
 						( \"eurusd\", \"$eurusd\", \"$date1\")" );
-			$price1 = $var2;
 		}
 		else
 		{
@@ -475,8 +473,8 @@ function euro2coin( $amount, $name1, $percent )
 
 	$amount = trimtodp( $amount );
 
-	$var1 = 0.481234; //getnewprice()
-//	$var1 = getnewprice();
+//	$var1 = 0.481234; //getnewprice()
+	$var1 = getnewprice();
 	$var2 = $var1 * ( 1 + ($percent * 0.01 ) );  //~0.49
 	$var3 = $var2 * $amount;   //~eur4.9023764498
 
@@ -522,8 +520,8 @@ function coin2euro( $amount, $name1, $percent )
 
 	$amount = trimtodp( $amount );
 
-	$var1 = 0.481234; //getnewprice()
-//	$var1 = getnewprice();
+//	$var1 = 0.481234; //getnewprice()
+	$var1 = getnewprice();
 	$var2 = $var1 * ( 1 - ($percent * 0.01 ) );  //~0.49
 	$var3 = $var2 * $amount;   //~eur4.9023764498
 
