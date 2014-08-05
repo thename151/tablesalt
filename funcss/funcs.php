@@ -326,6 +326,54 @@ function check_string( $type, $var )
 		return "okay";
 	}
 
+	if( $type == "productname2" )
+	{
+		echo "here we are<br>";
+		
+		$varr1 = pr2check( $var );
+		
+		if( $varr1[0] == 'okay' )
+		{
+			return $varr1;
+		}
+		
+		$varr[0] = 'notokay';
+		
+echo "wer<br>";
+		$minlen = $productlength_min;
+		$maxlen = $productlength;
+		$len = strlen( $var );
+		
+		if( $len < $minlen )
+		{
+			$varr[1] = "product name must be $minlen characters or more";
+			return $varr;
+		}
+		if( $len > $maxlen )
+		{
+			$varr[1] = "product name must be $maxlen characters or less";
+			return $varr;
+		}
+		
+		
+		$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+		if( $var2 == null )
+		{
+			$varr[1] = "product name must contain only characters A-Z a-z 0-9 _ and -";
+			return $varr;
+		}
+
+		if ( strpos( $var, " ") != false )
+		{
+			$varr[1] = "product name  must not have a space";
+			return $varr;
+		}
+
+		$varr[0] = 'okay';
+		$varr[1] = $var;
+		return $varr;
+	}
+
 	if( $type == "new-productname" )
 	{
 		$minlen = $productlength_min;
@@ -564,5 +612,40 @@ function check_string( $type, $var )
 	
 	return "okay2";
 }
+
+function pr2check( $var )
+{
+	$var2 = preg_match('/^\d{1,9}$/', $var);
+
+	if ( $var2 == 0 )
+	{
+		echo "here10<br>";
+		return null;
+	}
+
+	$result = myquery( "select productName from products1 where uniqueX = \"$var\" " );
+	$row = mysqli_fetch_row($result);
+
+	if( $row[0] == null )
+	{
+		$varr[0] = 'okay';
+		$varr[1] = "product does not exist";
+		echo "here11<br>";
+		return $varr;
+	}
+	$varr[0] = 'okay';
+	$varr[1] = $row[0];
+	echo $row[0];
+	
+	echo " here12<br>";
+	
+	return $varr;
+		
+	// if only numbers 
+	//   search products for id 
+	//     if not null return var[0]okay var[1]pname
+	//     if null product not found 
+}
+
 
 ?>

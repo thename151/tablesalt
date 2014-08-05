@@ -97,7 +97,7 @@ function listproducts2( $cr1, $startfrom, $results )
 
 
 
-function listprofilesproducts( $name1, $startfrom, $results  )
+function listusersproducts( $name1, $startfrom, $results  )
 {
 	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}

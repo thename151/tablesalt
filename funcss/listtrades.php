@@ -103,7 +103,7 @@ function showHowLess( $cr1, $pr1 )
 
 
 
-function listprofilestrades( $name1 )
+function listuserstrades( $name1 )
 {
 	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
 

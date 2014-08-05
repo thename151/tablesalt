@@ -7,8 +7,8 @@ function sendproductbalance( $name1, $pcrea, $pname, $amount, $name2, $sendsort 
 {
 	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "username", $pcrea );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "productname", $pname );if ($check1 != "okay" ){ return $check1;}
-
+//	$check1 = check_string( "productname", $pname );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "productname2", $pname );if ($check1[0] != "okay" ){ echo "return $check1[1]<br>" ;}else{ $pname = $check1[1];$check1 = $check1[0]; }
 	$check1 = check_string( "username", $name2 );if ($check1 != "okay" ){ return $check1;}
 	
 	$check1 = check_string( "amount", $amount );if ($check1 != "okay" ){ return $check1;}
@@ -79,7 +79,7 @@ function sendproduct( $name1, $pcrea, $pname, $amount, $name2, $sendsort )
 
 	if($row == null )
 	{
-		return "that profile's product does not exist";
+		return "that user's product does not exist";
 	}
 
 	if($row[1] == 0 )

@@ -1,5 +1,4 @@
 <?php
-
 function debug($something)
 {
   echo $something."<br>\n";
@@ -108,7 +107,7 @@ if( $qe == "market" )
 
 if( $qe == "myproducts" )
 {
-	$title1 = "list profile's products";
+	$title1 = "list user's products";
 	include '../funcss/listproducts.php';
 
 	$startfrom = quickGet( "startfrom", "0" );
@@ -118,7 +117,7 @@ if( $qe == "myproducts" )
 	//~ if (isset($_GET['results'])){ $results = $_GET['results'];}else{$results = "10";}
 
 
-	$mess1 = listprofilesproducts($name1, $startfrom, $results );
+	$mess1 = listusersproducts($name1, $startfrom, $results );
 	
 	$mess2 = "";
 		
@@ -160,11 +159,11 @@ if( $qe == "myproducts" )
 
 if( $qe == "mytrades" )
 {
-	$title1 = "list profile's trades";
+	$title1 = "list user's trades";
 
 	include '../funcss/listtrades.php';
 
-	$mess1 = listprofilestrades($name1);
+	$mess1 = listuserstrades($name1);
 	$mess2 = "";
 	if( $mess1[0][0] == "okay" )
 	{
@@ -1519,33 +1518,47 @@ if( $qe == "check" )
 	checkrpc();
 	echo walletvtable();
 	
-	echo "<br>reg<br>";
-	
-	$var = "2hype";
-	echo "var $var<br>";
-	
-	$var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
-	echo "var2 $var2<br>";
-	
-	if( $var2 == null )
-	{	
-		echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
-	}
-	
+	//~ echo "<br>reg<br>";
+	//~ 
+	//~ $var = "2hype";
+	//~ echo "var $var<br>";
+	//~ 
+	//~ $var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
+	//~ echo "var2 $var2<br>";
+	//~ 
+	//~ if( $var2 == null )
+	//~ {	
+		//~ echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
+	//~ }
+	//~ 
+	//~ echo "<br>";
+	//~ 
+	//~ $var3 = "1hype";
+	//~ echo "var3 $var3<br>";
+	//~ 
+	//~ $var2 = preg_match( "/^[a-zA-Z][a-zA-Z0-9 _-]+$/", $var3 );
+	//~ echo "var4 $var4<br>";
+	//~ 
+	//~ if( $var4 == null )
+	//~ {	
+		//~ echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
+	//~ }
+	//~ 
 	echo "<br>";
 	
-	$var3 = "1hype";
-	echo "var3 $var3<br>";
+
+	//    ^\d{1,45}$
+	$var33 = "32as##";
+	$var2 = preg_match('/^\d{1,9}$/', $var33);
+	echo "regex : " . $var2 .'<br>';
+
+	$check1 = check_string( "productname2", $var33 );if ($check1[0] != "okay" ){ echo "return $check1[1]<br>" ;}else{ $var33 = $check1[1];$check1 = $check1[0]; }
+
+	echo $check1[0] .'<br>';
+	echo $check1[1] .'<br>';
+	echo $var33 .'<br>';
 	
-	$var2 = preg_match( "/^[a-zA-Z][a-zA-Z0-9 _-]+$/", $var3 );
-	echo "var4 $var4<br>";
 	
-	if( $var4 == null )
-	{	
-		echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
-	}
-	
-	echo "<br>";
 	$messagez = "okay";
 }
 

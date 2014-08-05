@@ -17,7 +17,7 @@ function createproduct( $name1, $pname, $pdetail, $divisible )
 
 	if($row != null )
 	{
-		return "this profile has already created this product";
+		return "this user has already created this product";
 	}
 	
 	$var1 = 1;

@@ -62,7 +62,7 @@ Password<br><input type="password" name="passx" maxlength="25" size="10"><br>
 </table>
 </form>
 <br><br>
-<a href="newprofile.php">sign up</a>
+<a href="newuser.php">sign up</a>
 </center>
 </div>
 

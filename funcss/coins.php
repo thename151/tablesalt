@@ -895,9 +895,9 @@ function notify4( $txid )
 
 //		select uniqueX from deposits where txid = txid
 		$q1 = myquery( "select
-					uniqueX, endtime
+					uniqueX, endtime, confirmations
 					from deposits
-					where txid = \"$txid\" 
+					where txid = \"$txid\"
 					limit 1" );
 
 		$row = mysqli_fetch_row( $q1 );
@@ -918,54 +918,59 @@ function notify4( $txid )
 		}
 		else
 		{
-			$endtime = $row[1];
-			if( $endtime == null )
+			if( $row[2] == 0 )
 			{
-				$endtime = $date1;
-			}
-//			update deposits
-			my2query( "update deposits set
-						amount = \"$amount\",
-						address = \"$address\",
-						user = \"$user1\",
-						confirmations = \"$confirmations\",
-						txid = \"$txid\",
-						updatetime = \"$date1\",
-						endtime = \"$endtime\"
-						where uniqueX = \"$row[0]\"" );
+				$endtime = $row[1];
+				if( $endtime == null )
+				{
+					$endtime = $date1;
+				}
+	//			update deposits
+				my2query( "update deposits set
+							amount = \"$amount\",
+							address = \"$address\",
+							user = \"$user1\",
+							confirmations = \"$confirmations\",
+							txid = \"$txid\",
+							updatetime = \"$date1\",
+							endtime = \"$endtime\"
+							where uniqueX = \"$row[0]\"" );
 
-			$depositrow = $row[0];
-//			select from expenses2 where ttxid = depositrow
-			$q2 = myquery( "select
-						uniqueX
-						from expenses2
-						where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
-						limit 1" );
+				$depositrow = $row[0];
+	//			select from expenses2 where ttxid = depositrow
+				$q2 = myquery( "select
+							uniqueX
+							from expenses2
+							where ttxid = \"$depositrow\" and ( type = \"deposit-unconfirmed\" or type = \"deposit\" )
+							limit 1" );
 
-			$row2 = mysqli_fetch_row( $q2 );
+				$row2 = mysqli_fetch_row( $q2 );
 
-			if($row2 == null )
-			{
-//				insert to expenses: deposit, depositrow
-				$q2 = my2query( "INSERT INTO expenses2
-					( amount, user, type, address, ttxid, runintotal, datetime )
-					VALUES 
-					( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$depositrow\", \"$runintotal\", \"$endtime\" )" );
+				if($row2 == null )
+				{
+	//				insert to expenses: deposit, depositrow
+					$q2 = my2query( "INSERT INTO expenses2
+						( amount, user, type, address, ttxid, runintotal, datetime )
+						VALUES 
+						( \"$amount\", \"$user1\", \"deposit\", \"$address\", \"$depositrow\", \"$runintotal\", \"$endtime\" )" );
+				}
+				else
+				{
+	//				update expenses: deposit, depositrow
+					echo "here<br>";
+					my2query( "update expenses2 set
+							amount = \"$amount\",
+							user = \"$user1\",
+							address = \"$address\",
+							type = \"deposit\",
+							ttxid = \"$depositrow\",
+							runintotal = \"$runintotal\",
+							datetime = \"$endtime\"
+							where uniqueX = \"$row2[0]\" " );
+				}
 			}
-			else
-			{
-//				update expenses: deposit, depositrow
-				echo "here<br>";
-				my2query( "update expenses2 set
-						amount = \"$amount\",
-						user = \"$user1\",
-						address = \"$address\",
-						type = \"deposit\",
-						ttxid = \"$depositrow\",
-						runintotal = \"$runintotal\",
-						datetime = \"$endtime\"
-						where uniqueX = \"$row2[0]\" " );
-			}
+			
+			
 		}
 	}
 

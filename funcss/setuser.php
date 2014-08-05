@@ -3,10 +3,10 @@
 include_once( "funcs.php" );
 include_once( "deleteproduct.php" );
 
-function createprofile( $fname1, $pass1, $pass2 )
+function createuser( $fname1, $pass1, $pass2 )
 {
 //	echo "enabled!<br>";
-	$check1 = createprofile2( $fname1, $pass1, $pass2 );
+	$check1 = createuser2( $fname1, $pass1, $pass2 );
 	if( $check1 != "okay" )
 	{
 		return $check1;
@@ -54,7 +54,7 @@ function createprofile( $fname1, $pass1, $pass2 )
 }
 
 
-function createprofile2( $fname1, $pass1, $pass2 )
+function createuser2( $fname1, $pass1, $pass2 )
 {
 	#check name is valid
 	$check1 = check_string( "new-username", $fname1 );

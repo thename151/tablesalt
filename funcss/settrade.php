@@ -23,7 +23,7 @@ function removetrade( $name1, $traden )
 	}
 	else
 	{
-		return "that profile's trade does not exist!";
+		return "that user's trade does not exist!";
 	}
 	return $mess1;
 }
