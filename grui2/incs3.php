@@ -27,7 +27,6 @@ if($mess1[0][0] == "okay" )
 		}
 		$mess3 = addcontrol( $startfrom, $results, $mess1[0][1], $mess4, $nextvar );
 	}
-
 }
 
 

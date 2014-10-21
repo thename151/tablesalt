@@ -216,7 +216,7 @@ if( $qe == "market" )
 				&pr1=' . $pr1 . '
 				&cr2=' . $cr2 . '
 				&pr2=' . $pr2 . '"
-				>bids</a></td>';
+				>bids</a>';
 
 		$asklink = '<a href="'.$link1.'?qe=settrade1&am1=' . $lowask . '
 				&type1=buy
@@ -224,7 +224,7 @@ if( $qe == "market" )
 				&pr1=' . $pr1 . '
 				&cr2=' . $cr2 . '
 				&pr2=' . $pr2 . '"
-				>asks</a></td>';
+				>asks</a>';
 		}
 					
 		$var10 = '' . "_/&#175;";

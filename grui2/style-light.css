@@ -1,8 +1,7 @@
 
 #prenex
 {
-	float:auto;
-/*	width:99%;*/
+/* 	float:auto;	width:99%;*/
 }
 
 #pre
@@ -24,7 +23,7 @@
 
 #t3
 { 
-	float:auto;
+	/*float:auto;*/
 	text-align:left;
 }  
 
@@ -215,7 +214,7 @@ a
 
 #leftnav
 {
-height: fill;
+height: 100%;
 float: left;
 width: 155px;
 margin: 0;

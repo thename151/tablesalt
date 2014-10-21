@@ -45,7 +45,6 @@ if( $qe == "scores" )
 
 	if( $mess1[0][0] == "okay" &&  sizeof($mess1) > 1 )
 	{
-
 		for( $i2 = 1; $i2 < sizeof($mess1); $i2++ )
 		{
 			$mess3f = "";
@@ -1516,7 +1515,10 @@ if( $qe == "check" )
 	$title1 = "check";
 	include( "../funcss/coins.php" );
 	checkrpc();
-	echo walletvtable();
+	echo walletvtable(56);
+	echo'<br>sendtransactions:start<br>';
+	echo  sendtransactions();
+	echo'<br>sendtransactions:finish<br>';
 	
 	//~ echo "<br>reg<br>";
 	//~ 
@@ -1548,15 +1550,15 @@ if( $qe == "check" )
 	
 
 	//    ^\d{1,45}$
-	$var33 = "32as##";
-	$var2 = preg_match('/^\d{1,9}$/', $var33);
-	echo "regex : " . $var2 .'<br>';
-
-	$check1 = check_string( "productname2", $var33 );if ($check1[0] != "okay" ){ echo "return $check1[1]<br>" ;}else{ $var33 = $check1[1];$check1 = $check1[0]; }
-
-	echo $check1[0] .'<br>';
-	echo $check1[1] .'<br>';
-	echo $var33 .'<br>';
+	//~ $var33 = "32as##";
+	//~ $var2 = preg_match('/^\d{1,9}$/', $var33);
+	//~ echo "regex : " . $var2 .'<br>';
+//~ 
+	//~ $check1 = check_string( "productname2", $var33 );if ($check1[0] != "okay" ){ echo "return $check1[1]<br>" ;}else{ $var33 = $check1[1];$check1 = $check1[0]; }
+//~ 
+	//~ echo $check1[0] .'<br>';
+	//~ echo $check1[1] .'<br>';
+	//~ echo $var33 .'<br>';
 	
 	
 	$messagez = "okay";

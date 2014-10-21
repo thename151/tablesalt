@@ -58,7 +58,8 @@ body
 
 a.b
 {
-color:blue; /*white #00DB00;   light blue #57b5e0 #3b83bd*/
+	color: #00DB00;
+ /*white #00DB00;   light blue #57b5e0 #3b83bd*/
 text-decoration:underline;
 }
 

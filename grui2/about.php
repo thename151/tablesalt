@@ -30,7 +30,6 @@ about
 
 
 <?php
-session_start();
 include( '../sitename.inc' );
 
 
@@ -88,7 +87,7 @@ $sitename . '
 <br><a class="b" href="http://ubuntu.com" target="_blank">ubuntu.com</a>
 <br><a class="b" href="http://www.apachefriends.org/index.html" target="_blank">xampp</a>
 <br><a class="b" href="http://notepad-plus-plus.org/" target="_blank">notepad++</a>
-<br><a class="b" href="http://www.geany.org/" target="_blank">geany!!!!???!!!???!!</a>
+<br><a class="b" href="http://www.geany.org/" target="_blank">geany</a>
 <br><a class="b" href="http://sourceforge.net/projects/phpqrcode/" target="_blank">phpqrcode</a>
 
 

@@ -328,7 +328,7 @@ function check_string( $type, $var )
 
 	if( $type == "productname2" )
 	{
-		echo "here we are<br>";
+//		echo "here we are<br>";
 		
 		$varr1 = pr2check( $var );
 		
@@ -339,7 +339,7 @@ function check_string( $type, $var )
 		
 		$varr[0] = 'notokay';
 		
-echo "wer<br>";
+//echo "wer<br>";
 		$minlen = $productlength_min;
 		$maxlen = $productlength;
 		$len = strlen( $var );
@@ -619,7 +619,7 @@ function pr2check( $var )
 
 	if ( $var2 == 0 )
 	{
-		echo "here10<br>";
+//		echo "here10<br>";
 		return null;
 	}
 

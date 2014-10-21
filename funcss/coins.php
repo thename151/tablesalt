@@ -593,11 +593,11 @@ function sendamount( $amount, $destination, $name1 )
 	echo "sendamount( $amount, $destination $name1 )<br>";
 	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "coinamount", $amount );if ($check1 != "okay" ){ return $check1;}
-//	$amount = trimtoxdp( $amount, 8 );
+	$amount = trimtoxdp( $amount, 8 );
 
 	if ( checkAddress($destination) == false )
 	{
-//		return "bad address";
+		return "bad address";
 	}
 
 	$available = getQuickBalance( $name1 );
@@ -605,7 +605,7 @@ function sendamount( $amount, $destination, $name1 )
 	$amount2 = $amount + $txfee;
 	if ( $amount2 > $available )
 	{
-//		return "insufficient funds";
+		return "insufficient funds";
 	}
 
 	$olrunintotal = getrunintotal2($name1);
@@ -623,7 +623,7 @@ function sendamount( $amount, $destination, $name1 )
 					VALUES 
 					( \"$amount2\", \"$name1\", \"withdrawal-pending\", \"$destination\", \"$runintotal\", \"$date1\", \"$q2\" )" );
 
-//	sendtransactions();
+	sendtransactions();
 
 	return "okay";
 }
@@ -652,7 +652,7 @@ function sendtransactions()
 {
 	$var = checkrpc();
 
-	if( $var == "" )
+	if( $var == "server not running" )
 	{
 		return "no service<br>";
 	}
@@ -1043,14 +1043,14 @@ function walletvtable( $prevdif )
 
 	echo "error:<br>" . $bitcoin->error . "<br>";
 
-	$i = 0;
-	while ( $var1[$i] != null )
+	foreach ( $var1 as &$value )
 	{
-		echo ": " . $var1[$i][category] . " " . $var1[$i][amount] . "<br>";
-		$i++;
+		echo ": " . $value['category'] . " ";
+		echo $value['amount'] . "<br>";
 	}
-
-	echo "wallet v table : end<br>";
+	
+	
+	echo "<br>wallet v table : end<br>";
 	return "okay<br>";
 }
 
