@@ -326,7 +326,7 @@ function listdivs2( $startfrom, $results, $cr1, $pr1 )
 {
 	$check1 = check_string( "pageno", $startfrom );;if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "pageno", $results );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
 	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
 
 	$result4 = myquery( "select 
