@@ -374,6 +374,43 @@ function getrecentprice()
 }
 
 
+function getrecentpricekrak()
+{
+//	echo "1<br>";
+	$q1 = myquery( "select
+			thevalue, datetime
+			from valuepairs
+			where thekey = \"btceur\" 
+			order by datetime desc limit 1 " );
+			
+	$row = mysqli_fetch_row( $q1 );
+
+	if($row != null )
+	{
+//		echo "2<br>";
+		$date1 = date("Y-m-d H:i:s");
+		$date2 = $row[1];
+		$diff = strtotime($date1) - strtotime($date2);
+//		echo "2b $diff<br>";
+		
+		if( $diff < 30 )
+		{
+			$var1 = trimtodp( $row[0] );
+
+			$varr[0] = $var1;
+			$varr[1] = $diff;
+
+			
+			return $varr;
+		}
+	}
+	
+	$varr[0] = trimtodp(getnewpricekrak());
+	$varr[1] = 0;
+	return $varr;
+}
+
+
 function getnewprice()
 {
 //	echo "11<br>";
@@ -426,6 +463,21 @@ function getnewprice()
 	return $eurbtc;
 }
 
+
+
+function getnewpricekrak()
+{
+//	return 1.02;
+	$date1 = date("Y-m-d H:i:s");
+	$btceur = 0.001 * getkrakprice();
+	$q2 = my2query( "INSERT INTO valuepairs 
+				( thekey, thevalue, datetime ) 
+				VALUES 
+				( \"btceur\", \"$btceur\", \"$date1\")" );
+
+	return $btceur;
+}
+
 function getbitprice()
 {
 //		return 620;
@@ -437,6 +489,24 @@ function getbitprice()
 	$pieces = explode("\"", $data);
 
 	return $pieces[7];
+}
+
+function getkrakprice()
+{
+	//~ echo "<br>krak pirce<br>";
+	$url = "https://api.kraken.com/0/public/Ticker?pair=xbteur";
+	$data = file_get_contents( $url );
+//	echo $data;
+
+	$pieces = explode("\"", $data);
+
+//	echo '<br>' . $pieces[9];
+//	echo '<br>' . $pieces[15];
+	$ans = $pieces[9] + $pieces[15];
+	$ans = $ans / 2;
+	
+//	echo '<br>' . $ans;
+	return $ans;
 }
 
 function geteurusd()
@@ -474,7 +544,7 @@ function euro2coin( $amount, $name1, $percent )
 	$amount = trimtodp( $amount );
 
 //	$var1 = 0.481234; //getnewprice()
-	$var1 = getnewprice();
+	$var1 = getnewpricekrak();
 	$var2 = $var1 * ( 1 + ($percent * 0.01 ) );  //~0.49
 	$var3 = $var2 * $amount;   //~eur4.9023764498
 
@@ -521,7 +591,7 @@ function coin2euro( $amount, $name1, $percent )
 	$amount = trimtodp( $amount );
 
 //	$var1 = 0.481234; //getnewprice()
-	$var1 = getnewprice();
+	$var1 = getnewpricekrak();
 	$var2 = $var1 * ( 1 - ($percent * 0.01 ) );  //~0.49
 	$var3 = $var2 * $amount;   //~eur4.9023764498
 

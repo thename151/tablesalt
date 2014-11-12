@@ -1499,15 +1499,6 @@ if( $qe == "coins" )
 	<a href="page.php?qe=tradecoin">trade</a><br>
 	<a href="page.php?qe=wraw">withdraw</a>';
 
-//	echo addaddress();
-//	echo sendtransactions();
-//	echo sendamount( 10.5, "zxcvfdsa", $name1 );
-
-//	echo getcwd();
-//	echo notify( "874053ae865c5e304ca6b3da416253afd1653bf12881c031673a3b4b845acd5c" );
-//	echo notify3( "562f1d5c08d84fd94112c1937e2aa2c706d26f6b3250ba62e1fef15a76df9a80" );
-//	echo notify4( "wqe" );
-//	echo walletvtable();
 }
 
 if( $qe == "check" )
@@ -1520,45 +1511,14 @@ if( $qe == "check" )
 	echo  sendtransactions();
 	echo'<br>sendtransactions:finish<br>';
 	
-	//~ echo "<br>reg<br>";
-	//~ 
-	//~ $var = "2hype";
-	//~ echo "var $var<br>";
-	//~ 
-	//~ $var2 = preg_match( "/^[a-zA-Z0-9][a-zA-Z0-9 _-]+$/", $var );
-	//~ echo "var2 $var2<br>";
-	//~ 
-	//~ if( $var2 == null )
-	//~ {	
-		//~ echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
-	//~ }
-	//~ 
-	//~ echo "<br>";
-	//~ 
-	//~ $var3 = "1hype";
-	//~ echo "var3 $var3<br>";
-	//~ 
-	//~ $var2 = preg_match( "/^[a-zA-Z][a-zA-Z0-9 _-]+$/", $var3 );
-	//~ echo "var4 $var4<br>";
-	//~ 
-	//~ if( $var4 == null )
-	//~ {	
-		//~ echo "username must contain only characters A-Z a-z 0-9 _ and -<br>";
-	//~ }
-	//~ 
-	echo "<br>";
-	
+//	echo "<br>"  . getkrakprice() . "<br>";
 
-	//    ^\d{1,45}$
-	//~ $var33 = "32as##";
-	//~ $var2 = preg_match('/^\d{1,9}$/', $var33);
-	//~ echo "regex : " . $var2 .'<br>';
-//~ 
-	//~ $check1 = check_string( "productname2", $var33 );if ($check1[0] != "okay" ){ echo "return $check1[1]<br>" ;}else{ $var33 = $check1[1];$check1 = $check1[0]; }
-//~ 
-	//~ echo $check1[0] .'<br>';
-	//~ echo $check1[1] .'<br>';
-	//~ echo $var33 .'<br>';
+	$vars = getrecentpricekrak();
+	echo "<br><br>recent : "  . $vars[0] . "  " . $vars[1] . "<br>";
+
+	
+	
+	echo "<br>";
 	
 	
 	$messagez = "okay";
@@ -1794,7 +1754,7 @@ if( $qe == "tradecoin" )
 			
 	</TABLE >';
 
-	$varr = getrecentprice();
+	$varr = getrecentpricekrak();
 	$var1 = $varr[0];
 	$var2 = $varr[1];
 
