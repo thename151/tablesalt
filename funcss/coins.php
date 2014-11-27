@@ -393,7 +393,7 @@ function getrecentpricekrak()
 		$diff = strtotime($date1) - strtotime($date2);
 //		echo "2b $diff<br>";
 		
-		if( $diff < 30 )
+		if( $diff < 300 )
 		{
 			$var1 = trimtodp( $row[0] );
 
