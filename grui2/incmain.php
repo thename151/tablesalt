@@ -5,6 +5,9 @@ function debug($something)
 }
 
 /*
+
+1910
+
 every 3 minutes do tasks
 every 15 minutes check stp
 every hour check bp
