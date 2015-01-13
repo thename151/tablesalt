@@ -1637,9 +1637,16 @@ if( $qe == "wraw" )
 	include( "../funcss/coins.php" );
 	$balance = 0;
 	$balance = getQuickBalance( $name1 );
+	
+	$coindbal = getrpcBalance();
+	
 	$messagez = 'balance : ' . $balance . '<br><br>transaction fee is 0.0001 bitcoin';
 	
 	$messagez .=  $form;
+//	if( $balance > $coindbal )
+	{
+		$messagez .= '<br>amounts greater than ' . $coindbal . ' might take a few hours';
+	}
 }
 
 if( $qe == "wraw2" )
