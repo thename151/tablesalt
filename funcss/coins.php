@@ -290,9 +290,42 @@ function checkAddress($address)
     return substr(strtoupper(hash("sha256",hash("sha256",pack("H*",substr($address,0,strlen($address)-8)),true))),0,8) == substr($address,strlen($address)-8);
 }
 
+function getrpc()
+{
+	include( "../dbdets.inc" );
+
+	require_once('easybitcoin.php');
+	$bitcoin = new Bitcoin( $rpcuser, $pass1 );
+
+	return $bitcoin;
+}
+
+
+
+function getrpcBalance()
+{
+	$bitcoin = getrpc();
+
+	$var1 = $bitcoin->getinfo();
+	$var2a = $var1['version'];
+
+	if( $var2a == "" )
+	{
+		return "zero";
+	}
+
+	return $var1['balance'];
+}
+
 
 function checkrpc()
 {
+echo "hey";
+
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
 	include( "../dbdets.inc" );
 
 	require_once('easybitcoin.php');
@@ -1125,48 +1158,5 @@ function walletvtable( $prevdif )
 }
 
 
-/*
-qwertyhgfdsa
-
-
-
-wallettotable()
-{
-	wbal = get wallet balance minconf=0
-	tbal = get table  balance minconf=0
-	tbal2 = tbal
-	
-	if( wbal > tbal )
-	{
-		get transactions
-		while( next tx && wbal > tbal2 )
-			if( tx amount > 0 )
-				select from transactions where txid == txid
-				if null
-					txamount = txid.amount
-					insert to trasactions txid date confirmations
-					tbal2 = tbal2 + txamount	
-	}
-	select from trasactions where confirmations == 0 
-	while( next row )
-		get transaction where txid == txid
-			if ( transaction.confirmations > 0 )
-				update transaction where txid ==txid
-}
-
-deposits
-amount address confirmations datetime1 datetime2
-
-withdrawals
-amount address state datetime1 datetime2
-
-expenses
-amount user type runintotal datetime
-
-view
-amount user type state(pending,unconfirmed) runintotal datetime
-
-
-*/ 
 ?>
 
