@@ -508,6 +508,26 @@ function check_string( $type, $var )
 
 		return "okay";
 	}
+	
+	if( $type == "masknumber" )
+	{
+		$len = strlen( $var );
+		$len2 = 4;
+
+		if( $len > $len2 )
+		{
+			return "page number must be $len2 characters or less";
+		}
+
+		$var2 = preg_match( "/^[0-9]{1,45}$/", $var );
+//		$var2 = preg_match( "^[0-9]$/", $var );
+		if( $var2 == null )
+		{
+			return "number must contain only characters 0-9";
+		}
+
+		return "okay";
+	}
 
 	if( $type == "trueorfalse" )
 	{

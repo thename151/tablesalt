@@ -154,10 +154,11 @@ function listuserstrades( $name1 )
 
 function listdep2mask( $cr1, $pr1, $cr2, $pr2, $type )
 {	
-	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ return $check1;}
+//	echo "listdepmask   $cr1, $pr1, $cr2, $pr2, $type  <br>";
+	$check1 = check_string( "masknumber", $cr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "masknumber", $pr1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "masknumber", $cr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "masknumber", $pr2 );if ($check1 != "okay" ){ return $check1;}
 	
 //	echo "$cr1, $pr1, $cr2, $pr2, $type<br>";
 	
