@@ -1,6 +1,6 @@
 <?php
 
-$sitename = "drincs";
+$sitename = "drinc";
 
 $coinPageCreator = "userb";
 $coinPageProduct = "mcoin";
