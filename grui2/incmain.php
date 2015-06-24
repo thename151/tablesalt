@@ -32,10 +32,9 @@ if( $qe == "blank" )
 	<p>
 	On this website products can be created and traded.
 	</p>
-	source : <a href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt</a><br>
 	';
 }
-
+//	source : <a href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt</a><br>
 
 if( $qe == "scores" )
 {
@@ -991,7 +990,7 @@ if( $qe == "edittrade2" )
 	$product2 = quickPost( "pr2", "" );
 	$vehicle = quickPost( "vehicle", "" );
 
-	echo $vehicle . "wer<br>";
+//	echo $vehicle . "wer<br>";
 
 	include( "../funcss/settrade.php" );
 
@@ -1482,10 +1481,12 @@ if( $qe == "closeuser3" )
 if( $qe == "coins" )
 {
 	$title1 = "cns";
-	include_once '../sitename.inc';
 	
+	include_once '../sitename.inc';
 	include( "../funcss/coins.php" );
-//	fillTable();
+
+	btccheckdeposits();
+	
 	$balance = 'bitcoin : ' . getQuickBalance( $name1 );
 
 	include_once( "../funcss/listtrades.php" );
@@ -1507,21 +1508,35 @@ if( $qe == "coins" )
 if( $qe == "check" )
 {
 	$title1 = "check";
+	
+//	error_reporting(E_ALL);
+//	ini_set('display_errors', '1');
+
+	
 	include( "../funcss/coins.php" );
-	checkrpc();
-	echo walletvtable(56);
+/*	$varr = checkstate();
+	
+	echo $varr[0] . '<br>';
+	echo $varr[1] . '<br>';
+	echo $varr[2] . '<br>';
+	echo $varr[3] . '<br>';
+	
+//	echo walletvtable(56);
 	echo'<br>sendtransactions:start<br>';
-	echo  sendtransactions();
+//	echo  sendtransactions();
 	echo'<br>sendtransactions:finish<br>';
 	
 //	echo "<br>"  . getkrakprice() . "<br>";
 
 	$vars = getrecentpricekrak();
-	echo "<br><br>recent : "  . $vars[0] . "  " . $vars[1] . "<br>";
-
-	
+echo "<br><br>recent : "  . $vars[0] . "  " . $vars[1] . "<br>";
+*/
+	echo "check <br>";
 	
 	echo "<br>";
+
+	
+//	sendtransactionsnew();
 	
 	
 	$messagez = "okay";
@@ -1539,6 +1554,8 @@ if( $qe == "coinst" )
 	
 	include( "../funcss/coins.php" );
 
+	btccheckdeposits();
+	
 	$startfrom = quickGet( "startfrom", "0" );
 	$results = quickGet( "results", "10" );
 	
@@ -1662,9 +1679,11 @@ if( $qe == "wraw2" )
 //	$q1 = coinwraw( $name1, $amount, $destination );
 	$q1 = sendamount( $amount, $destination, $name1 );
 
-	echo $q1;
+	$messagez .=  $q1;
 
-	header("Location: page.php?qe=message&q2=$q1");
+//	echo $q1;
+
+//	header("Location: page.php?qe=message&q2=$q1");
 }
 
 
@@ -1780,13 +1799,13 @@ if( $qe == "coinbuy" )
 {
 	$amount = quickPost( "amount1", "" );
 	
-	echo "qweewqqq";
+//	echo "qweewqqq";
 
 	include( "../funcss/coins.php" );
 
 	$q1 = coinbuy( $name1, $amount );
 
-	echo "qa<br>".$q1;
+	$messagez = $q1;
 
 	header("Location: page.php?qe=message&q2=$q1");
 }
@@ -1818,8 +1837,9 @@ if( $qe == "coinsell" )
 
 	$q1 = coinsell( $name1, $amount );
 
-	echo "qewr " . $q1;
+//	echo "qewr " . $q1;
 	
+	$messagez = $q1;
 	header("Location: page.php?qe=message&q2=$q1");
 }
 
@@ -1947,6 +1967,7 @@ if( $qe == "cointrade1" )
 	
 	$messagez .= "$tmess <br>" ;
 }
+
 
 
 if( $qe == "cointrade2" )

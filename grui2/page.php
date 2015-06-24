@@ -6,6 +6,8 @@ if( $_SESSION['login'] != "yes" )
 	session_start();
 	session_destroy();
 	unset( $_SESSION );
+	
+	//include sitename...
 	header("Location: page2.php");
 }
 
@@ -73,7 +75,7 @@ echo $name1; //<a href="page.php?qe=settins"></a>
 <a href="page.php?qe=sendproduct1">send product</a><br>
 <a href="page.php?qe=transactions">transactions</a><br><br>
 <a href="page.php?qe=dividends">dividends</a><br>
-<a href="page.php?qe=coins">try</a><br><br>
+<a href="page.php?qe=coins">coins</a><br><br>
 <a href="page.php?qe=sendmessage1">send message</a><br>
 <a href="page.php?qe=readmessages&startfrom=0&results=5">read messages</a><br><br>
 <a href="page.php?qe=settins">settins</a><br>
