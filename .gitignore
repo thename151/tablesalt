@@ -2,6 +2,5 @@
 *.notrack.php
 *~
 dbdets.inc
-sitename.inc
 grui2/qrcodes
 grui2/qrcodes/qrcodeshere.txt
