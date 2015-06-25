@@ -77,7 +77,7 @@ function showHowMuch2( $cr1, $pr1, $user )
 	
 	if( $user == $cr1 )
 	{
-		echo "here 1 $hiscore<br>";
+//		echo "here 1 $hiscore<br>";
 		return $hiscore;
 	}
 	return 0;
@@ -191,15 +191,131 @@ function listdep2( $cr1, $pr1, $cr2, $pr2, $type )
 	{
 		$messa[0][1] = 0;
 	}
-	
+/*	
 	$messa[1] = listdep( $cr1, $pr1, $cr2, $pr2, 1 );
 	$messa[2] = listdep( $cr2, $pr2, $cr1, $pr1, 2 );
+*/
+	
+	$messa[1] = listdept1( $cr1, $pr1, $cr2, $pr2 );
+	$messa[2] = listdept2( $cr2, $pr2, $cr1, $pr1 );
 	
 	return $messa;
 }
 
+function listdept1( $cr1, $pr1, $cr2, $pr2 )
+{
+//	echo "t1: $cr1, $pr1, $cr2, $pr2<br>";
+	$messa =null;
+	$price = "price2";
+	$result1 = myquery( "select
+			stock, price2, price1, amount1, type1
+			from salesactive2 where
+			creator1 = \"$cr2\" and product1 = \"$pr2\" and
+			creator2 = \"$cr1\" and product2 = \"$pr1\" and
+			stock > 0
+			order by price1"
+			);
+
+	$counter = 0;
+	while( $rowa = mysqli_fetch_array( $result1 ) )
+	{
+		$messa[$counter][0] = $rowa[ 0 ];
+		$messa[$counter][1] = $rowa[ 1 ];
+		
+		if( $rowa[4] == "buy" )
+		{
+			$messa[$counter][2] = $rowa[ 3 ];
+			$messa[$counter][3] = "equal";
+		}
+		if( $rowa[4] == "sell" )
+		{
+			$messa[$counter][2] = $rowa[ 2 ] * $rowa[ 0 ];
+			
+			$var10 = $rowa[0] / $rowa[1];
+			$var11 = $rowa[ 1 ];
+			if( $var10 == $var11 )
+			{
+				$messa[$counter][3] = "equal";
+			}
+			else
+			{
+				$messa[$counter][3] = "not equal";
+			}
+		}
+		
+	
+#		echo "$counter : " . $messa[$counter][0] . " : " . $messa[$counter][1]. "<br>";
+		$counter = $counter + 1;
+	}
+	
+//	print_r( $messa );
+
+	return $messa;
+}
+
+
+function listdept2( $cr1, $pr1, $cr2, $pr2 )
+{
+//	echo "t2: $cr1, $pr1, $cr2, $pr2<br>";
+	$messa =null;
+	$price = "price1";
+	$result1 = myquery( "select
+			stock, price1, amount1, type1
+			from salesactive2 where
+			creator1 = \"$cr2\" and product1 = \"$pr2\" and
+			creator2 = \"$cr1\" and product2 = \"$pr1\" and
+			stock > 0
+			order by price1"
+			);
+
+	$counter = 0;
+	while( $rowa = mysqli_fetch_array( $result1 ) )
+	{
+		$messa[$counter][0] = $rowa[ 0 ];
+		$messa[$counter][1] = $rowa[ 1 ];
+		
+		
+		if( $rowa[3] == "buy" )
+		{
+			$messa[$counter][2] = $rowa[ 2 ];
+			
+			$var10 = $rowa[0] / $rowa[1];
+			$var11 = $rowa[ 2 ];
+			if( $var10 == $var11 )
+			{
+				$messa[$counter][3] = "equal";
+			}
+			else
+			{
+				$messa[$counter][3] = "not equal";
+			}
+		}
+		if( $rowa[3] == "sell" )
+		{
+			$messa[$counter][2] = $rowa[ 0 ] * $rowa[ 1 ];
+			$messa[$counter][3] = "equal";
+		}
+		
+		
+#		echo "$counter : " . $messa[$counter][0] . " : " . $messa[$counter][1]. "<br>";
+		$counter = $counter + 1;
+	}
+//	print_r( $messa );
+
+	return $messa;
+}
+
+
+
+
+
+
+
+/*
+
 function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 {
+	echo "$cr1, $pr1, $cr2, $pr2, $type<br>";
 	$messa =null;
 	$price = "price1";
 	if( $type == 1 )
@@ -223,10 +339,11 @@ function listdep( $cr1, $pr1, $cr2, $pr2, $type )
 #		echo "$counter : " . $messa[$counter][0] . " : " . $messa[$counter][1]. "<br>";
 		$counter = $counter + 1;
 	}
-	
+	print_r( $messa );
+	echo "<br>";
 	return $messa;
 }
-
+*/
 
 function listtrades23( $startfrom, $results, $hide )
 {

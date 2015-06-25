@@ -6,12 +6,12 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 {
 	//  1            2                               3                  4
 	// 132 * 1.2 = 158.4, rounds up to a maximum of 159, cancontinue = true
-	$check1 = check_string( "username", $cr1 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "username", $cr2 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "username", $cr1 );   if ($check1 != "okay" ){ $mess1[0] = 'false'; $mess1[1] = $check1 ; return $mess1; }
+	$check1 = check_string( "productname", $pr1 );if ($check1 != "okay" ){ $mess1[0] = 'false'; $mess1[1] = $check1 ; return $mess1; }
+	$check1 = check_string( "username", $cr2 );   if ($check1 != "okay" ){ $mess1[0] = 'false'; $mess1[1] = $check1 ; return $mess1; }
+	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ $mess1[0] = 'false'; $mess1[1] = $check1 ; return $mess1; }
 	
-	$check1 = check_string( "amount", $am1 );if ($check1 != "okay" ){ return $check1;}
+	$check1 = check_string( "amount", $am1 );if ($check1 != "okay" ){ $mess1[0] = 'false'; $mess1[1] = $check1 ; return $mess1; }
 	$am1 = trimtodp( $am1 );
 
 
@@ -20,7 +20,7 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 	if($row1 == null )
 	{
 		$mess1[0] = 'false';
-		$mess1[1] = "$cr1 $pr1 not found";
+		$mess1[1] = "product $cr1 $pr1 not found";
 		return $mess1;
 	}
 	
@@ -29,7 +29,7 @@ function sendiv1( $cr1, $pr1, $cr2, $pr2, $am1 )
 	if($row2 == null )
 	{
 		$mess1[0] = 'false';
-		$mess1[1] = "$cr2 $pr2 not found";
+		$mess1[1] = "product $cr2 $pr2 not found";
 		return $mess1;
 	}
 	if($row2[1] == 0 )
@@ -101,11 +101,13 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 	$check1 = check_string( "productname", $pr2 );if ($check1 != "okay" ){ return $check1;}
 	
 	$check1 = check_string( "amount", $am1 );if ($check1 != "okay" ){ return $check1;}
-	$check1 = check_string( "amount", $prevmax );if ($check1 != "okay" ){ return $check1;}
+	if ( $prevmax != 0 )
+	{
+		$check1 = check_string( "amount", $prevmax );if ($check1 != "okay" ){ return $check1;}
+	}
 
 	$am1 = trimtodp( $am1 );
 	$prevmax = trimtodp( $prevmax );
-
 
 	$q0 = myquery( "select productName, divisible from products1 where user1 = \"$cr1\" and productName = \"$pr1\" and status1 = \"okay\"" );
 	$row1 = mysqli_fetch_row( $q0 );
@@ -249,7 +251,7 @@ function sendiv2( $cr1, $pr1, $cr2, $pr2, $am1, $prevmax )
 
 	include_once( "sendproduct.php" );
 	$send = sendprDiv1($cr1, $cr2, $pr2, $total );
-
+	
 	$count2 = 0;
 	while ( $count2 < $counter )
 	{

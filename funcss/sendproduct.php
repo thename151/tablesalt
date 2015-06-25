@@ -38,7 +38,7 @@ function sendprDiv1( $name, $cr1, $pr1, $amount )
 	}
 
 	sendproduct5( $name, $cr1, $pr1, $checkr1[1], $checkr1[0] );
-	return sendlog($name, $cr1, $pr1, $amount, "divholder", "dividend" );
+	sendlog($name, $cr1, $pr1, $amount, "divholder", "dividend" );
 
 	return "a success : $name, $cr1, $pr1, $amount, div, div<br>";
 }

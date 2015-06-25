@@ -160,7 +160,6 @@ function settradeb( $name1, $amount, $crea1,  $pname1,
 	{
 		return "too many names are the same";
 	}
-
 	return settradeb2( $name1, $amount, $crea1, $pname1,
 				$price, $crea2, $pname2, $buysell );
 

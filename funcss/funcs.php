@@ -1,6 +1,7 @@
 <?php
 include_once( "dbfuncs.php" );
 include_once( "hilovalues.php" );
+include_once( "password.php" );
 
 function checkuser( $name1 )
 {
@@ -142,7 +143,7 @@ function rounditup( $num )
 
 	$var5 = $var1 + $loscore;
 
-	echo "roundit-up : num $num, var1 $var1, var5 $var5, var3 $var3, var4 $var4, var5 $var5, var6 $var6, var7 $var7<br> ";
+//	echo "roundit-up : num $num, var1 $var1, var5 $var5, var3 $var3, var4 $var4, var5 $var5, var6 $var6, var7 $var7<br> ";
 	return $var5;
 }
 
@@ -176,7 +177,7 @@ function rounditrand( $num1 )	// 21.234567
 	
 	$var5 = $var4 + $var1;
 	
-	echo "roundit-rand : num1 $num1, var1 $var1, var2 $var2, var3 $var3, var4 $var4, xr $xr, var5 $var5, var7 $var7<br> ";
+//	echo "roundit-rand : num1 $num1, var1 $var1, var2 $var2, var3 $var3, var4 $var4, xr $xr, var5 $var5, var7 $var7<br> ";
 	return $var5;
 }
 
@@ -473,10 +474,10 @@ function check_string( $type, $var )
 
 		$var2 = preg_match('/^[0-9]+(\.[0-9]+)?$/', $var);
 
-		if ( $var == 0 )
-		{
-			return "amount must contain only characters 0-9 and .  : $var";
-		}		
+		//~ if ( $var == 0 )
+		//~ {
+			//~ return "amount must contain only characters 0-9 and .  : $var";
+		//~ }
 		if( $var < $loscore )
 		{
 			return "amount must be $loscore or more";

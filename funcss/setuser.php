@@ -2,6 +2,7 @@
 
 include_once( "funcs.php" );
 include_once( "deleteproduct.php" );
+include_once( "password.php" );
 
 function createuser( $fname1, $pass1, $pass2 )
 {

@@ -6,7 +6,7 @@ function showscores( $name1 )
 	$check1 = check_string( "username", $name1 );if ($check1 != "okay" ){ return $check1;}
 	include( "hilovalues.php" );
 	
-	$result7 = myquery( "select productName from products1 where 
+	$result7 = myquery( "select productName, divisible from products1 where 
 						 user1 = \"$name1\" and 
 						 status1 = \"okay\"" );
 	$mess1a = null;
@@ -35,6 +35,12 @@ function showscores( $name1 )
 			$amt2 = $midscore;
 		}
 
+		if( $row2[1] == 0 )
+		{
+			$amt2 = $amt2 - 1 + $loscore;
+			
+		}
+		
 		$messa[0] = $name1;
 		$messa[1] = $row2[0];
 		$messa[2] = $amt2;
