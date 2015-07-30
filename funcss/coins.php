@@ -30,7 +30,7 @@ function coinbuy( $name, $amount ) // buy mbtc products
     $runintotal = $olrunintotal + $amount2;
 
     
-    $available = $runintotal;
+    $available = $getQuickBalance($name);
     if ( ($amount/1000) > $available )
     {
         return "insufficient funds";
@@ -1214,6 +1214,36 @@ function getrecentness( $valuevar, $timevar )
     return true;
 }
 
+
+function getrecentness2( $valuevar )
+{
+//	echo "1<br>";
+	$q1 = myquery( "select
+			thevalue, datetime
+			from valuepairs
+			where thekey = \"$valuevar\" 
+			order by datetime desc limit 1 " );
+			
+	$row = mysqli_fetch_row( $q1 );
+
+	if($row != null )
+	{
+//		echo "2<br>";
+		$date1 = date("Y-m-d H:i:s");
+		$date2 = $row[1];
+//		echo $date1 . '<br>';
+//		echo $date2 . '<br>';
+		$diff = strtotime($date1) - strtotime($date2);
+		
+//		echo "2b $diff<br>";
+		
+//		echo "true";
+		return $diff;
+	}
+	
+//	echo "true";
+	return 0;
+}
 
 
 function sendtransactionsnew() // rename
