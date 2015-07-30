@@ -1241,8 +1241,7 @@ function getrecentness2( $valuevar )
 		return $diff;
 	}
 	
-//	echo "true";
-	return 0;
+	return false;
 }
 
 

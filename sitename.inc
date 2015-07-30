@@ -2,9 +2,11 @@
 
 $sitename = "drinc";
 
-$coinPageCreator = "userb";
-$coinPageProduct = "mcoin";
+
+$coinPageCreator = "coins";
+$coinPageProduct = "mbtc";
 $coinPageHolder = "holder";
 $coinPageEuro = "euro";
+
 
 ?>

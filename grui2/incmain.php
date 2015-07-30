@@ -1626,6 +1626,21 @@ if( $qe == "coinst" )
 	{
 		$mess10 .= $mess1;
 	}
+	
+	
+	$varrecent = getrecentness2( "coinkite" );
+	$recnt2 = 900 - $varrecent;
+	if( $recnt2 < 0 )
+	{
+	    $recnt2 = 0;
+	}
+	$recnt3 = gmdate("i", $recnt2);
+	$recnt4 = gmdate("s", $recnt2);
+	
+	$recent5 .= 'deposits are checked at 15 minute intervals : ' . "$recnt3 minutes and $recnt4 seconds until next check <br><br>";
+	
+	$messagez .= $recent5;
+	
 	$messagez .= $mess10;
 }
 
