@@ -36,6 +36,49 @@ if( $qe == "blank" )
 }
 //	source : <a href=https://github.com/thename151/tablesalt target="_blank">github.com/thename151/tablesalt</a><br>
 
+
+if( $qe == "check" )
+{
+	$title1 = "check";
+	
+//	error_reporting(E_ALL);
+//	ini_set('display_errors', '1');
+
+	
+	include( "../funcss/coins.php" );
+/*	$varr = checkstate();
+	
+	echo $varr[0] . '<br>';
+	echo $varr[1] . '<br>';
+	echo $varr[2] . '<br>';
+	echo $varr[3] . '<br>';
+	
+//	echo walletvtable(56);
+	echo'<br>sendtransactions:start<br>';
+//	echo  sendtransactions();
+	echo'<br>sendtransactions:finish<br>';
+	
+//	echo "<br>"  . getkrakprice() . "<br>";
+*/
+	$vars = getrecentpricekrak();
+echo "<br><br>recent krak: "  . $vars[0] . "  " . $vars[1] . "<br>";
+
+
+	$vars = getkrakprice();
+echo "<br><br>recent krak: "  . $vars. "<br>";
+
+	echo "check <br>";
+	
+	echo "<br>";
+
+	
+//	sendtransactionsnew();
+	
+	
+	$messagez = "okay";
+}
+
+
 if( $qe == "scores" )
 {
 	$title1 = "show scores";
@@ -1505,42 +1548,6 @@ if( $qe == "coins" )
 
 }
 
-if( $qe == "check" )
-{
-	$title1 = "check";
-	
-//	error_reporting(E_ALL);
-//	ini_set('display_errors', '1');
-
-	
-	include( "../funcss/coins.php" );
-/*	$varr = checkstate();
-	
-	echo $varr[0] . '<br>';
-	echo $varr[1] . '<br>';
-	echo $varr[2] . '<br>';
-	echo $varr[3] . '<br>';
-	
-//	echo walletvtable(56);
-	echo'<br>sendtransactions:start<br>';
-//	echo  sendtransactions();
-	echo'<br>sendtransactions:finish<br>';
-	
-//	echo "<br>"  . getkrakprice() . "<br>";
-
-	$vars = getrecentpricekrak();
-echo "<br><br>recent : "  . $vars[0] . "  " . $vars[1] . "<br>";
-*/
-	echo "check <br>";
-	
-	echo "<br>";
-
-	
-//	sendtransactionsnew();
-	
-	
-	$messagez = "okay";
-}
 
 if( $qe == "okay" )
 {

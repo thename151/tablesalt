@@ -538,8 +538,8 @@ function getkrakprice()
     $pieces = explode("\"", $data);
 
 //    echo '<br>' . $pieces[9];
-//    echo '<br>' . $pieces[15];
-    $ans = $pieces[9] + $pieces[15];
+//    echo '<br>17  ' . $pieces[17];
+    $ans = $pieces[9] + $pieces[17];
     $ans = $ans / 2;
     
 //    echo '<br>' . $ans;
